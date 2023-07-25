@@ -3,14 +3,14 @@ export interface IUser {
   email: string,
   firstName: string,
   lastName: string,
-  isAdmin: boolean
+  isAdmin: boolean,
 }
 
-export interface TokenData {
+export interface ITokenData {
   token: string,
   expiresIn: number,
 }
 
-export interface DataStoredInToken {
+export interface IDataStoredInToken {
   _id: number,
 }

@@ -1,10 +1,10 @@
 import jwt from "jsonwebtoken";
-import { DataStoredInToken, IUser, TokenData } from "../config/types";
+import { IDataStoredInToken, IUser, ITokenData } from "../config/types";
 import secrets from "../config/secrets";
 
-const createToken = (user: IUser): TokenData => {
+const createToken = (user: IUser): ITokenData => {
   const expiresIn = 60 * 60;
-  const dataStoredInToken: DataStoredInToken = {
+  const dataStoredInToken: IDataStoredInToken = {
     _id: user.id
   };
   const token = jwt.sign(dataStoredInToken, secrets.jwtSecret, { expiresIn });

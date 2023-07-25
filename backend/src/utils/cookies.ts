@@ -1,6 +1,6 @@
-import { TokenData } from "../config/types";
+import { ITokenData } from "../config/types";
 
-const createCookie = (tokenData: TokenData) => {
+const createCookie = (tokenData: ITokenData) => {
   return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn}`;
 }
 

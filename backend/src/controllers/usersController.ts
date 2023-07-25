@@ -1,10 +1,10 @@
-import { Request, Response } from "express"
+import { RequestHandler, Request, Response } from "express"
 import bcrypt from "bcrypt";
 import prisma from "../prisma/lib/prisma";
 import createToken from "../utils/tokens";
 import createCookie from "../utils/cookies";
 
-const getAllUsers = async (req: Request, res: Response) => {
+const getAllUsers: RequestHandler = async (req: Request, res: Response) => {
   try {
     const users = await prisma.user.findMany();
     res.json(users);
@@ -15,7 +15,7 @@ const getAllUsers = async (req: Request, res: Response) => {
   }
 }
 
-const getUser = async (req: Request, res: Response) => {
+const getUser: RequestHandler<{ id: string }> = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const user = await prisma.user.findUnique({
@@ -30,7 +30,7 @@ const getUser = async (req: Request, res: Response) => {
   }
 }
 
-const createUser = async (req: Request, res: Response) => {
+const createUser: RequestHandler = async (req: Request, res: Response) => {
   const { email, firstName, lastName, password }: { email: string, firstName: string, lastName: string, password: string } = req.body;
 
   try {
@@ -52,7 +52,7 @@ const createUser = async (req: Request, res: Response) => {
   }
 }
 
-const updateUser = async (req: Request, res: Response) => {
+const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { email, firstName, lastName }: { email: string, firstName: string, lastName: string } = req.body;
   let password: string = req.body.password
@@ -73,10 +73,9 @@ const updateUser = async (req: Request, res: Response) => {
       message: "Something went wrong.",
     });
   }
-  
 }
 
-const deleteUser = async (req: Request, res: Response) => {
+const deleteUser: RequestHandler<{ id: string }> = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const deletedUser = await prisma.user.delete({
