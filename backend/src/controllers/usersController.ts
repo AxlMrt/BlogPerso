@@ -10,7 +10,8 @@ const getAllUsers: RequestHandler = async (req: Request, res: Response) => {
     res.json(users);
   } catch (error) {
     res.status(500).json({
-      message: "Something went wrong.",
+      message: "Something went wrong",
+      error
     });
   }
 }
@@ -25,7 +26,8 @@ const getUser: RequestHandler<{ id: string }> = async (req: Request, res: Respon
     res.json(user);
   } catch (error) {
     res.status(500).json({
-      message: "Something went wrong.",
+      message: "Something went wrong",
+      error
     });
   }
 }
@@ -47,7 +49,8 @@ const createUser: RequestHandler = async (req: Request, res: Response) => {
   } catch (error) {
     console.log(error)
     res.status(500).json({
-      message: "Something went wrong.",
+      message: "Something went wrong",
+      error
     });
   }
 }
@@ -70,7 +73,8 @@ const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
     res.json(updatedUser);
   } catch (error) {
     res.status(500).json({
-      message: "Something went wrong.",
+      message: "Something went wrong",
+      error
     });
   }
 }
@@ -85,7 +89,8 @@ const deleteUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
     res.json(deletedUser);
   } catch (error) {
     res.status(500).json({
-      message: "Something went wrong.",
+      message: "Something went wrong",
+      error
     });
   }
 }
