@@ -1,49 +1,90 @@
 import { Request, Response } from "express"
+import bcrypt from 'bcrypt';
 import prisma from "../../lib/prisma";
 
 const getAllUsers = async (req: Request, res: Response) => {
-  const users = await prisma.user.findMany();
-  res.json(users);
+  try {
+    const users = await prisma.user.findMany();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong.",
+    });
+  }
 }
 
 const getUser = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const user = await prisma.user.findUnique({
-    where: { id: parseInt(id) }
-  });
-
-  res.json(user);
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: parseInt(id) }
+    });
+  
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong.",
+    });
+  }
 }
 
 const createUser = async (req: Request, res: Response) => {
-  const { email, firstName, lastName }: { email: string, firstName: string, lastName: string } = req.body;
+  const { email, firstName, lastName, password }: { email: string, firstName: string, lastName: string, password: string } = req.body;
 
-  const newUser = await prisma.user.create({
-    data: { email, firstName, lastName },
-  });
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const cryptedPassword = await bcrypt.hash(password, salt);
 
-  res.status(201).json(newUser);
+    const newUser = await prisma.user.create({
+      data: { email, firstName, lastName, password: cryptedPassword }, 
+    });
+
+    res.status(201).json(newUser);
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong.",
+    });
+  }
+
 }
 
 const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { email, firstName, lastName, isAdmin } = req.body;
+  const { email, firstName, lastName }: { email: string, firstName: string, lastName: string } = req.body;
+  let password: string = req.body.password
+  try {
+    if (password) {
+    const salt = await bcrypt.genSalt(10);
+    password = await bcrypt.hash(password, salt);
+    }
 
-  const updatedUser = await prisma.user.update({
-    where: { id: parseInt(id) },
-    data: { email, firstName, lastName, isAdmin }
-  });
+    const updatedUser = await prisma.user.update({
+      where: { id: parseInt(id) },
+      data: { email, firstName, lastName, password }
+    });
 
-  res.json(updatedUser);
+    res.json(updatedUser);
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong.",
+    });
+  }
+  
 }
 
 const deleteUser = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const deletedUser = prisma.user.delete({
-    where: { id: parseInt(id) },
-  });
+  try {
+    const deletedUser = await prisma.user.delete({
+      where: { id: parseInt(id) },
+    });
 
-  res.json(deletedUser);
+    res.json(deletedUser);
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong.",
+    });
+  }
 }
 
 const _ = {
