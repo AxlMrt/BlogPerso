@@ -35,12 +35,11 @@ const getUser: RequestHandler<{ id: string }> = async (req: Request, res: Respon
 const createUser: RequestHandler = async (req: Request, res: Response) => {
   try {
     const { email, firstName, lastName, password }: { email: string, firstName: string, lastName: string, password: string } = req.body;
-
     const salt = await bcrypt.genSalt(10);
     const cryptedPassword = await bcrypt.hash(password, salt);
 
     const newUser = await prisma.user.create({
-      data: { email, firstName, lastName, password: cryptedPassword }, 
+      data: { email, firstName, lastName, password: cryptedPassword },
     });
 
     const tokenData = createToken(newUser);
@@ -58,17 +57,16 @@ const createUser: RequestHandler = async (req: Request, res: Response) => {
 const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { email, firstName, lastName }: { email: string, firstName: string, lastName: string } = req.body;
     let password: string = req.body.password;
-
+    
     if (password) {
-    const salt = await bcrypt.genSalt(10);
-    password = await bcrypt.hash(password, salt);
+      const salt = await bcrypt.genSalt(10);
+      password = await bcrypt.hash(password, salt);
     }
 
     const updatedUser = await prisma.user.update({
       where: { id: id },
-      data: { email, firstName, lastName, password }
+      data: req.body
     });
 
     res.json(updatedUser);

@@ -1,9 +1,8 @@
 export interface IUser {
-  id: number,
   email: string,
   firstName: string,
   lastName: string,
-  isAdmin: boolean,
+  password: string,
 }
 
 export interface ITokenData {
@@ -14,3 +13,14 @@ export interface ITokenData {
 export interface IDataStoredInToken {
   _id: number,
 }
+
+export type UploadedFile = {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  destination: string;
+  filename: string;
+  path: string;
+  size: number;
+};
