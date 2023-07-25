@@ -1,5 +1,6 @@
 import express, { Application } from "express";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 import secrets from "./config/secrets";
 import cors from "cors";
 import UsersRoute from "./routes/users";
@@ -11,6 +12,7 @@ const baseURL = "/api/v1"
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(cors({ origin: true }));
 app.use(cors({ origin: "<http://localhost:3000>" }));
 
