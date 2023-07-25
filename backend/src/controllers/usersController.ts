@@ -1,6 +1,8 @@
 import { Request, Response } from "express"
-import bcrypt from 'bcrypt';
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 import prisma from "../../lib/prisma";
+import secrets from "../config/secrets";
 
 const getAllUsers = async (req: Request, res: Response) => {
   try {
@@ -39,7 +41,11 @@ const createUser = async (req: Request, res: Response) => {
       data: { email, firstName, lastName, password: cryptedPassword }, 
     });
 
-    res.status(201).json(newUser);
+    const { id } = newUser;
+
+    const accessToken = jwt.sign({ id }, secrets.jwtSecret, { expiresIn: "3 hours" });
+
+    res.status(201).json({ id, token: accessToken });
   } catch (error) {
     res.status(500).json({
       message: "Something went wrong.",

@@ -1,12 +1,10 @@
 import express, { Application } from "express";
 import bodyParser from "body-parser";
-import dotenv from 'dotenv';
+import secrets from "./config/secrets";
 import cors from "cors";
 import UsersRoute from "./routes/users";
 
-dotenv.config();
-
-const PORT = process.env.PORT || 8000;
+const PORT = secrets.port || 8000;
 const app: Application = express();
 
 app.use(bodyParser.json());

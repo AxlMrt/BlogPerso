@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import * as dotenv from "dotenv";
-dotenv.config();
+import secrets from "../src/config/secrets";
 
 declare global {
   var prisma: PrismaClient | undefined;
@@ -8,7 +7,7 @@ declare global {
 
 let prisma: PrismaClient;
 
-if (process.env.NODE_ENV === "production")
+if (secrets.nodeEnv === "production")
   prisma = new PrismaClient();
 else {
   if (!global.prisma)
