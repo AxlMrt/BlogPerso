@@ -1,7 +1,10 @@
-let secret:string = process.env.JWT_SECRET as string;
+import * as dotenv from "dotenv";
+dotenv.config();
+
+let jwtSecret: string = process.env.JWT_SECRET as string;
 
 const secrets = {
-  jwtSecret: secret,
+  jwtSecret,
   nodeEnv: process.env.NODE_ENV,
   port: process.env.PORT,
 }

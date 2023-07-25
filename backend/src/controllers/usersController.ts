@@ -1,8 +1,8 @@
 import { Request, Response } from "express"
-import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import prisma from "../../lib/prisma";
-import secrets from "../config/secrets";
+import prisma from "../prisma/lib/prisma";
+import createToken from "../utils/tokens";
+import createCookie from "../utils/cookies";
 
 const getAllUsers = async (req: Request, res: Response) => {
   try {
@@ -41,17 +41,15 @@ const createUser = async (req: Request, res: Response) => {
       data: { email, firstName, lastName, password: cryptedPassword }, 
     });
 
-    const { id } = newUser;
-
-    const accessToken = jwt.sign({ id }, secrets.jwtSecret, { expiresIn: "3 hours" });
-
-    res.status(201).json({ id, token: accessToken });
+    const tokenData = createToken(newUser);
+    res.setHeader('Set-Cookie', [createCookie(tokenData)]);
+    res.status(201).json(newUser);
   } catch (error) {
+    console.log(error)
     res.status(500).json({
       message: "Something went wrong.",
     });
   }
-
 }
 
 const updateUser = async (req: Request, res: Response) => {
