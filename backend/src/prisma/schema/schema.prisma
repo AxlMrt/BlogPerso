@@ -11,10 +11,25 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  firstName String
-  lastName  String
-  password  String
-  isAdmin   Boolean  @default(false)
+  id                String          @id @default(uuid())
+  email             String          @unique
+  firstName         String          @db.VarChar(255)
+  lastName          String          @db.VarChar(255)
+  password          String
+
+  photo             String?         @default("default.png")
+  role              RoleEnumType?   @default(user)
+
+  verificationCode  String?         @db.Text
+
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  @@unique([email, verificationCode])
+  @@index([email, verificationCode])
+}
+
+enum RoleEnumType {
+  user
+  admin
 }
