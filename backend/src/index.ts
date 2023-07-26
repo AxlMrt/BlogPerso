@@ -1,9 +1,8 @@
 import express, { Application } from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
-import secrets from "./config/secrets";
 import cors from "cors";
-import path from "path";
+import secrets from "./config/secrets";
 import UsersRoute from "./routes/users";
 import AuthRoute from "./routes/auth";
 
