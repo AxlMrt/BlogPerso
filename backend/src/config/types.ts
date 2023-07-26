@@ -14,6 +14,11 @@ export interface IDataStoredInToken {
   _id: number,
 }
 
+export interface HttpException extends Error {
+  status: number,
+  message: string,
+}
+
 export type UploadedFile = {
   fieldname: string;
   originalname: string;
