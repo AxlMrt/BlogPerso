@@ -46,8 +46,8 @@ const createBook: RequestHandler = async (req: Request, res: Response, next: Nex
   }
 }
 
-const updateBook: RequestHandler<{ id: string, author: string, type: string, year: number, publisher: string, isRead: boolean, feedback: number }> = async (req: Request, res: Response, next: NextFunction) => {
-  const { title, author, type, year, publisher, isRead, feedback } = req.body;
+const updateBook: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
+  const { title, author, type, year, publisher, isRead, feedBack } = req.body;
   const { id } = req.params;
   try {
     const updatedBook = await prisma.book.update({
@@ -58,7 +58,7 @@ const updateBook: RequestHandler<{ id: string, author: string, type: string, yea
         type,
         year,
         publisher,
-        feedback,
+        feedBack,
         isRead
       },
     });
