@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import prisma from "../prisma/lib/prisma";
 import HttpException from "../config/exceptions/HttpException";
+import { IRequestWithUser } from "../config/types";
 
 const getAllBooks = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -25,7 +26,7 @@ const getBook = async (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
-const createBook = async (req: Request, res: Response, next: NextFunction) => {
+const createBook = async (req: IRequestWithUser, res: Response, next: NextFunction) => {
   const { title, userMail } = req.body
   try {
     const newBook = await prisma.book.create({
@@ -41,7 +42,7 @@ const createBook = async (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
-const updateBook = async (req: Request, res: Response, next: NextFunction) => {
+const updateBook = async (req: IRequestWithUser, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
     console.log(req.body)
@@ -58,7 +59,7 @@ const updateBook = async (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
-const deleteBook = async (req: Request, res: Response, next: NextFunction) => {
+const deleteBook = async (req: IRequestWithUser, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
     const deletedBook = await prisma.book.delete({
