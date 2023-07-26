@@ -34,7 +34,7 @@ model Book {
   year        Int?
   publisher   String?
 
-  FeedBack    Int         @default(0)
+  feedBack    Int         @default(0)
   isRead      Boolean     @default(false)
 
   createdAt   DateTime    @default(now())

@@ -21,7 +21,7 @@ CREATE TABLE "Book" (
     "type" TEXT,
     "year" INTEGER,
     "publisher" TEXT,
-    "FeedBack" INTEGER NOT NULL DEFAULT 0,
+    "feedBack" INTEGER NOT NULL DEFAULT 0,
     "isRead" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
