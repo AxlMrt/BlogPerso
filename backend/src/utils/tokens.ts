@@ -5,7 +5,7 @@ import secrets from "../config/secrets";
 const createToken = (user: IUser): ITokenData => {
   const expiresIn = 60 * 60;
   const dataStoredInToken: IDataStoredInToken = {
-    _id: user.id
+    _id: user.email
   };
   const token = jwt.sign(dataStoredInToken, secrets.jwtSecret, { expiresIn });
 

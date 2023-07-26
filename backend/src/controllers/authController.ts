@@ -21,19 +21,24 @@ const login: RequestHandler<{ email: string, password: string }> = async (req: R
     const isPasswordMatching = bcrypt.compareSync(password, user.password);
     if (isPasswordMatching) {
       const tokenData = createToken(user);
-    
       res.setHeader('Set-Cookie', [createCookie(tokenData)]);
-      res.json(user.email);
+      res.json(user);
     } else {
-      return next(new WrongCrendentials());
+      next(new WrongCrendentials());
     }
   } catch (error) {
     next(new HttpException(500, "Something went wrong"));
   }
 }
 
+const logout = async(req: Request, res: Response) => {
+  res.setHeader("Set-Cookie", ["Authorization=;Max-age=0"]);
+  res.status(200).json()
+}
+
 const _ = {
   login,
+  logout
 }
 
 export default _;

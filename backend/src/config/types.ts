@@ -1,8 +1,15 @@
+import { Request } from "express";
+
 export interface IUser {
+  id: string
   email: string,
   firstName: string,
   lastName: string,
   password: string,
+}
+
+export interface IRequestWithUser extends Request {
+  user: IUser
 }
 
 export interface ITokenData {
@@ -11,7 +18,7 @@ export interface ITokenData {
 }
 
 export interface IDataStoredInToken {
-  _id: number,
+  _id: string,
 }
 
 export type UploadedFile = {
