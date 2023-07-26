@@ -1,9 +1,8 @@
-import { Request, Response, NextFunction } from "express"
+import { Request, Response, NextFunction, RequestHandler } from "express"
 import prisma from "../prisma/lib/prisma";
 import HttpException from "../config/exceptions/HttpException";
-import { IRequestWithUser } from "../config/types";
 
-const getAllBooks = async (req: Request, res: Response, next: NextFunction) => {
+const getAllBooks: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const books = await prisma.book.findMany();
     res.status(200).json(books);
@@ -12,7 +11,7 @@ const getAllBooks = async (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
-const getBook = async (req: Request, res: Response, next: NextFunction) => {
+const getBook: RequestHandler<{ id: string }> = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
 
   try {
@@ -26,12 +25,17 @@ const getBook = async (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
-const createBook = async (req: IRequestWithUser, res: Response, next: NextFunction) => {
-  const { title, userMail } = req.body
+const createBook: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
+  const { title, author, type, year, publisher, userMail } = req.body;
+
   try {
     const newBook = await prisma.book.create({
       data: { 
         title,
+        author,
+        type,
+        year,
+        publisher,
         user: { connect: { email: userMail } }
        },
     });
@@ -42,16 +46,22 @@ const createBook = async (req: IRequestWithUser, res: Response, next: NextFuncti
   }
 }
 
-const updateBook = async (req: IRequestWithUser, res: Response, next: NextFunction) => {
+const updateBook: RequestHandler<{ id: string, author: string, type: string, year: number, publisher: string, isRead: boolean, feedback: number }> = async (req: Request, res: Response, next: NextFunction) => {
+  const { title, author, type, year, publisher, isRead, feedback } = req.body;
   const { id } = req.params;
   try {
-    console.log(req.body)
     const updatedBook = await prisma.book.update({
       where: { id },
-      data: req.body
+      data: {
+        title,
+        author,
+        type,
+        year,
+        publisher,
+        feedback,
+        isRead
+      },
     });
-
-    console.log(updatedBook)
 
     res.json(updatedBook);
   } catch (error) {
@@ -59,7 +69,7 @@ const updateBook = async (req: IRequestWithUser, res: Response, next: NextFuncti
   }
 }
 
-const deleteBook = async (req: IRequestWithUser, res: Response, next: NextFunction) => {
+const deleteBook: RequestHandler<{ id: string }> = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
     const deletedBook = await prisma.book.delete({

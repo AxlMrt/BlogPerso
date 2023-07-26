@@ -5,10 +5,11 @@ import createToken from "../utils/tokens";
 import createCookie from "../utils/cookies";
 import WrongCredentials from "../config/exceptions/WrongCred";
 import HttpException from "../config/exceptions/HttpException";
+import { IUserLogin } from "config/types";
 
 const login: RequestHandler<{ email: string, password: string }> = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { email, password } = req.body;
+    const { email, password }: IUserLogin = req.body;
     const user = await prisma.user.findUnique({
       where: {
         email
@@ -31,7 +32,7 @@ const login: RequestHandler<{ email: string, password: string }> = async (req: R
   }
 }
 
-const logout = async (req: Request, res: Response) => {
+const logout: RequestHandler = async (req: Request, res: Response) => {
   res.setHeader("Set-Cookie", ["Authorization=;Max-age=0"]);
   res.status(200).json();
 }

@@ -2,23 +2,24 @@ import { Request } from "express";
 
 export interface IUser {
   id: string
-  email: string,
-  firstName: string,
-  lastName: string,
-  password: string,
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
 }
 
-export interface IRequestWithUser extends Request {
-  user: IUser
+export interface IUserLogin {
+  email: string;
+  password: string;
 }
 
 export interface ITokenData {
-  token: string,
-  expiresIn: number,
+  token: string;
+  expiresIn: number;
 }
 
 export interface IDataStoredInToken {
-  _id: string,
+  _id: string;
 }
 
 export type UploadedFile = {
@@ -30,4 +31,4 @@ export type UploadedFile = {
   filename: string;
   path: string;
   size: number;
-};
+}
