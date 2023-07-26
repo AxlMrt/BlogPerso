@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import prisma from "../prisma/lib/prisma";
 import createToken from "../utils/tokens";
 import createCookie from "../utils/cookies";
-import WrongCrendentials from "../config/exceptions/WrongCred";
+import WrongCredentials from "../config/exceptions/WrongCred";
 import HttpException from "../config/exceptions/HttpException";
 
 const login: RequestHandler<{ email: string, password: string }> = async (req: Request, res: Response, next: NextFunction) => {
@@ -16,7 +16,7 @@ const login: RequestHandler<{ email: string, password: string }> = async (req: R
     });
     
     if (!user)
-      return next(new WrongCrendentials());
+      return next(new WrongCredentials());
     
     const isPasswordMatching = bcrypt.compareSync(password, user.password);
     if (isPasswordMatching) {
@@ -24,14 +24,14 @@ const login: RequestHandler<{ email: string, password: string }> = async (req: R
       res.setHeader('Set-Cookie', [createCookie(tokenData)]);
       res.json(user);
     } else {
-      next(new WrongCrendentials());
+      next(new WrongCredentials());
     }
   } catch (error) {
     next(new HttpException(500, "Something went wrong"));
   }
 }
 
-const logout = async(req: Request, res: Response) => {
+const logout = async (req: Request, res: Response) => {
   res.setHeader("Set-Cookie", ["Authorization=;Max-age=0"]);
   res.status(200).json();
 }

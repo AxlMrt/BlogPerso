@@ -13,6 +13,7 @@ const authMiddleware = async (req: IRequestWithUser, res: Response, next: NextFu
     try {
       const verificationResponse = jwt.verify(cookies.Authorization, secrets.jwtSecret) as IDataStoredInToken;
       const id = verificationResponse._id;
+      console.log(id)
       const user = await prisma.user.findUnique({
         where: {
           id,
@@ -32,4 +33,4 @@ const authMiddleware = async (req: IRequestWithUser, res: Response, next: NextFu
     next(new MissingAuthenticationTokenException());
 }
 
-export default authMiddleware
+export default authMiddleware;

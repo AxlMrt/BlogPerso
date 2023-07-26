@@ -19,7 +19,8 @@ const getUser: RequestHandler<{ id: string }> = async (req: Request, res: Respon
 
   try {
     const user = await prisma.user.findUnique({
-      where: { id: id }
+      where: { id },
+      include: { books: true }
     });
   
     res.json(user);
@@ -29,13 +30,16 @@ const getUser: RequestHandler<{ id: string }> = async (req: Request, res: Respon
 }
 
 const createUser: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
-  const { email, firstName, lastName, password }: { email: string, firstName: string, lastName: string, password: string } = req.body;
   const salt = await bcrypt.genSalt(10);
-  const cryptedPassword = await bcrypt.hash(password, salt);
-  
+  const cryptedPassword = await bcrypt.hash(req.body.password, salt);
+
   try {
     const newUser = await prisma.user.create({
-      data: { email, firstName, lastName, password: cryptedPassword, photo: req.file?.path },
+      data: { 
+        ...req.body,
+        password: cryptedPassword,
+        photo: req.file?.path
+      },
     });
 
     const tokenData = createToken(newUser);
@@ -48,9 +52,8 @@ const createUser: RequestHandler = async (req: Request, res: Response, next: Nex
 
 const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  const { email, firstName, lastName }: { email: string, firstName: string, lastName: string } = req.body;
   let password: string = req.body.password;
-  
+
   if (password) {
     const salt = await bcrypt.genSalt(10);
     password = await bcrypt.hash(password, salt);
@@ -59,7 +62,7 @@ const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
   try {
     const updatedUser = await prisma.user.update({
       where: { id: id },
-      data: { email, firstName, lastName, password, photo: req.file?.path }
+      data: { ...req.body, password, photo: req.file?.path }
     });
 
     res.json(updatedUser);
