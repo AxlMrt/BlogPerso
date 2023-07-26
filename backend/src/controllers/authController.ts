@@ -33,7 +33,7 @@ const login: RequestHandler<{ email: string, password: string }> = async (req: R
 
 const logout = async(req: Request, res: Response) => {
   res.setHeader("Set-Cookie", ["Authorization=;Max-age=0"]);
-  res.status(200).json()
+  res.status(200).json();
 }
 
 const _ = {
