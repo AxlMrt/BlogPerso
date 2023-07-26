@@ -1,10 +1,12 @@
-import { RequestHandler, Request, Response } from "express";
+import { RequestHandler, Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import prisma from "../prisma/lib/prisma";
 import createToken from "../utils/tokens";
 import createCookie from "../utils/cookies";
+import WrongCrendentials from "../config/exceptions/WrongCred";
+import HttpException from "../config/exceptions/HttpException";
 
-const login: RequestHandler<{ email: string, password: string }> = async (req: Request, res: Response) => {
+const login: RequestHandler<{ email: string, password: string }> = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, password } = req.body;
     const user = await prisma.user.findUnique({
@@ -14,18 +16,19 @@ const login: RequestHandler<{ email: string, password: string }> = async (req: R
     });
     
     if (!user)
-      return res.status(401).json("Wrong credentials");
+      return next(new WrongCrendentials());
     
     const isPasswordMatching = bcrypt.compareSync(password, user.password);
     if (isPasswordMatching) {
       const tokenData = createToken(user);
+    
       res.setHeader('Set-Cookie', [createCookie(tokenData)]);
-      res.json(user);
+      res.json(user.email);
     } else {
-      return res.status(401).json("Wrong credentials");
+      return next(new WrongCrendentials());
     }
   } catch (error) {
-    res.status(500).json(error);
+    next(new HttpException(500, "Something went wrong"));
   }
 }
 
