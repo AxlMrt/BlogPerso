@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import secrets from "../../config/secrets";
+import secrets from "../../src/config/secrets";
 
 declare global {
   var prisma: PrismaClient | undefined;

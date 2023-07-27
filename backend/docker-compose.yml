@@ -1,0 +1,41 @@
+
+version: "3.9"
+services:
+  backend:
+    build: .
+    container_name: backend
+    image: backend:latest
+    volumes:
+      - postgres-data:/app/postgres-data
+    restart: always
+    environment:
+      DB_URL: ${DATABASE_URL}
+    expose:
+      - 8000
+    ports:
+      - 8000:8000
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["npm", "run", "dev"]
+
+  db:
+    container_name: postgres
+    image: postgres:latest
+    ports:
+      - 6500:5432
+    expose:
+      - 6500
+    env_file:
+      - docker.env
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    volumes:
+      - postgres-data:/data/postgres
+
+volumes:
+  postgres-data:
+    name: postgres-data

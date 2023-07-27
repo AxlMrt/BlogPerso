@@ -1,11 +1,11 @@
 import { RequestHandler, Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
-import prisma from "../prisma/lib/prisma";
+import prisma from "../../prisma/lib/prisma";
 import createToken from "../utils/tokens";
 import createCookie from "../utils/cookies";
 import WrongCredentials from "../config/exceptions/WrongCred";
 import HttpException from "../config/exceptions/HttpException";
-import { IUserLogin } from "config/types";
+import { IUserLogin } from "../config/types";
 
 const login: RequestHandler<{ email: string, password: string }> = async (req: Request, res: Response, next: NextFunction) => {
   try {

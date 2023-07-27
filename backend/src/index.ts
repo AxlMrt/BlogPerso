@@ -15,7 +15,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors({ origin: true }));
-app.use(cors({ origin: "<http://localhost:3000>" }));
 
 app.use(`${baseURL}/users`, UserRoute);
 app.use(`${baseURL}/login`, AuthRoute);
@@ -24,5 +23,5 @@ app.use(`${baseURL}/books`, BookRoute);
 app.use('/uploads', express.static('../public/uploads'));
 
 app.listen(PORT, () => {
-  console.log(`Server running on PORT: ${PORT}`);
+  console.log(`listening on port ${PORT}`)
 });

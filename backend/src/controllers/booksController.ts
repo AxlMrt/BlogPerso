@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, RequestHandler } from "express"
-import prisma from "../prisma/lib/prisma";
+import prisma from "../../prisma/lib/prisma";
 import HttpException from "../config/exceptions/HttpException";
 
 const getAllBooks: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {

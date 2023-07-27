@@ -1,6 +1,6 @@
 import { RequestHandler, Request, Response, NextFunction } from "express"
 import bcrypt from "bcrypt";
-import prisma from "../prisma/lib/prisma";
+import prisma from "../../prisma/lib/prisma";
 import createToken from "../utils/tokens";
 import createCookie from "../utils/cookies";
 import HttpException from "../config/exceptions/HttpException";
