@@ -4,7 +4,7 @@ services:
   backend:
     build: .
     container_name: backend
-    image: backend:latest
+    image: backend
     volumes:
       - postgres-data:/app/postgres-data
     restart: always
@@ -21,7 +21,7 @@ services:
 
   db:
     container_name: postgres
-    image: postgres:latest
+    image: postgres
     ports:
       - 6500:5432
     expose:
