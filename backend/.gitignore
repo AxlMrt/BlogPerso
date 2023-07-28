@@ -14,7 +14,7 @@
 *_REMOTE_*.txt
 
 ### dotenv ###
-.env
+*.env
 
 ### Node ###
 # Logs

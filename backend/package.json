@@ -7,7 +7,10 @@
     "build": "tsc",
     "start": "ts-node ./src/index.ts",
     "dev": "ts-node-dev --respawn --transpile-only ./src/index.ts",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "test": "vitest",
+    "test:unit": "vitest -c ./vitest.config.unit.ts",
+    "test:unit:ui": "vitest -c ./vitest.config.unit.ts --ui"
   },
   "keywords": [],
   "author": "",
@@ -33,6 +36,9 @@
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
     "@types/node": "^20.4.4",
-    "ts-node-dev": "^2.0.0"
+    "@vitest/ui": "^0.33.0",
+    "ts-node-dev": "^2.0.0",
+    "vitest": "^0.33.0",
+    "vitest-mock-extended": "^1.1.4"
   }
 }
