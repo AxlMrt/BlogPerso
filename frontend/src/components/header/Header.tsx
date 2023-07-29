@@ -4,6 +4,7 @@ import NavLogo from './navlogo/NavLogo';
 import Navigation from './navigation/Navigation';
 import NavHamburger from './navigation/NavHamburger';
 import Logs from './logs/Logs';
+import DarkMode from '../buttons/darkmode/DarkMode'
 
 export default function Header() {
 	const [scroll, setScroll] = useState<boolean>(false);
@@ -25,6 +26,7 @@ export default function Header() {
 				<NavLogo />
 				<div className='flex items-center lg:order-2'>
 					<Logs />
+					<DarkMode />
 					<NavHamburger navbar={navbar} setNavBar={setNavbar} />
 				</div>
 				<Navigation navbar={navbar} />
