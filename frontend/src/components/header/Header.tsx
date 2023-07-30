@@ -4,11 +4,11 @@ import NavLogo from './navlogo/NavLogo';
 import Navigation from './navigation/Navigation';
 import NavHamburger from './navigation/NavHamburger';
 import Logs from './logs/Logs';
-import DarkMode from '../buttons/darkmode/DarkMode'
+import DarkMode from '../buttons/switcher/Switcher'
 
 export default function Header() {
 	const [scroll, setScroll] = useState<boolean>(false);
-	const [navbar, setNavbar] = useState(false);
+	const [navbar, setNavbar] = useState<boolean>(false);
 
 	useEffect(() => {
 		window.addEventListener('scroll', () => {
