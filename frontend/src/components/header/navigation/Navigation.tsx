@@ -5,7 +5,8 @@ export default function Navigation({ navbar }: { navbar: boolean }) {
 	const navLinks = [
 		{ title: 'Home', path: '/' },
 		{ title: 'Bibliothèque', path: '#' },
-		{ title: 'Ajouter', path: '#', click: () => window.add_book.showModal() },
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		{ title: 'Ajouter', path: '#', click: () => (window as any).add_book.showModal() },
 	];
 
 	return (

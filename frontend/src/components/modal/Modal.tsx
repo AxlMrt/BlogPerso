@@ -9,7 +9,8 @@ export default function Modal() {
 	}
 
 	const closeModal = () => {
-		window.add_book.close();
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		(window as any).add_book.close();
 	}
 
 	return (
