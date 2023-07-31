@@ -18,7 +18,7 @@ export default function Header() {
 
 	return (
 		<nav
-			className={`bg-white shadow-md border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800 sticky top-0 ${
+			className={`bg-white shadow-md border-gray-200 xs:px-4 lg:px-6 py-2.5 dark:bg-gray-800 sticky top-0 ${
 				scroll ? 'scrolling' : undefined
 			}`}
 		>
