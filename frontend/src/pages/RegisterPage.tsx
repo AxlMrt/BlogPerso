@@ -1,12 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/store/configureStore';
-import { registerUser } from '../app/store/actions/authActions';
+import { registerUser } from '../app/store/actions/userActions';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { IRegister } from '../app/types';
 
 export default function RegisterPage() {
-	const { loading, userInfo, success } = useAppSelector((state) => state.auth);
+	const { loading, userInfo, success } = useAppSelector((state) => state.user);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
@@ -14,7 +14,7 @@ export default function RegisterPage() {
 		// redirect user to login page if registration was successful
 		if (success) navigate('/login');
 		// redirect authenticated user to profile screen
-		if (userInfo) navigate('/login');
+		if (userInfo) navigate('/');
 	}, [navigate, userInfo, success]);
 
 	const { register, handleSubmit } = useForm<IRegister>();
