@@ -17,7 +17,7 @@ export interface IUserLogin {
 }
 
 export interface IRegister extends IUser {
-	confirmPassword: string
+  confirmPassword: string;
 }
 
 export interface IBook {

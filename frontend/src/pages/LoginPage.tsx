@@ -12,10 +12,10 @@ export default function LoginPage() {
 	const { register, handleSubmit } = useForm<IUserLogin>();
 
 	useEffect(() => {
-    if (userInfo) {
-      navigate('/')
-    }
-  }, [navigate, userInfo])
+		if (userInfo) {
+			navigate('/');
+		}
+	}, [navigate, userInfo]);
 
 	const submitForm = (data: IUserLogin) => {
 		dispatch(userLogin(data));
