@@ -1,30 +1,27 @@
 import React from 'react'
+import Svg from '../svg/Svg';
 
 export default function DropDownButton() {
+	const downArrow = {
+		icon: 'm1 1 4 4 4-4',
+		class: 'w-2.5 h-2.5 ml-2.5',
+		viewBox: '0 0 10 6',
+	};
+
   return (
 		<button
 			id='dropdownActionButton'
 			data-dropdown-toggle='dropdownAction'
-			className='inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700'
+			className='inline-flex items-center text-gray-900 border border-gray-300 focus:ring-1 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none'
 			type='button'
 		>
 			<span className='sr-only'>Action button</span>
 			Action
-			<svg
-				className='w-2.5 h-2.5 ml-2.5'
-				aria-hidden='true'
-				xmlns='http://www.w3.org/2000/svg'
-				fill='none'
-				viewBox='0 0 10 6'
-			>
-				<path
-					stroke='currentColor'
-					strokeLinecap='round'
-					strokeLinejoin='round'
-					strokeWidth='2'
-					d='m1 1 4 4 4-4'
-				/>
-			</svg>
+			<Svg
+				icon={downArrow.icon}
+				iconClass={downArrow.class}
+				viewBox={downArrow.viewBox}
+			/>
 		</button>
 	);
 }

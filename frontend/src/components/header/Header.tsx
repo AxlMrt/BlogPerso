@@ -29,7 +29,9 @@ export default function Header() {
 					<DarkMode />
 					<NavHamburger navbar={navbar} setNavBar={setNavbar} />
 				</div>
-				<Navigation navbar={navbar} />
+				<Navigation
+					navbar={navbar}
+				/>
 			</div>
 		</nav>
 	);
