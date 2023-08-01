@@ -4,6 +4,7 @@ import Modal from './components/modal/Modal';
 import { useAppDispatch, useAppSelector } from './app/store/configureStore';
 import { useEffect } from 'react';
 import { toggleTheme } from './app/store/slices/themeSlice';
+import { getTheme } from './app/utils';
 
 function App() {
 	const dispatch = useAppDispatch();
@@ -11,7 +12,7 @@ function App() {
 
 	useEffect(() => {
 		dispatch(toggleTheme(darkMode))
-		document.documentElement.classList.add(darkMode ? 'dark' : 'light');
+		document.documentElement.classList.add(getTheme(darkMode));
 	}, [darkMode, dispatch]);
 
 	return (
@@ -23,4 +24,4 @@ function App() {
 	);
 }
 
-export default App
+export default App;
