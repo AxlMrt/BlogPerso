@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createSlice } from '@reduxjs/toolkit'
-import { userLogin, userLogout } from '../actions/authActions'
+import { createSlice } from '@reduxjs/toolkit';
+import { userLogin, userLogout } from '../actions/authActions';
 
 // initialize userToken from local storage
 const userToken = localStorage.getItem('userToken')
@@ -20,7 +20,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      localStorage.removeItem('userToken'); // delete token from storage
+      localStorage.removeItem('userToken');
       state.loading = false;
       state.userInfo = null;
       state.userToken = null;

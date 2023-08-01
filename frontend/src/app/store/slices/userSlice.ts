@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser } from '../actions/userActions';
+import { addUserAsync } from '../actions/userActions';
 
 const userToken = localStorage.getItem('userToken')
   ? localStorage.getItem('userToken')
@@ -21,15 +21,15 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     // register user
-    builder.addCase(registerUser.pending, (state) => {
+    builder.addCase(addUserAsync.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(registerUser.fulfilled, (state) => {
+    builder.addCase(addUserAsync.fulfilled, (state) => {
       state.loading = false;
       state.success = true; // registration successful
     });
-    builder.addCase(registerUser.rejected, (state, { payload }) => {
+    builder.addCase(addUserAsync.rejected, (state, { payload }) => {
       state.loading = false;
       (state.error as any) = payload;
     });

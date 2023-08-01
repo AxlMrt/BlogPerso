@@ -1,30 +1,60 @@
-import axios from 'axios';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { RootState } from '../configureStore';
+import { IUser } from '../../types';
+import agent from '../../axios/agent';
 
-const backendURL = 'http://0.0.0.0:8000';
-
-export const registerUser = createAsyncThunk(
-  'user/register',
-  async ({ email, firstName, lastName, password }: { email: string, firstName: string, lastName: string, password: string }, { rejectWithValue }) => {
+export const fetchProductsAsync = createAsyncThunk<IUser[], void, { state: RootState }>(
+  'collection/fetchProductsAsync',
+  async (_, thunkAPI) => {
     try {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-      await axios.post(
-        `${backendURL}/api/v1/users`,
-        { email, firstName, lastName, password },
-        config
-      )
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return agent.User.userList();
     } catch (error: any) {
-      // return custom error message from backend if present
-      if (error.response && error.response.data.message) {
-        return rejectWithValue(error.response.data.message);
-      } else {
-        return rejectWithValue(error.message);
-      }
+      return thunkAPI.rejectWithValue({ error: error.data })
+    }
+  }
+);
+
+export const fetchUserAsync = createAsyncThunk<IUser[], string>(
+  'user/fetchUserAsync',
+  async (_, thunkAPI) => {
+    try {
+      return agent.User.getUser(_);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ error: error.data })
+    }
+  }
+);
+
+export const addUserAsync = createAsyncThunk<IUser, { email: string, firstName: string, lastName: string, password: string }>(
+  'user/addUserAsync',
+  async ({ email, firstName, lastName, password }, thunkAPI) => {
+    try {
+      return await agent.User.addUser(email, firstName, lastName, password);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ error: error.data })
+    }
+  }
+);
+
+export const updateUserAsync = createAsyncThunk<IUser, { email: string, firstName: string, lastName: string, photo: string, password: string }>(
+  'user/addUserAsync',
+  async ({ email, firstName, lastName, photo, password }, thunkAPI) => {
+    try {
+      return await agent.User.updateUser(email, firstName, lastName, photo, password);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ error: error.data })
+    }
+  }
+);
+
+export const deleteUserAsync = createAsyncThunk<IUser[], string>(
+  'user/fetchUserAsync',
+  async (_, thunkAPI) => {
+    try {
+      return agent.User.deleteUser(_);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ error: error.data })
     }
   }
 );

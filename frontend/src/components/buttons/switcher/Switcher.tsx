@@ -1,41 +1,14 @@
-import { useEffect } from 'react';
 import Svg from '../../svg/Svg';
 import {
-	useAppDispatch,
-	useAppSelector,
+	useAppDispatch, useAppSelector,
 } from '../../../app/store/configureStore';
-import { toggleTheme } from '../../../app/store/slices/themeSlice';
+import { toggleMode } from '../../../app/utils';
 
-const isDark = () =>
-	//Function that will return boolean if any of the condition is satisfied
-	(localStorage && localStorage.theme === 'dark') || //Condition 1 - has local storage and theme = dark in local storage is found
-	(!('theme' in localStorage) &&
-		window.matchMedia('(prefers-color-scheme: dark)').matches); //Condition 2 - No theme key in local storage but media color scheme is dark
 
-const getTheme = (isDark: boolean) => (isDark ? 'dark' : 'light'); //Function to return 'dark' or 'light' string
 
 export default function Switcher() {
-	const darkMode = useAppSelector((state) => state.theme.darkMode);
 	const dispatch = useAppDispatch();
-
-	const toggleMode = () => {
-		//onClick handler for changing theme on button press
-		localStorage.theme = getTheme(!darkMode); //setting up local storage theme value
-		if (localStorage.theme === 'dark') {
-			// If theme is 'dark'
-			document.documentElement.classList.remove('light'); // remove 'light' from html class
-			document.documentElement.classList.add('dark'); // add 'dark' to html class
-		} else {
-			// if not 'dark'
-			document.documentElement.classList.remove('dark'); // remove 'dark' from html class
-			document.documentElement.classList.add('light'); //add 'light' to html class
-		}
-		dispatch(toggleTheme(!darkMode)); //set dark mode state to opposite of initial value
-	};
-
-	useEffect(() => {
-		dispatch(toggleTheme(isDark())); //before page mount set the value of dark mode by observing theme in local storage
-	}, [dispatch]);
+	const darkMode = useAppSelector((state) => state.theme.darkMode);
 
 	// process.browser is deprecat
 	const mode = {
@@ -48,7 +21,7 @@ export default function Switcher() {
 
 	return (
 		<button
-			onClick={toggleMode}
+			onClick={() => toggleMode(dispatch, darkMode)}
 			className={`${
 				!darkMode ? 'text-gray-500' : 'text-white'
 			} shadow-none p-2 text-lg cursor-pointer`}

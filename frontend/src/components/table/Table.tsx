@@ -10,7 +10,7 @@ export default function Table() {
 
 	return (
 		<div className='relative overflow-x-auto shadow-md sm:rounded-lg w-5/6 m-auto mt-32'>
-			<div className='flex items-center justify-between pb-4 bg-white dark:bg-gray-800'>
+			<div className='flex items-center justify-between pb-4 bg-white dark:bg-gray-900'>
 				<div>
 					<DropDownButton />
 				</div>

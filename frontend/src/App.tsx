@@ -1,11 +1,21 @@
 import { Outlet } from 'react-router-dom';
 import Header from "./components/header/Header";
 import Modal from './components/modal/Modal';
+import { useAppDispatch, useAppSelector } from './app/store/configureStore';
+import { useEffect } from 'react';
+import { toggleTheme } from './app/store/slices/themeSlice';
 
 function App() {
+	const dispatch = useAppDispatch();
+	const darkMode = useAppSelector((state) => state.theme.darkMode);
 
-  return (
-		<main className='bg-white dark:dark:bg-gray-800 h-screen'>
+	useEffect(() => {
+		dispatch(toggleTheme(darkMode))
+		document.documentElement.classList.add(darkMode ? 'dark' : 'light');
+	}, [darkMode, dispatch]);
+
+	return (
+		<main className='bg-gray-50 dark:bg-gray-900 h-screen'>
 			<Header />
 			<Outlet />
 			<Modal />
