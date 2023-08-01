@@ -44,7 +44,7 @@ const createUser: RequestHandler = async (req: Request, res: Response, next: Nex
 
     const tokenData = createToken(newUser);
     res.setHeader('Set-Cookie', [createCookie(tokenData)]);
-    res.status(201).json(newUser);
+    res.status(201).json({ newUser, tokenData });
   } catch (error) {
     next(new HttpException(500, "Something went wrong"));
   }

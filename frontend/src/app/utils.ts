@@ -23,3 +23,8 @@ export const toggleMode = (dispatch: AppDispatch, darkMode: boolean) => {
 	}
 	dispatch(toggleTheme(!darkMode)); //set dark mode state to opposite of initial value
 };
+
+export function getCookie(key: string) {
+  const b = document.cookie.match("(^|;)\\s*" + key + "\\s*=\\s*([^;]+)");
+  return b ? b.pop() : "";
+}

@@ -10,11 +10,28 @@ import BookRoute from "./routes/book";
 const PORT = secrets.port || 8000;
 const app: Application = express();
 const baseURL = "/api/v1";
+const whitelist = ['http://localhost:5174']
+
+const options: cors.CorsOptions = {
+  allowedHeaders: [
+    'Origin',
+    'X-Requested-With',
+    'Content-Type',
+    'Accept',
+    'X-Access-Token',
+  ],
+  credentials: true,
+  methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
+  origin: whitelist,
+  preflightContinue: false,
+};
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors({ origin: true }));
+app.use(express.json());
+app.use(cors(options));
 
 app.use(`${baseURL}/users`, UserRoute);
 app.use(`${baseURL}/login`, AuthRoute);
@@ -23,5 +40,5 @@ app.use(`${baseURL}/books`, BookRoute);
 app.use('/uploads', express.static('../public/uploads'));
 
 app.listen(PORT, () => {
-  console.log(`listening on port ${PORT}`)
+  console.log(`listening on port ${PORT}`);
 });

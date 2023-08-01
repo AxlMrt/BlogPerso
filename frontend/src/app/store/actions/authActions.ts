@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import agent from '../../axios/agent';
 
 const backendURL = 'http://0.0.0.0:8000';
 
@@ -8,18 +9,13 @@ export const userLogin = createAsyncThunk(
   async ({ email, password }: { email: string, password: string }, { rejectWithValue }) => {
     try {
       // configure header's Content-Type as JSON
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-      const { data } = await axios.post(
-        `${backendURL}/api/v1/login`,
-        { email, password },
-        config
-      )
+
+      const data = await agent.Auth.auth(email, password);
+      console.log(data.user)
       // store user's token in local storage
-      localStorage.setItem('userToken', data.userToken);
+      localStorage.setItem('userToken', data.tokenData.token);
+      localStorage.setItem('user', data.user.email);
+
       return data;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -47,8 +43,7 @@ export const userLogout = createAsyncThunk(
         `${backendURL}/api/v1/logout`,
         config
       )
-      // store user's token in local storage
-      localStorage.setItem('userToken', data.userToken);
+  
       return data;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

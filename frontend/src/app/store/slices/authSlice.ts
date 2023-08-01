@@ -7,9 +7,13 @@ const userToken = localStorage.getItem('userToken')
   ? localStorage.getItem('userToken')
   : null;
 
+const userInfo = localStorage.getItem('user')
+  ? localStorage.getItem('user')
+  : null;
+
 const initialState = {
   loading: false,
-  userInfo: null,
+  userInfo,
   userToken,
   error: null,
   success: false,
@@ -21,6 +25,7 @@ const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       localStorage.removeItem('userToken');
+      localStorage.removeItem('user');
       state.loading = false;
       state.userInfo = null;
       state.userToken = null;
@@ -38,7 +43,7 @@ const authSlice = createSlice({
     });
     builder.addCase(userLogin.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.userInfo = payload;
+      state.userInfo = payload.user;
       state.userToken = payload.userToken;
     });
     builder.addCase(userLogin.rejected, (state, { payload }) => {

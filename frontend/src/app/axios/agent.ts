@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 
 axios.defaults.baseURL = 'http://0.0.0.0:8000/api/v1/';
+axios.defaults.withCredentials = true;
 
 const responseBody = (response: AxiosResponse) => response.data;
 
@@ -19,8 +20,13 @@ const User = {
   deleteUser: (id: string) => requests.get(`users/${id}`),
 }
 
+const Auth = {
+  auth: (email: string, password: string) => requests.post('login', { email, password })
+}
+
 const agent = {
   User,
+  Auth
 }
 
 export default agent;

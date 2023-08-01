@@ -23,7 +23,7 @@ const login: RequestHandler<{ email: string, password: string }> = async (req: R
     if (isPasswordMatching) {
       const tokenData = createToken(user);
       res.setHeader('Set-Cookie', [createCookie(tokenData)]);
-      res.json(user);
+      res.json({ user, tokenData });
     } else {
       next(new WrongCredentials());
     }

@@ -1,4 +1,3 @@
-import { Request } from "express";
 
 export interface IUser {
   id: string
@@ -6,11 +5,11 @@ export interface IUser {
   firstName: string;
   lastName: string;
   password: string;
-  photo: string;
+  photo?: string;
   role: string;
   createdAt: Date;
   updatedAt: Date;
-  books: IBook[];
+  books?: IBook[];
 }
 
 export interface IUserLogin {
