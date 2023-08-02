@@ -7,10 +7,7 @@ const secrets = {
   jwtSecret,
   nodeEnv: process.env.NODE_ENV,
   port: Number(process.env.PORT),
-  host: process.env.POSTGRES_HOST,
-  username: process.env.PROGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
-  database: process.env.POSTGRES_DB,
+  dev: process.env.POSTGRES_DEV_ACCESS,
 }
 
 export default secrets;
