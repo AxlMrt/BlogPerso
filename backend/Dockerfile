@@ -13,8 +13,6 @@ RUN npm install
 # copy everything
 COPY . .
 
-# generate the prisma database client
-RUN npx prisma generate
 RUN npm run build
 
 FROM node:alpine
