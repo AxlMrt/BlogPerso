@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
-import './header.css';
-import NavLogo from './navlogo/NavLogo';
+import Hamburger from './hamburger/Hamburger';
 import Navigation from './navigation/Navigation';
-import NavHamburger from './navigation/NavHamburger';
-import Logs from './logs/Logs';
-import DarkMode from '../buttons/switcher/Switcher'
+import Switcher from '../buttons/switcher/Switcher';
+import HamburgerDropDown from './hamburger/HamburgerDropDown';
+import Profile from './profile/Profile';
+import './header.css';
 
 export default function Header() {
 	const [scroll, setScroll] = useState<boolean>(false);
-	const [navbar, setNavbar] = useState<boolean>(false);
+	const [navBar, setNavbar] = useState<boolean>(false);
+	const [profileBar, setProfilebar] = useState<boolean>(false);
 
 	useEffect(() => {
 		window.addEventListener('scroll', () => {
@@ -17,22 +18,20 @@ export default function Header() {
 	}, []);
 
 	return (
-		<nav
-			className={`bg-white shadow-md border-gray-200 xs:px-4 lg:px-6 py-2.5 dark:bg-gray-800 sticky top-0 ${
+		<nav className={`bg-white shadow-md border-gray-200 dark:bg-gray-800 sticky top-0 ${
 				scroll ? 'scrolling' : undefined
-			}`}
-		>
-			<div className='flex flex-wrap justify-between items-center mx-auto max-w-screen-xl '>
-				<NavLogo />
-				<div className='flex items-center lg:order-2'>
-					<Logs />
-					<DarkMode />
-					<NavHamburger navbar={navbar} setNavBar={setNavbar} />
+			}`}>
+			<div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
+				<div className='relative flex h-16 items-center justify-between'>
+					<Hamburger navBar={navBar} setNavbar={setNavbar} />
+					<Navigation />
+					<div className='absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0'>
+            <Switcher />
+            <Profile profileBar={profileBar} setProfilebar={setProfilebar} />
+					</div>
 				</div>
-				<Navigation
-					navbar={navbar}
-				/>
 			</div>
+			<HamburgerDropDown navBar={navBar} />
 		</nav>
 	);
 }

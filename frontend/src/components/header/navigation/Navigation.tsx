@@ -1,38 +1,59 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link } from 'react-router-dom';
+import { useAppSelector } from '../../../app/store/configureStore';
+import NavLogo from '../navlogo/NavLogo';
 
 
-export default function Navigation({ navbar }: { navbar: boolean }) {
-	const navLinks = [
-		{ title: 'Home', path: '/' },
-		{ title: 'Bibliothèque', path: '#' },
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		{ title: 'Ajouter', path: '#', click: () => (window as any).add_book.showModal() },
-	];
+export default function Navigation() {
+	const { userInfo } = useAppSelector((state) => state.auth);
 
 	return (
-		<div
-			className={`justify-between items-center w-full lg:flex lg:w-auto lg:order-1 ${
-				navbar ? 'block' : 'hidden'
-			}`}
-		>
-			<div className='items-center lg:flex lg:w-auto lg:order-1'>
-				<ul className='flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0'>
-					{navLinks.map((link) => {
-						return (
-							<li key={link.title}>
-								<Link
-									to={link.path}
-									className='block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700'
-									aria-current='page'
-									onClick={link.click}
-								>
-									{link.title}
-								</Link>
-							</li>
-						);
-					})}
-				</ul>
-			</div>
+		<div className='flex flex-1 items-center justify-center sm:items-stretch sm:justify-start'>
+			<NavLogo />
+			{userInfo ? (
+				<div className='hidden sm:ml-6 sm:block text-gray-600 '>
+					<div className='flex space-x-4'>
+						<Link
+							to='#'
+							className='bg-gray-300 text-black  rounded-md px-3 py-2 text-sm font-medium dark:bg-gray-900 dark:text-gray-300 dark:hover:text-white'
+							aria-current='page'
+							onClick={() => (window as any).add_book.showModal()}
+						>
+							Ajouter
+						</Link>
+						<Link
+							to='#'
+							className='hover:bg-gray-200 hover:text-black rounded-md px-3 py-2 text-sm font-medium dark:hover:text-white dark:hover:bg-gray-700'
+						>
+							Accueil
+						</Link>
+						<Link
+							to='#'
+							className='hover:bg-gray-200 hover:text-black rounded-md px-3 py-2 text-sm font-medium dark:hover:text-white dark:hover:bg-gray-700 '
+						>
+							Bibliothèque
+						</Link>
+					</div>
+				</div>
+			) : (
+				<div className='hidden sm:ml-6 sm:block text-gray-600 '>
+					<div className='flex space-x-4'>
+						<Link
+							to='/register'
+							className='bg-gray-300 text-black  rounded-md px-3 py-2 text-sm font-medium dark:bg-gray-900 dark:text-gray-300 dark:hover:text-white'
+							aria-current='page'
+						>
+							S'incrire
+						</Link>
+						<Link
+							to='/login'
+							className='hover:bg-gray-200 hover:text-black rounded-md px-3 py-2 text-sm font-medium dark:hover:text-white dark:hover:bg-gray-700 '
+						>
+							Connexion
+						</Link>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }

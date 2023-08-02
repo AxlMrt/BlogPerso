@@ -12,10 +12,12 @@ import AccountPage from '../../pages/AccountPage';
 import ServerError from '../errors/ServerError';
 import ErrorHandling from '../errors/ErrorHandling';
 import ProtectedRoute from './ProtectedRoute';
+import Landing from '../../pages/Landing';
 
 export const router = createBrowserRouter(
 	createRoutesFromElements(
 		<Route path='/' element={<App />}>
+			<Route path='landing' element={<Landing />} />
 			<Route path='login' element={<LoginPage />} />
 			<Route path='register' element={<RegisterPage />} />
 			<Route element={<ProtectedRoute />}>

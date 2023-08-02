@@ -24,7 +24,7 @@ export default function LoginPage() {
 
 	return (
 		<section className='bg-gray-50 dark:bg-gray-900'>
-			<div className='flex flex-col items-center justify-center mx-auto h-screen lg:py-0'>
+			<div className='flex flex-col items-center justify-center px-6 h-screen'>
 				<a
 					href='#'
 					className='flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white'
@@ -101,7 +101,7 @@ export default function LoginPage() {
 								className='w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'
 								disabled={loading}
 							>
-								{loading ? 'Chargement...': 'Connexion'}
+								{loading ? 'Chargement...' : 'Connexion'}
 							</button>
 							<p className='text-sm font-light text-gray-500 dark:text-gray-400'>
 								Pas encore de compte?{' '}

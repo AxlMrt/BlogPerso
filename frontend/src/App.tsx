@@ -16,7 +16,7 @@ function App() {
 	}, [darkMode, dispatch]);
 
 	return (
-		<main className='bg-gray-50 dark:bg-gray-900 h-screen'>
+		<main className='bg-gray-100 dark:bg-gray-900 h-screen'>
 			<Header />
 			<Outlet />
 			<Modal />
