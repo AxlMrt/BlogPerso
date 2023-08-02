@@ -10,14 +10,13 @@ import BookRoute from "./routes/book";
 const PORT = secrets.port || 8000;
 const app: Application = express();
 const baseURL = "/api/v1";
-const whitelist = [secrets.dev, secrets.web];
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors({
-  origin: whitelist,
+  origin: [secrets.dev, secrets.web],
   optionsSuccessStatus: 200,
   credentials: true
 }));
