@@ -28,4 +28,4 @@ COPY --from=builder /app/prisma ./prisma
 EXPOSE 8000
 
 # run the dev app - prod is not currently Dockerised
-CMD [ "npm", "run", "dev" ]
+CMD [  "npm", "run", "start:migrate:prod" ]
