@@ -7,8 +7,8 @@ const secrets = {
   jwtSecret,
   nodeEnv: process.env.NODE_ENV,
   port: Number(process.env.PORT),
-  dev: process.env.DEV_ACCESS,
-  web: process.env.WEBSITE_ACCESS
+  dev: process.env.DEV_ACCESS as string,
+  web: process.env.WEBSITE_ACCESS as string
 }
 
 export default secrets;
