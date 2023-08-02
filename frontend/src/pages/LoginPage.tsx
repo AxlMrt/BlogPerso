@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { IUserLogin } from "../app/types";
 export default function LoginPage() {
-	const { loading, error, userInfo } = useAppSelector((state) => state.auth);
+	const { loading, userInfo } = useAppSelector((state) => state.auth);
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 	
@@ -19,7 +19,6 @@ export default function LoginPage() {
 
 	const submitForm = (data: IUserLogin) => {
 		dispatch(userLogin(data));
-		console.log(error);
 	};
 
 	return (
