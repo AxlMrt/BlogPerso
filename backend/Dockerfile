@@ -14,6 +14,7 @@ COPY . .
 
 # generate the prisma database client
 RUN npx prisma generate
+RUN npx prisma migrate dev --name init
 
 # expose the api port
 EXPOSE 8000

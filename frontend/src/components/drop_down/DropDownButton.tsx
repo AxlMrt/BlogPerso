@@ -11,7 +11,7 @@ export default function DropDownButton() {
 		<button
 			id='dropdownActionButton'
 			data-dropdown-toggle='dropdownAction'
-			className='inline-flex items-center text-gray-900 border border-gray-300 focus:ring-1 font-medium rounded-lg text-sm px-3 py-1.5 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none'
+			className='inline-flex items-center text-gray-900 border border-gray-300 focus:ring-1 font-medium rounded-lg text-sm px-3 py-1.5 focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-100 dark:focus:border-gray-100 outline-none'
 			type='button'
 		>
 			<span className='sr-only'>Action button</span>

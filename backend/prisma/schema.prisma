@@ -28,7 +28,7 @@ model Book {
   year      Int?
   publisher String?
   feedBack  Int      @default(0)
-  isRead    Boolean  @default(false)
+  isRead    Read     @default(NOT_READ)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId    String?
@@ -38,4 +38,10 @@ model Book {
 enum Role {
   USER
   ADMIN
+}
+
+enum Read {
+  IS_READ
+  IN_PROGRESS
+  NOT_READ
 }
