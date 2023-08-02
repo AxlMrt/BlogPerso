@@ -12,26 +12,14 @@ const app: Application = express();
 const baseURL = "/api/v1";
 const whitelist = [secrets.dev, secrets.web];
 
-const options: cors.CorsOptions = {
-  allowedHeaders: [
-    'Origin',
-    'X-Requested-With',
-    'Content-Type',
-    'Accept',
-    'X-Access-Token',
-  ],
-  credentials: true,
-  methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
-  origin: whitelist,
-  preflightContinue: false,
-};
-
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.json());
-app.use(cors(options));
+app.use(cors({
+  origin: whitelist,
+  optionsSuccessStatus: 200
+}));
 
 app.use(`${baseURL}/users`, UserRoute);
 app.use(`${baseURL}/login`, AuthRoute);
