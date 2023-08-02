@@ -1,4 +1,4 @@
-FROM node:alpine AS builder
+FROM node:19 AS builder
 
 # Create app directory
 WORKDIR /app
@@ -9,14 +9,14 @@ COPY prisma ./prisma/
 # install packages to the container
 RUN npm install
 
-# copy everything
-COPY . .
 
 # generate the prisma database client
 RUN npx prisma generate
+# copy everything
+COPY . .
 RUN npm run build
 
-FROM node:alpine
+FROM node:19
 
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package*.json ./
