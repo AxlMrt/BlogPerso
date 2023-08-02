@@ -18,7 +18,8 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(cors({
   origin: whitelist,
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
+  credentials: true
 }));
 
 app.use(`${baseURL}/users`, UserRoute);
