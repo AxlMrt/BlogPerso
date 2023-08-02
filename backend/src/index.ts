@@ -11,15 +11,22 @@ const PORT = secrets.port || 8000;
 const app: Application = express();
 const baseURL = "/api/v1";
 
+const allowedOrigins = [secrets.dev, secrets.web];
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Origin not allowed by CORS'));
+    }
+  },
+};
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.json());
-app.use(cors({
-  origin: [secrets.dev, secrets.web],
-  optionsSuccessStatus: 200,
-  credentials: true
-}));
+app.use(cors(corsOptions));
 
 app.use(`${baseURL}/users`, UserRoute);
 app.use(`${baseURL}/login`, AuthRoute);
