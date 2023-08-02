@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../../app/store/configureStore';
-import NavLogo from '../navlogo/NavLogo';
+import NavLogo from '../logo/NavLogo';
 
 
 export default function Navigation() {
