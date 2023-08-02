@@ -12,7 +12,7 @@ export default function Profile({
 	return (
 		<div className='relative ml-3'>
 			<ProfileImage profileBar={profileBar} setProfilebar={setProfilebar} />
-			<ProfileDropDown profileBar={profileBar} />
+			<ProfileDropDown profileBar={profileBar} setProfilebar={setProfilebar} />
 		</div>
 	);
 }

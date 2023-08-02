@@ -17,7 +17,7 @@ export default function Landing() {
 
 						<div className='flex flex-col items-center justify-center space-y-3 sm:space-x-4 sm:space-y-0 sm:flex-row lg:justify-start'>
 							<Link
-								to='register'
+								to='/register'
 								target='_blank'
 								rel='noopener'
 								className='px-8 py-4 text-lg font-medium text-center text-white bg-primary-600 hover:bg-primary-800 rounded-md '
@@ -45,7 +45,7 @@ export default function Landing() {
 									<polyline points='10 17 15 12 10 7'></polyline>
 									<line x1='15' y1='12' x2='3' y2='12'></line>
 								</svg>
-								<span>Se connecter</span>
+								<span>Connexion</span>
 							</Link>
 						</div>
 					</div>

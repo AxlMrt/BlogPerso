@@ -1,14 +1,22 @@
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../../../app/store/configureStore";
 import { logout } from "../../../app/store/slices/authSlice";
+import { Dispatch, SetStateAction } from "react";
 
-export default function ProfileDropDown({ profileBar }: { profileBar: boolean }) {
-  const dispatch = useAppDispatch();
-  const disconnect = () => {
+export default function ProfileDropDown({
+	profileBar,
+	setProfilebar,
+}: {
+	profileBar: boolean;
+	setProfilebar: Dispatch<SetStateAction<boolean>>;
+}) {
+	const dispatch = useAppDispatch();
+	const disconnect = () => {
+		setProfilebar(false);
 		dispatch(logout());
-  };
+	};
 
-  return (
+	return (
 		<div
 			className={`${
 				profileBar ? 'block' : 'hidden'
@@ -18,7 +26,7 @@ export default function ProfileDropDown({ profileBar }: { profileBar: boolean })
 			aria-labelledby='user-menu-button'
 		>
 			<Link
-				to='#'
+				to='/account'
 				className='block px-4 py-2 text-sm text-gray-700'
 				role='menuitem'
 				id='user-menu-item-0'
@@ -37,8 +45,8 @@ export default function ProfileDropDown({ profileBar }: { profileBar: boolean })
 				to='/'
 				className='block px-4 py-2 text-sm text-gray-700'
 				role='menuitem'
-        id='user-menu-item-2'
-        onClick={disconnect}
+				id='user-menu-item-2'
+				onClick={disconnect}
 			>
 				Déconnexion
 			</Link>
