@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { IRegister } from '../app/types';
 
 export default function RegisterPage() {
-	const { loading, userInfo, success } = useAppSelector((state) => state.user);
+	const { loading, success, error } = useAppSelector((state) => state.user);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
@@ -14,8 +14,8 @@ export default function RegisterPage() {
 		// redirect user to login page if registration was successful
 		if (success) navigate('/login');
 		// redirect authenticated user to profile screen
-		if (userInfo) navigate('/');
-	}, [navigate, userInfo, success]);
+		if (error) navigate('/');
+	}, [navigate, error, success]);
 
 	const { register, handleSubmit } = useForm<IRegister>();
 

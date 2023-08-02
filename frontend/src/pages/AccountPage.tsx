@@ -13,7 +13,7 @@ export default function AccountPage() {
 		viewBox: '0 0 48 48',
   };
 
-  const { loading, userInfo, success } = useAppSelector((state) => state.user);
+  const { loading, error, success } = useAppSelector((state) => state.user);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
@@ -21,8 +21,8 @@ export default function AccountPage() {
 		// redirect user to login page if registration was successful
 		if (success) navigate('/login');
 		// redirect authenticated user to profile screen
-		if (userInfo) navigate('/');
-	}, [navigate, userInfo, success]);
+		if (error) navigate('/');
+	}, [navigate, error, success]);
 
 	const { register, handleSubmit } = useForm<IRegister>();
 

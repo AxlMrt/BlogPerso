@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import agent from '../../axios/agent';
 
-const backendURL = 'http://0.0.0.0:8000';
+const backendURL = process.env.BASE_URL;
 
 export const userLogin = createAsyncThunk(
   'auth/login',
@@ -40,7 +40,7 @@ export const userLogout = createAsyncThunk(
         },
       }
       const { data } = await axios.post(
-        `${backendURL}/api/v1/logout`,
+        `${backendURL}/logout`,
         config
       )
   

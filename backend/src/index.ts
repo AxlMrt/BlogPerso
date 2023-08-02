@@ -10,7 +10,7 @@ import BookRoute from "./routes/book";
 const PORT = secrets.port || 8000;
 const app: Application = express();
 const baseURL = "/api/v1";
-const whitelist = [`${secrets.dev}`];
+const whitelist = [secrets.dev, secrets.web];
 
 const options: cors.CorsOptions = {
   allowedHeaders: [
