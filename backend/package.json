@@ -11,8 +11,8 @@
     "test": "vitest",
     "test:unit": "vitest -c ./vitest.config.unit.ts",
     "test:unit:ui": "vitest -c ./vitest.config.unit.ts --ui",
-    "start:prod": "node dist/src",
-    "start:migrate:prod": "prisma migrate deploy && npm run start:prod"
+    "start:prod": "ts-node dist/src",
+    "start:migrate:prod": "prisma migrate dev --name init && npm run start:prod"
   },
   "keywords": [],
   "author": "",
