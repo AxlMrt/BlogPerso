@@ -1,6 +1,6 @@
 import express from "express";
 import authMiddleware from "../middleware/auth.middleware";
-import _ from "../controllers/book.ontroller";
+import _ from "../controllers/book.controller";
 
 const router = express.Router();
 router.use('/*', authMiddleware)

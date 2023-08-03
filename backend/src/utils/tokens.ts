@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { IDataStoredInToken, IUser, ITokenData } from "../config/types";
+import { IDataStoredInToken, ITokenData } from "../config/types";
 import secrets from "../config/secrets";
 
 const createToken = (user: any): ITokenData => {

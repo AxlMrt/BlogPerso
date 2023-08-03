@@ -15,10 +15,10 @@ const login: RequestHandler<{ email: string, password: string }> = async (req: R
         email
       },
     });
-    
+
     if (!user)
       return next(new WrongCredentials());
-    
+
     const isPasswordMatching = bcrypt.compareSync(password, user.password);
     if (isPasswordMatching) {
       const tokenData = createToken(user);
