@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 axios.defaults.baseURL = process.env.BASE_URL;
 axios.defaults.withCredentials = true;
 
+
 const responseBody = (response: AxiosResponse) => response.data;
 
 const requests = {

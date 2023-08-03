@@ -6,8 +6,8 @@ import { addBookAsync } from "../../app/store/actions/bookActions";
 
 export default function Modal() {
 	const { loading } = useAppSelector((state) => state.book);
-	const { userInfo } = useAppSelector((state) => state.auth);
 	const dispatch = useAppDispatch();
+	const user = localStorage.getItem("user");
 
 	const closeIcon = {
 		icon: 'M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z',
@@ -15,16 +15,15 @@ export default function Modal() {
 		viewBox: '0 0 20 20'
 	}
 
-		const { register, handleSubmit } = useForm<IBookRegister>();
+	const { register, handleSubmit } = useForm<IBookRegister>();
 
-		const submitForm = (data: IBookRegister) => {
-			// check if passwords match
-			// transform email string to lowercase to avoid case sensitivity issues in login
-			if (userInfo)
-				data.userMail = userInfo;
-
-			dispatch(addBookAsync(data));
-		};
+	const submitForm = (data: IBookRegister) => {
+		console.log(data)
+		if (user)
+			data.userMail = user;
+		
+		dispatch(addBookAsync(data));
+	};
 
 	const closeModal = () => {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -67,7 +66,7 @@ export default function Modal() {
 									Titre
 								</label>
 								<input
-									type='title'
+									type='text'
 									id='title'
 									className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
 									placeholder='ex: Harry Potter'
@@ -83,7 +82,7 @@ export default function Modal() {
 									Auteur
 								</label>
 								<input
-									type='author'
+									type='text'
 									id='author'
 									placeholder='ex: J. K. Rowling'
 									className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
@@ -99,11 +98,13 @@ export default function Modal() {
 									Type
 								</label>
 								<input
-									type='type'
+									type='text'
 									id='type'
 									placeholder='ex: Roman, Fantaisie'
 									className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
-									{...register('type')}
+									{...register('type', {
+										setValueAs: (x) => (x === '' ? null : parseInt(x)),
+									})}
 								/>
 							</div>
 							<div>
@@ -114,11 +115,13 @@ export default function Modal() {
 									Année de parution
 								</label>
 								<input
-									type='year'
+									type='number'
 									id='year'
 									placeholder='ex: 1997'
 									className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
-									{...register('year')}
+									{...register('year', {
+										setValueAs: (x) => (x === '' ? null : parseInt(x)),
+									})}
 								/>
 							</div>
 							<div>
@@ -129,11 +132,13 @@ export default function Modal() {
 									Éditeur
 								</label>
 								<input
-									type='publisher'
+									type='text'
 									id='publisher'
 									placeholder='ex: Bloomsbury Publishing'
 									className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
-									{...register('publisher')}
+									{...register('publisher', {
+										setValueAs: (x) => (x === '' ? null : parseInt(x)),
+									})}
 								/>
 							</div>
 
