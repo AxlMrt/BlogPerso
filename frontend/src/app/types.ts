@@ -43,3 +43,24 @@ export interface IGenericResponse {
   status: string;
   message: string;
 }
+
+export type IsBookRead = {
+		NOT_READ: {
+			color: string;
+			text: string;
+		};
+		IN_PROGRESS: {
+			color: string;
+			text: string;
+		};
+		IS_READ: {
+			color: string;
+			text: string;
+		};
+	};
+
+export enum Read {
+  IS_READ,
+  IN_PROGRESS,
+  NOT_READ
+}

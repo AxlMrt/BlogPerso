@@ -18,7 +18,6 @@ export default function Modal() {
 	const { register, handleSubmit } = useForm<IBookRegister>();
 
 	const submitForm = (data: IBookRegister) => {
-		console.log(data)
 		if (user)
 			data.userMail = user;
 		

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosResponse } from 'axios';
 
 axios.defaults.baseURL = process.env.BASE_URL;
@@ -29,7 +30,10 @@ const Book = {
   bookList: () => requests.get('books/feed'),
   getBook: (id: string) => requests.get(`books/${id}`),
   addBook: (title: string, author: string, type: string, year: number, publisher: string, userMail: string) => requests.post('books', { title, author, type, year, publisher, userMail }),
-  updateBook: (title: string, author: string, type: string, year: number, publisher: string) => requests.post('books', { title, author, type, year, publisher }),
+  updateBook: (id: string, feedBack: number) => {
+    console.log(id, feedBack)
+    requests.post(`books/${id}`, { feedBack })
+  },
   deleteBook: (id: string) => requests.get(`books/${id}`),
 }
 

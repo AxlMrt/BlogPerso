@@ -10,7 +10,6 @@ export default function Table() {
 	const dispatch = useAppDispatch();
 
 	const books = useAppSelector(booksSelectors.selectAll);
-	console.log(books)
 	useEffect(() => {
 		if (!success) dispatch(fetchAllBooksAsync());
 	}, [success, dispatch]);
@@ -19,7 +18,7 @@ export default function Table() {
 		<div className='overflow-x-auto shadow-md sm:rounded-lg'>
 			<table className='w-full text-sm  text-left text-gray-500 dark:text-gray-400'>
 				<TableHead />
-				{books.length > 0 && <TableBody />}
+				{books.length > 0 && <TableBody books={books} />}
 			</table>
 			{!books.length && (
 				<div className='text-center my-5'>

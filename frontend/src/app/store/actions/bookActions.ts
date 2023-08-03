@@ -37,11 +37,11 @@ export const addBookAsync = createAsyncThunk<IBook, { title: string, author: str
   }
 );
 
-export const updateBookAsync = createAsyncThunk<IBook, { title: string, author: string, type: string, year: number, publisher: string }>(
-  'books/addBookAsync',
-  async ({ title, author, type, year, publisher }, thunkAPI) => {
+export const updateBookAsync = createAsyncThunk<IBook, { id: string, feedBack: number }>(
+  'books/updateBookAsync',
+  async (data, thunkAPI) => {
     try {
-      return await agent.Book.updateBook(title, author, type, year, publisher);
+      return await agent.Book.updateBook(data);
     } catch (error: any) {
       return thunkAPI.rejectWithValue({ error: error.data })
     }
