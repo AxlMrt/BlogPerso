@@ -13,16 +13,8 @@ const baseURL = "/api/v1";
 
 const options: cors.CorsOptions = {
   credentials: true,
-  preflightContinue: true,
   optionsSuccessStatus: 200,
   origin: secrets.web,
-  allowedHeaders: [
-    'Origin',
-    'X-Requested-With',
-    'Content-Type',
-    'Accept',
-    'X-Access-Token',
-  ],
   methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
 };
 
