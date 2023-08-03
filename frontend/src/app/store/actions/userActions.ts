@@ -4,8 +4,8 @@ import { RootState } from '../configureStore';
 import { IUser } from '../../types';
 import agent from '../../axios/agent';
 
-export const fetchProductsAsync = createAsyncThunk<IUser[], void, { state: RootState }>(
-  'collection/fetchProductsAsync',
+export const fetchAllUsersAsync = createAsyncThunk<IUser[], void, { state: RootState }>(
+  'user/fetchAllUsersAsync',
   async (_, thunkAPI) => {
     try {
       return agent.User.userList();
@@ -15,7 +15,7 @@ export const fetchProductsAsync = createAsyncThunk<IUser[], void, { state: RootS
   }
 );
 
-export const fetchUserAsync = createAsyncThunk<IUser[], string>(
+export const fetchUserAsync = createAsyncThunk<IUser, string>(
   'user/fetchUserAsync',
   async (_, thunkAPI) => {
     try {
@@ -48,7 +48,7 @@ export const updateUserAsync = createAsyncThunk<IUser, { email: string, firstNam
   }
 );
 
-export const deleteUserAsync = createAsyncThunk<IUser[], string>(
+export const deleteUserAsync = createAsyncThunk<IUser, string>(
   'user/fetchUserAsync',
   async (_, thunkAPI) => {
     try {

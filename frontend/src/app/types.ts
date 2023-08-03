@@ -28,11 +28,15 @@ export interface IBook {
   year: number;
   publisher: string;
   feedBack: number;
-  isRead: boolean;
+  isRead: string;
   createdAt: Date;
   updatedAt: Date;
   userId: string;
   user: IUser;
+}
+
+export interface IBookRegister extends IBook {
+  userMail: string;
 }
 
 export interface IGenericResponse {

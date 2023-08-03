@@ -18,7 +18,6 @@ export default function Landing() {
 						<div className='flex flex-col items-center justify-center space-y-3 sm:space-x-4 sm:space-y-0 sm:flex-row lg:justify-start'>
 							<Link
 								to='/register'
-								target='_blank'
 								rel='noopener'
 								className='px-8 py-4 text-lg font-medium text-center text-white bg-primary-600 hover:bg-primary-800 rounded-md '
 							>
@@ -26,7 +25,6 @@ export default function Landing() {
 							</Link>
 							<Link
 								to='/login'
-								target='_blank'
 								rel='noopener'
 								className='flex items-center space-x-2 text-gray-500 dark:text-gray-400'
 							>

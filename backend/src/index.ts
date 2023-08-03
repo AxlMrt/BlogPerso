@@ -13,9 +13,9 @@ const baseURL = "/api/v1";
 
 const options: cors.CorsOptions = {
   credentials: true,
-  methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
-  origin: [secrets.dev, secrets.web],
   preflightContinue: true,
+  optionsSuccessStatus: 200,
+  origin: [secrets.dev, secrets.web],
 };
 
 app.use(bodyParser.json());

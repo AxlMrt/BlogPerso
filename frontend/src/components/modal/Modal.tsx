@@ -1,12 +1,30 @@
+import { useForm } from "react-hook-form";
+import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
+import { IBookRegister } from "../../app/types";
 import Svg from "../svg/Svg"
+import { addBookAsync } from "../../app/store/actions/bookActions";
 
 export default function Modal() {
+	const { loading } = useAppSelector((state) => state.book);
+	const { userInfo } = useAppSelector((state) => state.auth);
+	const dispatch = useAppDispatch();
 
 	const closeIcon = {
 		icon: 'M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z',
 		class: 'w-5 h-5',
 		viewBox: '0 0 20 20'
 	}
+
+		const { register, handleSubmit } = useForm<IBookRegister>();
+
+		const submitForm = (data: IBookRegister) => {
+			// check if passwords match
+			// transform email string to lowercase to avoid case sensitivity issues in login
+			if (userInfo)
+				data.userMail = userInfo;
+
+			dispatch(addBookAsync(data));
+		};
 
 	const closeModal = () => {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -40,7 +58,7 @@ export default function Modal() {
 						<h3 className='mb-4 text-xl font-medium text-gray-900 dark:text-white'>
 							Ajouter un livre
 						</h3>
-						<form className='space-y-6' action='#'>
+						<form className='space-y-6' onSubmit={handleSubmit(submitForm)}>
 							<div>
 								<label
 									htmlFor='title'
@@ -50,10 +68,10 @@ export default function Modal() {
 								</label>
 								<input
 									type='title'
-									name='title'
 									id='title'
 									className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
 									placeholder='ex: Harry Potter'
+									{...register('title')}
 									required
 								/>
 							</div>
@@ -66,10 +84,10 @@ export default function Modal() {
 								</label>
 								<input
 									type='author'
-									name='author'
 									id='author'
 									placeholder='ex: J. K. Rowling'
 									className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
+									{...register('author')}
 									required
 								/>
 							</div>
@@ -82,10 +100,10 @@ export default function Modal() {
 								</label>
 								<input
 									type='type'
-									name='type'
 									id='type'
 									placeholder='ex: Roman, Fantaisie'
 									className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
+									{...register('type')}
 								/>
 							</div>
 							<div>
@@ -97,10 +115,10 @@ export default function Modal() {
 								</label>
 								<input
 									type='year'
-									name='year'
 									id='year'
 									placeholder='ex: 1997'
 									className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
+									{...register('year')}
 								/>
 							</div>
 							<div>
@@ -112,10 +130,10 @@ export default function Modal() {
 								</label>
 								<input
 									type='publisher'
-									name='publisher'
 									id='publisher'
 									placeholder='ex: Bloomsbury Publishing'
 									className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
+									{...register('publisher')}
 								/>
 							</div>
 
@@ -123,7 +141,7 @@ export default function Modal() {
 								type='submit'
 								className='w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
 							>
-								Ajouter
+								{loading ? 'Chargement...' : 'Ajouter'}
 							</button>
 						</form>
 					</div>

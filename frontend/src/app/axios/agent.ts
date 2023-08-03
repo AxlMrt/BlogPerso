@@ -24,9 +24,18 @@ const Auth = {
   auth: (email: string, password: string) => requests.post('login', { email, password })
 }
 
+const Book = {
+  bookList: () => requests.get('books/feed'),
+  getBook: (id: string) => requests.get(`books/${id}`),
+  addBook: (title: string, author: string, type: string, year: number, publisher: string, userMail: string) => requests.post('books', { title, author, type, year, publisher, userMail }),
+  updateBook: (title: string, author: string, type: string, year: number, publisher: string) => requests.post('books', { title, author, type, year, publisher }),
+  deleteBook: (id: string) => requests.get(`books/${id}`),
+}
+
 const agent = {
   User,
-  Auth
+  Auth,
+  Book
 }
 
 export default agent;
