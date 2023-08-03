@@ -1,6 +1,5 @@
 import { IBook, IsBookRead } from '../../../app/types';
 import StarRating from '../starRating/StarRating';
-import StarRatingPicker from '../starRating/StarRating';
 
 export default function SingleBook({ book }: { book: IBook }) {
 	const isRead: IsBookRead = {

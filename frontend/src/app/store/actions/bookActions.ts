@@ -26,22 +26,33 @@ export const fetchBookAsync = createAsyncThunk<IBook, string>(
   }
 );
 
-export const addBookAsync = createAsyncThunk<IBook, { title: string, author: string, type: string, year: number, publisher: string, userMail: string }>(
+export const addBookAsync = createAsyncThunk<IBook, any>(
   'books/addBookAsync',
-  async ({ title, author, type, year, publisher, userMail }, thunkAPI) => {
+  async (data, thunkAPI) => {
     try {
-      return await agent.Book.addBook(title, author, type, year, publisher, userMail);
+      return await agent.Book.addBook(data);
     } catch (error: any) {
       return thunkAPI.rejectWithValue({ error: error.data })
     }
   }
 );
 
-export const updateBookAsync = createAsyncThunk<IBook, { id: string, feedBack: number }>(
+export const updateBookAsync = createAsyncThunk<IBook, any>(
+  'books/updateBookAsync',
+  async (values, thunkAPI) => {
+    try {
+      return await agent.Book.updateBook(values);
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue({ error: error.data })
+    }
+  }
+);
+
+export const updateFeedBackAsync = createAsyncThunk<IBook, { id: string, feedBack: number }>(
   'books/updateBookAsync',
   async (data, thunkAPI) => {
     try {
-      return await agent.Book.updateBook(data);
+      return agent.Book.updateFeedBack(data);
     } catch (error: any) {
       return thunkAPI.rejectWithValue({ error: error.data })
     }

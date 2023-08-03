@@ -29,11 +29,9 @@ const Auth = {
 const Book = {
   bookList: () => requests.get('books/feed'),
   getBook: (id: string) => requests.get(`books/${id}`),
-  addBook: (title: string, author: string, type: string, year: number, publisher: string, userMail: string) => requests.post('books', { title, author, type, year, publisher, userMail }),
-  updateBook: (id: string, feedBack: number) => {
-    console.log(id, feedBack)
-    requests.post(`books/${id}`, { feedBack })
-  },
+  addBook: (data: any) => requests.post('books', data),
+  updateBook: (data: any) => requests.put(`books/${data.id}`, data),
+  updateFeedBack: (data: any) => requests.put(`books/${data.id}`, data),
   deleteBook: (id: string) => requests.get(`books/${id}`),
 }
 
