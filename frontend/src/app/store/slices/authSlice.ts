@@ -1,38 +1,48 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createSlice } from '@reduxjs/toolkit';
+import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { userLogin, userLogout } from '../actions/authActions';
+import { IUser } from '../../types';
+import { fetchUserAsync } from '../actions/userActions';
+import { RootState } from '../configureStore';
 
 // initialize userToken from local storage
-const userToken = localStorage.getItem('userToken')
-  ? localStorage.getItem('userToken')
+const token = localStorage.getItem('token')
+  ? localStorage.getItem('token')
   : null;
 
-const userInfo = localStorage.getItem('user')
+const user = localStorage.getItem('user')
   ? localStorage.getItem('user')
   : null;
 
-const initialState = {
-  loading: false,
-  userInfo,
-  userToken,
+const usersAdapter = createEntityAdapter<IUser>();
+interface UserState {
+  loading: boolean,
+  user: any,
+  token: string | null,
   error: null,
-  success: false,
+  success: boolean,
 }
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState,
+  initialState: usersAdapter.getInitialState<UserState>({
+  loading: false,
+  user,
+  token,
+  error: null,
+  success: false,
+}),
   reducers: {
     logout: (state) => {
-      localStorage.removeItem('userToken');
+      localStorage.removeItem('token');
       localStorage.removeItem('user');
       state.loading = false;
-      state.userInfo = null;
-      state.userToken = null;
+      state.user = null;
+      state.token = null;
       state.error = null;
     },
-    setCredentials: (state, { payload }) => {
-      state.userInfo = payload;
+    setUser: (state, { payload }) => {
+      state.user = payload;
     },
   },
   extraReducers: (builder) => {
@@ -42,9 +52,10 @@ const authSlice = createSlice({
       state.error = null;
     });
     builder.addCase(userLogin.fulfilled, (state, { payload }) => {
+      console.log(payload)
       state.loading = false;
-      state.userInfo = payload.user;
-      state.userToken = payload.userToken;
+      state.user = payload.user;
+      state.token = payload.token;
     });
     builder.addCase(userLogin.rejected, (state, { payload }) => {
       state.loading = false;
@@ -57,16 +68,32 @@ const authSlice = createSlice({
     });
     builder.addCase(userLogout.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.userInfo = payload;
-      state.userToken = payload.userToken;
+      state.user = payload;
+      state.token = payload.token;
     });
     builder.addCase(userLogout.rejected, (state, { payload }) => {
       state.loading = false;
       (state.error as any) = payload;
     });
+    //current user
+    builder.addCase(fetchUserAsync.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(fetchUserAsync.fulfilled, (state, action) => {
+      usersAdapter.upsertOne(state, action.payload);
+      state.loading = false;
+      state.success = true;
+    });
+    builder.addCase(fetchUserAsync.rejected, (state, { payload }) => {
+      state.loading = false;
+      (state.error as any) = payload;
+    });
+
   },
 });
 
-export const { logout, setCredentials } = authSlice.actions;
+export const usersSelectors = usersAdapter.getSelectors((state: RootState) => state.auth);
+export const { logout, setUser } = authSlice.actions;
 
 export default authSlice;

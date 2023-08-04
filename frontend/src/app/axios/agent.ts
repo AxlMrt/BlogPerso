@@ -5,7 +5,7 @@ import { store } from '../store/configureStore';
 axios.defaults.baseURL = process.env.BASE_URL;
 axios.defaults.withCredentials = true;
 axios.interceptors.request.use((config) => {
-  const token = store.getState().auth.userToken;
+  const token = store.getState().auth.token;
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });

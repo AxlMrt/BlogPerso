@@ -5,17 +5,17 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { IUserLogin } from "../app/types";
 export default function LoginPage() {
-	const { loading, userInfo } = useAppSelector((state) => state.auth);
+	const { loading, user } = useAppSelector((state) => state.auth);
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 	
 	const { register, handleSubmit } = useForm<IUserLogin>();
 
 	useEffect(() => {
-		if (userInfo) {
+		if (user) {
 			navigate('/');
 		}
-	}, [navigate, userInfo]);
+	}, [navigate, user]);
 
 	const submitForm = (data: IUserLogin) => {
 		dispatch(userLogin(data));

@@ -18,6 +18,7 @@ export const fetchAllUsersAsync = createAsyncThunk<IUser[], void, { state: RootS
 export const fetchUserAsync = createAsyncThunk<IUser, string>(
   'user/fetchUserAsync',
   async (_, thunkAPI) => {
+    console.log(_)
     try {
       return agent.User.getUser(_);
     } catch (error: any) {

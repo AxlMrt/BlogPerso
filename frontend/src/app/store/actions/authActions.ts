@@ -6,9 +6,9 @@ export const userLogin = createAsyncThunk(
   async ({ email, password }: { email: string, password: string }, { rejectWithValue }) => {
     try {
       const data = await agent.Auth.auth(email, password);
-
-      localStorage.setItem('userToken', data.tokenData.token);
-      localStorage.setItem('user', data.user.email);
+      console.log(data);
+      localStorage.setItem('token', data.tokenData.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
 
       return data;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

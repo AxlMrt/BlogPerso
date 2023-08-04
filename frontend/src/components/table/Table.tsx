@@ -6,13 +6,19 @@ import { fetchAllBooksAsync, updateBookAsync } from '../../app/store/actions/boo
 import { booksSelectors } from '../../app/store/slices/bookSlice';
 import { useForm } from 'react-hook-form';
 import { IBook } from '../../app/types';
-import { sleep } from '../../app/utils';
+import { usersSelectors } from '../../app/store/slices/authSlice';
+import { fetchUserAsync } from '../../app/store/actions/userActions';
 
 export default function Table() {
-	const { success } = useAppSelector((state) => state.book);
+	const { user, success } = useAppSelector((state) => state.auth);
+	//const { success } = useAppSelector((state) => state.book);
 	const books = useAppSelector(booksSelectors.selectAll);
-	const dispatch = useAppDispatch();
 
+	const id = JSON.parse(user!).id;
+
+	const currentUser = useAppSelector((state) => usersSelectors.selectById(state, id));
+	console.log(currentUser)
+	const dispatch = useAppDispatch();
 	const { register, handleSubmit } = useForm<IBook>();
 
 	const handleUpdate = (data: IBook) => {
@@ -22,7 +28,8 @@ export default function Table() {
 
 	useEffect(() => {
 		if (!success) dispatch(fetchAllBooksAsync());
-	}, [success, dispatch]);
+		if (!success) dispatch(fetchUserAsync(id));
+	}, [success, dispatch, id]);
 
 	return (
 		<div className='overflow-x-auto shadow-md sm:rounded-lg'>

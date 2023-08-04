@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import { useAppSelector } from "../../../app/store/configureStore";
 
 export default function HamburgerDropDown({ navBar }: { navBar: boolean }) {
-	const { userInfo } = useAppSelector((state) => state.auth);
+	const { user } = useAppSelector((state) => state.auth);
   return (
 		<div
 			className={`${navBar ? 'block' : 'hidden'} sm:hidden`}
 			id='mobile-menu'
 		>
-			{userInfo ? (
+			{user ? (
 				<div className='space-y-1 px-2 pb-3 pt-2'>
 					<Link
 						to='#'

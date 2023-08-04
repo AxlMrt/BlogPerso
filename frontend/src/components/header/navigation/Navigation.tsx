@@ -5,12 +5,12 @@ import NavLogo from '../logo/NavLogo';
 
 
 export default function Navigation() {
-	const { userInfo } = useAppSelector((state) => state.auth);
+	const { user } = useAppSelector((state) => state.auth);
 
 	return (
 		<div className='flex flex-1 items-center justify-center sm:items-stretch sm:justify-start'>
 			<NavLogo />
-			{userInfo ? (
+			{user ? (
 				<div className='hidden sm:ml-6 sm:block text-gray-600 '>
 					<div className='flex space-x-4'>
 						<Link
