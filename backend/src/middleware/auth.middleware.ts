@@ -7,23 +7,19 @@ import WrongAuthenticationTokenException from "../config/exceptions/WrongAuthTok
 import MissingAuthenticationTokenException from "../config/exceptions/MissingAuthToken";
 
 const authMiddleware: RequestHandler = async (req: Request, res: Response, next: NextFunction ) => {
-  const cookies = req.cookies;
+  const authorization = req.headers.authorization;
 
-  if (cookies && cookies.Authorization)
+  if (authorization)
     try {
-      const verificationResponse = jwt.verify(cookies.Authorization, secrets.jwtSecret) as IDataStoredInToken;
-      const id = verificationResponse._id;
-
-      const user = await prisma.user.findUnique({
-        where: { id }
+      const cookie = authorization.split(' ')[1];
+      jwt.verify(cookie, secrets.jwtSecret, (err, user) => {
+        if (user) {
+          req.body.user = user;
+          next();
+        } else {
+          next(new WrongAuthenticationTokenException());
+        }
       });
-
-      if (user) {
-        req.body.user = user;
-        next();
-      } else {
-        next(new WrongAuthenticationTokenException());
-      }
     } catch (error) {
       next(new WrongAuthenticationTokenException());
     }

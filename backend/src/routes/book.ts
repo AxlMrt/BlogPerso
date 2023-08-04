@@ -3,7 +3,6 @@ import authMiddleware from "../middleware/auth.middleware";
 import _ from "../controllers/book.controller";
 
 const router = express.Router();
-router.use('/*', authMiddleware)
 
 router.get('/feed', _.getAllBooks);
 router.get('/:id', _.getBook);
