@@ -17,9 +17,9 @@ const requests = {
 const User = {
   userList: () => requests.get('users'),
   getUser: (id: string) => requests.get(`users/${id}`),
-  addUser: (email: string, firstName: string, lastName: string, password: string) => requests.post('users', { email, firstName, lastName, password }),
-  updateUser: (email: string, firstName: string, lastName: string, photo: string, password: string) => requests.post('users', { email, firstName, lastName, photo,  password}),
-  deleteUser: (id: string) => requests.get(`users/${id}`),
+  addUser: (data: any) => requests.post('users', data),
+  updateUser: (data: any) => requests.put(`users/${data.id}`, data),
+  deleteUser: (id: string) => requests.delete(`users/${id}`),
 }
 
 const Auth = {
@@ -32,7 +32,7 @@ const Book = {
   addBook: (data: any) => requests.post('books', data),
   updateBook: (data: any) => requests.put(`books/${data.id}`, data),
   updateFeedBack: (data: any) => requests.put(`books/${data.id}`, data),
-  deleteBook: (id: string) => requests.get(`books/${id}`),
+  deleteBook: (id: string) => requests.delete(`books/${id}`),
 }
 
 const agent = {

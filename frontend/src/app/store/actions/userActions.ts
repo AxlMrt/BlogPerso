@@ -26,22 +26,22 @@ export const fetchUserAsync = createAsyncThunk<IUser, string>(
   }
 );
 
-export const addUserAsync = createAsyncThunk<IUser, { email: string, firstName: string, lastName: string, password: string }>(
+export const addUserAsync = createAsyncThunk<IUser, any>(
   'user/addUserAsync',
-  async ({ email, firstName, lastName, password }, thunkAPI) => {
+  async (data, thunkAPI) => {
     try {
-      return await agent.User.addUser(email, firstName, lastName, password);
+      return await agent.User.addUser(data);
     } catch (error: any) {
       return thunkAPI.rejectWithValue({ error: error.data })
     }
   }
 );
 
-export const updateUserAsync = createAsyncThunk<IUser, { email: string, firstName: string, lastName: string, photo: string, password: string }>(
+export const updateUserAsync = createAsyncThunk<IUser, any>(
   'user/addUserAsync',
-  async ({ email, firstName, lastName, photo, password }, thunkAPI) => {
+  async (data, thunkAPI) => {
     try {
-      return await agent.User.updateUser(email, firstName, lastName, photo, password);
+      return await agent.User.updateUser(data);
     } catch (error: any) {
       return thunkAPI.rejectWithValue({ error: error.data })
     }
