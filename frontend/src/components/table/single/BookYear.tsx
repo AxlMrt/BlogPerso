@@ -16,7 +16,7 @@ export default function BookYear({
 				{updating ? (
 					<input
 						type='number'
-						className='w-12'
+						className='w-16 bg-gray-100 dark:bg-gray-700 rounded-md px-2 py-1'
 						placeholder={year ? year.toString() : 'xxxx'}
 						form='table_form'
 						{...register('year', {

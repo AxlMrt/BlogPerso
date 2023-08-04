@@ -33,7 +33,11 @@ export default function ReadState({
 					} mr-2`}
 				></div>{' '}
 				{updating ? (
-					<select id='' form='table_form' {...register('isRead')}>
+					<select
+						className='bg-gray-100 dark:bg-gray-700 rounded-md px-2 py-1'
+						form='table_form'
+						{...register('isRead')}
+					>
 						<option defaultValue={isRead} value={isRead} hidden>
 							{readingState[isRead as keyof IsBookRead].text}
 						</option>

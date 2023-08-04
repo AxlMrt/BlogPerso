@@ -22,6 +22,7 @@ export default function BookTitle({
 						<input
 							type='text'
 							placeholder={book.title}
+							className='bg-gray-100 dark:bg-gray-700 rounded-md px-2 py-1'
 							form='table_form'
 							{...register('title', {
 								setValueAs: (x: string) => (x ? x : book.title),
