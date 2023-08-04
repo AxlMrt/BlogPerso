@@ -6,11 +6,16 @@ import BookAuthor from './BookAuthor';
 import BookYear from './BookYear';
 import BookButtons from './BookButtons';
 import { useAppDispatch } from '../../../app/store/configureStore';
-import {
-	deleteBookAsync,
-} from '../../../app/store/actions/bookActions';
+import { deleteBookAsync } from '../../../app/store/actions/bookActions';
+import { UseFormRegister } from 'react-hook-form';
 
-export default function SingleBook({ book, register }: { book: IBook }) {
+export default function SingleBook({
+	book,
+	register,
+}: {
+	book: IBook;
+	register: UseFormRegister<IBook>;
+}) {
 	const dispatch = useAppDispatch();
 	const [updating, setUpdating] = useState<boolean>(false);
 
@@ -38,7 +43,7 @@ export default function SingleBook({ book, register }: { book: IBook }) {
 				<input
 					type='text'
 					{...register('id', {
-						setValueAs: (x: string) => x ? book.id : book.id,
+						setValueAs: (x: string) => (x ? book.id : book.id),
 					})}
 				/>
 			</td>

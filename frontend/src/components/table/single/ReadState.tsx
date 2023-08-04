@@ -1,4 +1,5 @@
-import { IsBookRead } from '../../../app/types';
+import { UseFormRegister } from 'react-hook-form';
+import { IBook, IsBookRead } from '../../../app/types';
 
 export default function ReadState({
 	isRead,
@@ -7,6 +8,7 @@ export default function ReadState({
 }: {
 	isRead: string;
 	updating: boolean;
+	register: UseFormRegister<IBook>;
 }) {
 	const readingState: IsBookRead = {
 		NOT_READ: {
@@ -31,12 +33,7 @@ export default function ReadState({
 					} mr-2`}
 				></div>{' '}
 				{updating ? (
-					<select
-						name=''
-						id=''
-						form='table_form'
-						{...register('isRead')}
-					>
+					<select id='' form='table_form' {...register('isRead')}>
 						<option defaultValue={isRead} value={isRead} hidden>
 							{readingState[isRead as keyof IsBookRead].text}
 						</option>

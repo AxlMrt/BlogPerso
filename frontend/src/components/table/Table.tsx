@@ -14,7 +14,7 @@ export default function Table() {
 
 	const { register, handleSubmit } = useForm<IBook>();
 
-	const handleUpdate = (data) => {
+	const handleUpdate = (data: IBook) => {
 		dispatch(updateBookAsync(data));
 		window.location.reload();
 	};

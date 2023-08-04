@@ -1,3 +1,6 @@
+import { UseFormRegister } from "react-hook-form";
+import { IBook } from "../../../app/types";
+
 export default function BookAuthor({
 	author,
 	updating,
@@ -5,6 +8,7 @@ export default function BookAuthor({
 }: {
 	author: string;
 	updating: boolean;
+	register: UseFormRegister<IBook>;
 }) {
 	return (
 		<td className='px-6 py-4 w-32'>

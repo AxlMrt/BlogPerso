@@ -1,3 +1,6 @@
+import { UseFormRegister } from "react-hook-form";
+import { IBook } from "../../../app/types";
+
 export default function BookYear({
 	year,
 	updating,
@@ -5,6 +8,7 @@ export default function BookYear({
 }: {
 	year: number;
 	updating: boolean;
+	register: UseFormRegister<IBook>;
 }) {
 	return (
 		<td className='w-4 p-4'>
@@ -13,10 +17,10 @@ export default function BookYear({
 					<input
 						type='number'
 						className='w-12'
-						placeholder={year ? year : 'xxxx'}
+						placeholder={year ? year.toString() : 'xxxx'}
 						form='table_form'
 						{...register('year', {
-							setValueAs: (x: string) => (x  ? parseInt(x) : year),
+							setValueAs: (x: string) => (x ? parseInt(x) : year),
 						})}
 					/>
 				) : (

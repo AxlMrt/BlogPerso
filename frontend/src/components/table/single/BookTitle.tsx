@@ -1,5 +1,6 @@
 import StarRating from '../starRating/StarRating';
 import { IBook } from '../../../app/types';
+import { UseFormRegister } from 'react-hook-form';
 
 export default function BookTitle({
 	book,
@@ -8,6 +9,7 @@ export default function BookTitle({
 }: {
 	book: IBook;
 	updating: boolean;
+	register: UseFormRegister<IBook>;
 }) {
 	return (
 		<th
