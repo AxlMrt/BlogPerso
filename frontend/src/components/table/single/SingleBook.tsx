@@ -21,7 +21,7 @@ export default function SingleBook({
 
 	const handleDelete = () => {
 		dispatch(deleteBookAsync(book.id));
-		window.location.reload();
+		setTimeout(() => window.location.reload(), 100);
 	};
 
 	return (

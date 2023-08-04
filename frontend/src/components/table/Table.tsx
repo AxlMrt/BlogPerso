@@ -6,6 +6,7 @@ import { fetchAllBooksAsync, updateBookAsync } from '../../app/store/actions/boo
 import { booksSelectors } from '../../app/store/slices/bookSlice';
 import { useForm } from 'react-hook-form';
 import { IBook } from '../../app/types';
+import { sleep } from '../../app/utils';
 
 export default function Table() {
 	const { success } = useAppSelector((state) => state.book);
@@ -16,7 +17,7 @@ export default function Table() {
 
 	const handleUpdate = (data: IBook) => {
 		dispatch(updateBookAsync(data));
-		window.location.reload();
+		setTimeout(() => window.location.reload(), 100);
 	};
 
 	useEffect(() => {

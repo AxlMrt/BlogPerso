@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import { addBookAsync, fetchAllBooksAsync, fetchBookAsync } from '../actions/bookActions';
+import { addBookAsync, deleteBookAsync, fetchAllBooksAsync, fetchBookAsync, updateBookAsync } from '../actions/bookActions';
 import { IBook } from "../../types";
 import { RootState } from "../configureStore";
 
@@ -60,6 +60,32 @@ const bookSlice = createSlice({
       state.success = true;
     });
     builder.addCase(addBookAsync.rejected, (state, { payload }) => {
+      state.loading = false;
+      (state.error as any) = payload;
+    });
+
+    builder.addCase(updateBookAsync.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(updateBookAsync.fulfilled, (state) => {
+      state.loading = false;
+      state.success = true;
+    });
+    builder.addCase(updateBookAsync.rejected, (state, { payload }) => {
+      state.loading = false;
+      (state.error as any) = payload;
+    });
+    
+    builder.addCase(deleteBookAsync.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(deleteBookAsync.fulfilled, (state) => {
+      state.loading = false;
+      state.success = true;
+    });
+    builder.addCase(deleteBookAsync.rejected, (state, { payload }) => {
       state.loading = false;
       (state.error as any) = payload;
     });

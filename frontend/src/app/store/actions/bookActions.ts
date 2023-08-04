@@ -60,7 +60,7 @@ export const updateFeedBackAsync = createAsyncThunk<IBook, { id: string, feedBac
 );
 
 export const deleteBookAsync = createAsyncThunk<IBook, string>(
-  'books/fetchBookAsync',
+  'books/deleteBookAsync',
   async (_, thunkAPI) => {
     try {
       return agent.Book.deleteBook(_);
