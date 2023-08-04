@@ -1,8 +1,5 @@
-import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import agent from '../../axios/agent';
-
-const backendURL = process.env.BASE_URL;
 
 export const userLogin = createAsyncThunk(
   'auth/login',
@@ -30,18 +27,7 @@ export const userLogout = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
     try {
-      // configure header's Content-Type as JSON
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-      const { data } = await axios.post(
-        `${backendURL}/logout`,
-        config
-      )
-  
-      return data;
+      return agent.Auth.logout();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       // return custom error message from API if any

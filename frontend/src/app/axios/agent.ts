@@ -1,9 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosResponse } from 'axios';
+import { store } from '../store/configureStore';
 
 axios.defaults.baseURL = process.env.BASE_URL;
 axios.defaults.withCredentials = true;
-
+axios.interceptors.request.use((config) => {
+  const token = store.getState().auth.userToken;
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
 
 const responseBody = (response: AxiosResponse) => response.data;
 
@@ -23,7 +28,8 @@ const User = {
 }
 
 const Auth = {
-  auth: (email: string, password: string) => requests.post('login', { email, password })
+  auth: (email: string, password: string) => requests.post('login', { email, password }),
+  logout: () => requests.post('logout', {})
 }
 
 const Book = {
