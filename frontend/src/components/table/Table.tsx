@@ -35,8 +35,8 @@ export default function Table() {
 				{books.length > 0 && <TableBody books={books} register={register} />}
 			</table>
 			{!books.length && (
-				<div className='text-center my-5'>
-					<h1>Liste vide !</h1>
+				<div className='text-center my-5 dark:text-white'>
+					<h3>Liste vide !</h3>
 					Commencez votre collection littéraire: Ajoutez des livres à votre
 					bibliothèque
 				</div>
