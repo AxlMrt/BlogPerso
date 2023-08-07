@@ -1,32 +1,31 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../app/store/configureStore';
-import { addUserAsync } from '../app/store/actions/userActions';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { IRegister } from '../app/types';
+import { useAddNewUserMutation } from '../app/store/api/usersApi';
 
 export default function RegisterPage() {
-	const { loading, success, error } = useAppSelector((state) => state.user);
-	const dispatch = useAppDispatch();
+	const [addUser, { isLoading, isError, isSuccess }] = useAddNewUserMutation();
+	const { register, handleSubmit } = useForm<IRegister>();
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		// redirect user to login page if registration was successful
-		if (success) navigate('/login');
-		// redirect authenticated user to profile screen
-		if (error) navigate('/');
-	}, [navigate, error, success]);
+		if (isSuccess) navigate('/login');
+		if (isError) navigate('/');
+	}, [navigate, isSuccess, isError]);
 
-	const { register, handleSubmit } = useForm<IRegister>();
-
-	const submitForm = (data: IRegister) => {
-		// check if passwords match
-		if (data.password !== data.confirmPassword) {
+	const submitForm = async (data: IRegister) => {
+		if (data.password !== data.confirmPassword)
 			alert('Password mismatch');
-		}
-		// transform email string to lowercase to avoid case sensitivity issues in login
+		
 		data.email = data.email.toLowerCase();
-		dispatch(addUserAsync(data));
+		delete data.confirmPassword;
+
+		try {
+			await addUser(data).unwrap();
+		} catch (error) {
+			console.error('Failed to create user ', error);
+		}
 	};
 
 	return (
@@ -130,9 +129,9 @@ export default function RegisterPage() {
 							<button
 								type='submit'
 								className='w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'
-								disabled={loading}
+								disabled={isLoading}
 							>
-								{loading ? 'Chargement..' : 'Créer'}
+								{isLoading ? 'Chargement..' : 'Créer'}
 							</button>
 							<p className='text-sm font-light text-gray-500 dark:text-gray-400'>
 								Déjà un compte?{' '}

@@ -42,6 +42,7 @@ const Book = {
 }
 
 const agent = {
+  requests,
   User,
   Auth,
   Book

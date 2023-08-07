@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react';
 import { IBook } from '../../../app/types';
 import ReadState from './ReadState';
@@ -5,9 +6,8 @@ import BookTitle from './BookTitle';
 import BookAuthor from './BookAuthor';
 import BookYear from './BookYear';
 import BookButtons from './BookButtons';
-import { useAppDispatch } from '../../../app/store/configureStore';
-import { deleteBookAsync } from '../../../app/store/actions/bookActions';
 import { UseFormRegister } from 'react-hook-form';
+import { useDeleteBookMutation } from '../../../app/store/api/booksApi';
 
 export default function SingleBook({
 	book,
@@ -16,12 +16,16 @@ export default function SingleBook({
 	book: IBook;
 	register: UseFormRegister<IBook>;
 }) {
-	const dispatch = useAppDispatch();
+	const [deleteBook] = useDeleteBookMutation();
 	const [updating, setUpdating] = useState<boolean>(false);
 
-	const handleDelete = () => {
-		dispatch(deleteBookAsync(book.id));
-		setTimeout(() => window.location.reload(), 100);
+	const handleDelete = async () => {
+		try {
+			await deleteBook(book.id).unwrap();
+			window.location.reload();
+		} catch (error) {
+			console.error('Failed to delete the book: ', error);
+		}
 	};
 
 	return (

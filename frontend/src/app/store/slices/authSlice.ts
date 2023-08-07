@@ -2,7 +2,7 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { userLogin, userLogout } from '../actions/authActions';
 import { IUser } from '../../types';
-import { fetchUserAsync } from '../actions/userActions';
+import { fetchUserAsync } from '../actions/authActions';
 import { RootState } from '../configureStore';
 
 // initialize userToken from local storage
@@ -52,7 +52,6 @@ const authSlice = createSlice({
       state.error = null;
     });
     builder.addCase(userLogin.fulfilled, (state, { payload }) => {
-      console.log(payload)
       state.loading = false;
       state.user = payload.user;
       state.token = payload.token;

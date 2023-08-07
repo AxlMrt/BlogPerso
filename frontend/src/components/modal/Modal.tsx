@@ -1,13 +1,12 @@
 import { useForm } from "react-hook-form";
-import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { IBookRegister } from "../../app/types";
 import Svg from "../svg/Svg"
-import { addBookAsync } from "../../app/store/actions/bookActions";
+import { useAddNewBookMutation } from "../../app/store/api/booksApi";
 
 export default function Modal() {
-	const { loading } = useAppSelector((state) => state.book);
-	const dispatch = useAppDispatch();
 	const user = localStorage.getItem("user");
+	const [addNewBook, { isLoading }] = useAddNewBookMutation();
+	const { register, handleSubmit } = useForm<IBookRegister>();
 
 	const closeIcon = {
 		icon: 'M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z',
@@ -15,19 +14,22 @@ export default function Modal() {
 		viewBox: '0 0 20 20'
 	}
 
-	const { register, handleSubmit } = useForm<IBookRegister>();
-
-	const submitForm = (data: IBookRegister) => {
-		if (user)
-			data.userMail = user;
-		
-		dispatch(addBookAsync(data));
-	};
-
 	const closeModal = () => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		(window as any).add_book.close();
-	}
+	};
+	
+	const submitForm = async (data: IBookRegister) => {
+		if (user)
+			data.userMail = JSON.parse(user).email;
+
+		try {
+			await addNewBook(data).unwrap();
+			window.location.reload();
+		} catch (error) {
+			console.error('Failed to save the book: ', error);
+		}
+	};
 
 	return (
 		<dialog
@@ -102,7 +104,7 @@ export default function Modal() {
 									placeholder='ex: Roman, Fantaisie'
 									className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
 									{...register('type', {
-										setValueAs: (x) => (x === '' ? null : parseInt(x)),
+										setValueAs: (x) => (x === '' ? null : x),
 									})}
 								/>
 							</div>
@@ -145,7 +147,7 @@ export default function Modal() {
 								type='submit'
 								className='w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
 							>
-								{loading ? 'Chargement...' : 'Ajouter'}
+								{isLoading ? 'Chargement...' : 'Ajouter'}
 							</button>
 						</form>
 					</div>

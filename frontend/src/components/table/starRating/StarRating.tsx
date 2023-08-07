@@ -1,19 +1,21 @@
 import { useState } from 'react'
-import { useAppDispatch } from '../../../app/store/configureStore';
-import { updateFeedBackAsync } from '../../../app/store/actions/bookActions';
 import { IBook } from '../../../app/types';
+import { useUpdateBookMutation } from '../../../app/store/api/booksApi';
+
 
 export default function StarRating({ book }: {book: IBook}) {
   const { feedBack } = book;
-	const dispatch = useAppDispatch();
+	const [updateFeedBack] = useUpdateBookMutation();
   const [hover, setHover] = useState(0);
   const [rating, setRating] = useState<number>(feedBack);
-  
 
-  const rateBook = (index: number) => {
+  const rateBook = async (index: number) => {
 		setRating(index);
-	
-    dispatch(updateFeedBackAsync({ ...book, feedBack: index }));
+		try {
+			await updateFeedBack({ ...book, feedBack: index });
+		} catch (error) {
+			console.error('Failed to update feedback of the book: ', error);
+		}
 	};
 
 	return (

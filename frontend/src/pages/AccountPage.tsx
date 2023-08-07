@@ -1,29 +1,17 @@
-import { useEffect } from 'react'
 import Svg from '../components/svg/Svg';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { addUserAsync } from '../app/store/actions/userActions';
-import { useAppSelector, useAppDispatch } from '../app/store/configureStore';
 import { IRegister } from '../app/types';
+import { useUpdateUserMutation } from '../app/store/api/usersApi';
 
 export default function AccountPage() {
   const imageIcon = {
 		icon: 'M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02',
 		class: 'mx-auto h-12 w-12 dark:text-white',
 		viewBox: '0 0 48 48',
-  };
-
-  const { loading, error, success } = useAppSelector((state) => state.user);
-	const dispatch = useAppDispatch();
-	const navigate = useNavigate();
-
-	useEffect(() => {
-		// redirect user to login page if registration was successful
-		if (success) navigate('/login');
-		// redirect authenticated user to profile screen
-		if (error) navigate('/');
-	}, [navigate, error, success]);
-
+	};
+	
+	const [updateUser] = useUpdateUserMutation();
 	const { register, handleSubmit } = useForm<IRegister>();
 
 	const submitForm = (data: IRegister) => {
@@ -33,7 +21,7 @@ export default function AccountPage() {
 		}
 		// transform email string to lowercase to avoid case sensitivity issues in login
 		data.email = data.email.toLowerCase();
-		dispatch(addUserAsync(data));
+		updateUser(data);
 	};
 
   return (

@@ -8,9 +8,9 @@ export default function ProfileImage({
 	profileBar: boolean;
 	setProfilebar: Dispatch<SetStateAction<boolean>>;
 }) {
-	const { userInfo } = useAppSelector((state) => state.auth);
+	const { user } = useAppSelector((state) => state.auth);
 
-	if (userInfo)
+	if (user)
 		return (
 			<div>
 				<button
