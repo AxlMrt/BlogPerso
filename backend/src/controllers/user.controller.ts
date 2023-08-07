@@ -54,6 +54,8 @@ const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
   const { id } = req.params;
   let password: string = req.body.password;
 
+  if (req.body.user)
+    req.body = JSON.parse(req.body.user);
   console.log(req.body)
   if (password) {
     const salt = await bcrypt.genSalt(10);
@@ -63,7 +65,7 @@ const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
   try {
     const updatedUser = await prisma.user.update({
       where: { id },
-      data: { ...req.body, password, photo: req.file?.path }
+      data: { ...req.body, password, photo: req.file?.filename }
     });
 
     res.json(updatedUser);
