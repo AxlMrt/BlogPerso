@@ -2,6 +2,7 @@ import express, { Application, Request } from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import path from "path";
 import secrets from "./config/secrets";
 import UserRoute from "./routes/user";
 import AuthRoute from "./routes/auth";
@@ -28,7 +29,7 @@ app.use(`${baseURL}/users`, UserRoute);
 app.use(`${baseURL}/login`, AuthRoute);
 app.use(`${baseURL}/books`, BookRoute);
 
-app.use('/uploads', express.static('../public/uploads'));
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);

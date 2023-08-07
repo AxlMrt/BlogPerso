@@ -11,6 +11,7 @@ export default defineConfig(({ mode }) => {
     },
     define: {
             'process.env.BASE_URL': JSON.stringify(env.BASE_URL),
+            'process.env.BASE_IMG': JSON.stringify(env.BASE_IMG),
             'process.env.YOUR_BOOLEAN_VARIABLE': env.YOUR_BOOLEAN_VARIABLE,
     },
   }
