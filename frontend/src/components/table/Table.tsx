@@ -13,6 +13,10 @@ export default function Table() {
 		isLoading
 	} = useGetBooksQuery<any>();
 
+	const currentUser = JSON.parse(localStorage.getItem("user")!);
+	const id = currentUser.id;
+	const userBooks = books.filter((book: IBook) => book.userId === id)
+
 	const { register, handleSubmit } = useForm<IBook>();
 
 	const handleUpdate = async (data: IBook) => {
@@ -36,11 +40,11 @@ export default function Table() {
 			) : (
 				<table className='w-full text-sm  text-left text-gray-500 dark:text-gray-400'>
 					<TableHead />
-					{books && <TableBody books={books} register={register} />}
+					{userBooks && <TableBody books={userBooks} register={register} />}
 				</table>
 			)}
 
-			{!books.length && (
+			{!userBooks.length && (
 				<div className='text-center my-5 dark:text-white'>
 					<h3>Liste vide !</h3>
 					Commencez votre collection littéraire: Ajoutez des livres à votre

@@ -1,6 +1,5 @@
 import Svg from '../components/svg/Svg';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { IRegister } from '../app/types';
 import { useUpdateUserMutation } from '../app/store/api/usersApi';
 
