@@ -2,6 +2,7 @@ import Svg from '../components/svg/Svg';
 import { useForm } from 'react-hook-form';
 import { IRegister } from '../app/types';
 import { useUpdateUserMutation } from '../app/store/api/usersApi';
+import { useState } from 'react';
 
 export default function AccountPage() {
   const imageIcon = {
@@ -9,18 +10,32 @@ export default function AccountPage() {
 		class: 'mx-auto h-12 w-12 dark:text-white',
 		viewBox: '0 0 48 48',
 	};
-	
-	const [updateUser] = useUpdateUserMutation();
+	const user = JSON.parse(localStorage.getItem("user")!);
+	const [updateUser, { isLoading }] = useUpdateUserMutation();
+	const [file, setFile] = useState(null)
 	const { register, handleSubmit } = useForm<IRegister>();
 
-	const submitForm = (data: IRegister) => {
-		// check if passwords match
-		if (data.password !== data.confirmPassword) {
-			alert('Password mismatch');
+	const submitForm = async (data: IRegister) => {
+		if (data.password !== data.confirmPassword) alert('Password mismatch');
+		delete data.confirmPassword;
+
+		if (file) {
+			const formData = new FormData();
+			formData.append('photo', data.photo[0]);
+			data = { ...data, photo: data.photo[0].name };
+
+			try {
+				await updateUser({ id: data.id, formData });
+			} catch (error) {
+				console.error('Failed to upload the profile picture: ', error);
+			}
 		}
-		// transform email string to lowercase to avoid case sensitivity issues in login
-		data.email = data.email.toLowerCase();
-		updateUser(data);
+		
+		try {
+			await updateUser(data);
+		} catch (error) {
+			console.error('Failed to update the user: ', error);
+		}
 	};
 
   return (
@@ -39,7 +54,10 @@ export default function AccountPage() {
 								id='firstName'
 								type='text'
 								className='block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
-								{...register('firstName')}
+								placeholder={user.firstName}
+								{...register('firstName', {
+									setValueAs: (x: string) => (x ? x : user.firstName),
+								})}
 							/>
 						</div>
 						<div>
@@ -50,7 +68,10 @@ export default function AccountPage() {
 								id='lastName'
 								type='text'
 								className='block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
-								{...register('lastName')}
+								placeholder={user.lastName}
+								{...register('lastName', {
+									setValueAs: (x: string) => (x ? x : user.lastName),
+								})}
 							/>
 						</div>
 						<div>
@@ -61,7 +82,10 @@ export default function AccountPage() {
 								id='emailAddress'
 								type='email'
 								className='block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
-								{...register('email')}
+								placeholder={user.email}
+								{...register('email', {
+									setValueAs: (x: string) => (x ? x : user.email),
+								})}
 							/>
 						</div>
 						<div>
@@ -72,7 +96,10 @@ export default function AccountPage() {
 								id='password'
 								type='password'
 								className='block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
-								{...register('password')}
+								placeholder='••••••••'
+								{...register('password', {
+									setValueAs: (x: string) => (x ? x : user.password),
+								})}
 							/>
 						</div>
 						<div>
@@ -86,7 +113,18 @@ export default function AccountPage() {
 								id='passwordConfirmation'
 								type='password'
 								className='block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
-								{...register('confirmPassword')}
+								placeholder='••••••••'
+								{...register('confirmPassword', {
+									setValueAs: (x: string) => (x ? x : user.password),
+								})}
+							/>
+						</div>
+						<div className='hidden'>
+							<input
+								type='text'
+								{...register('id', {
+									setValueAs: (x: string) => (x ? user.id : user.id),
+								})}
 							/>
 						</div>
 						<div>
@@ -95,11 +133,16 @@ export default function AccountPage() {
 							</label>
 							<div className='mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md'>
 								<div className='space-y-1 text-center'>
-									<Svg
-										icon={imageIcon.icon}
-										iconClass={imageIcon.class}
-										viewBox={imageIcon.viewBox}
-									/>
+									{file ? (
+										<img src={URL.createObjectURL(file)} alt='' />
+									) : (
+										<Svg
+											icon={imageIcon.icon}
+											iconClass={imageIcon.class}
+											viewBox={imageIcon.viewBox}
+										/>
+									)}
+
 									<div className='flex text-sm text-gray-600'>
 										<label
 											htmlFor='file-upload'
@@ -110,7 +153,10 @@ export default function AccountPage() {
 												id='file-upload'
 												type='file'
 												className='sr-only'
-												{...register('photo')}
+												{...register('photo', {
+													onChange: (e) => setFile(e.target.files[0]),
+													setValueAs: (x: string) => (x ? x : user.photo),
+												})}
 											/>
 										</label>
 										<p className='pl-1 dark:text-white'>or drag and drop</p>
@@ -125,7 +171,7 @@ export default function AccountPage() {
 
 					<div className='flex justify-end mt-6'>
 						<button className='text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800'>
-							{loading ? 'Chargement..' : 'Valider'}
+							{isLoading ? 'Chargement..' : 'Valider'}
 						</button>
 					</div>
 				</form>

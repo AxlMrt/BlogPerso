@@ -19,8 +19,8 @@ const options: cors.CorsOptions = {
   methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
 };
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({limit: '10mb'}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors<Request>(options));

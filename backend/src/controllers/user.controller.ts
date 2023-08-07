@@ -54,6 +54,7 @@ const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
   const { id } = req.params;
   let password: string = req.body.password;
 
+  console.log(req.body)
   if (password) {
     const salt = await bcrypt.genSalt(10);
     password = await bcrypt.hash(password, salt);

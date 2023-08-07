@@ -6,7 +6,6 @@ const baseQuery = fetchBaseQuery({
   prepareHeaders: (headers) => {
     const token = store.getState().auth.token;
     if (token) {
-      headers.set('Content-Type', 'application/json');
       headers.set('Authorization', `Bearer ${token}`);
       headers.set('Cookies', token);
     }
