@@ -27,7 +27,7 @@ export default function AccountPage() {
 		if (!data.password) delete data.password;
 
 		delete data.confirmPassword;
-		
+		console.log(data)
 		if (file) {
 			const formData = new FormData();
 			formData.append('photo', data.photo[0]);
@@ -35,7 +35,7 @@ export default function AccountPage() {
 			formData.append('user', JSON.stringify(data));
 
 			try {
-				await updateUser({ id: currentUser.id, formData }).then(() =>
+				await updateUser({ formData }).then(() =>
 					window.location.reload()
 				);
 			} catch (error) {
@@ -44,7 +44,7 @@ export default function AccountPage() {
 		} else {
 			data.photo = currentUser.photo;
 			try {
-				await updateUser({ id: currentUser.id, formData: data }).then(() => window.location.reload());
+				await updateUser({ formData: data }).then(() => window.location.reload());
 			} catch (error) {
 				console.error('Failed to update the user: ', error);
 			}
