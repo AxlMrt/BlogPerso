@@ -29,7 +29,7 @@ app.use(`${baseURL}/users`, UserRoute);
 app.use(`${baseURL}/login`, AuthRoute);
 app.use(`${baseURL}/books`, BookRoute);
 
-app.use('/public/uploads', express.static(path.join(__dirname, '/public/uploads')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);

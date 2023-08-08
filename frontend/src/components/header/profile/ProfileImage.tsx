@@ -18,7 +18,7 @@ export default function ProfileImage({
 			<div>
 				<button
 					type='button'
-					className='relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
+					className='relative flex rounded-full bg-gray-800 dark:bg-white text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
 					id='user-menu-button'
 					aria-expanded='false'
 					aria-haspopup='true'
