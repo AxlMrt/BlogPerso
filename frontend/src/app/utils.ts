@@ -3,31 +3,27 @@ import { toggleTheme } from "./store/slices/themeSlice";
 import { IUser } from "./types";
 
 export const isDark = () =>
-	//Function that will return boolean if any of the condition is satisfied
-	(localStorage && localStorage.theme === 'dark') || //Condition 1 - has local storage and theme = dark in local storage is found
+	(localStorage && localStorage.theme === 'dark') ||
 	(!('theme' in localStorage) &&
-		window.matchMedia('(prefers-color-scheme: dark)').matches); //Condition 2 - No theme key in local storage but media color scheme is dark
+		window.matchMedia('(prefers-color-scheme: dark)').matches);
 
-export const getTheme = (isDark: boolean) => (isDark ? 'dark' : 'light'); //Function to return 'dark' or 'light' string
+export const getTheme = (isDark: boolean) => (isDark ? 'dark' : 'light');
 
 export const toggleMode = (dispatch: AppDispatch, darkMode: boolean) => {
-		//onClick handler for changing theme on button press
-	localStorage.theme = getTheme(!darkMode); //setting up local storage theme value
+	localStorage.theme = getTheme(!darkMode);
 	if (localStorage.theme === 'dark') {
-			// If theme is 'dark'
-		document.documentElement.classList.remove('light'); // remove 'light' from html class
-		document.documentElement.classList.add('dark'); // add 'dark' to html class
+		document.documentElement.classList.remove('light');
+		document.documentElement.classList.add('dark');
 	} else {
-			// if not 'dark'
-		document.documentElement.classList.remove('dark'); // remove 'dark' from html class
-		document.documentElement.classList.add('light'); //add 'light' to html class
+		document.documentElement.classList.remove('dark');
+		document.documentElement.classList.add('light');
 	}
-	dispatch(toggleTheme(!darkMode)); //set dark mode state to opposite of initial value
+	dispatch(toggleTheme(!darkMode));
 };
 
 export const trimUserObject = (data: IUser) => {
 		const asArray = Object.entries(data);
-		const filtered = asArray.filter(([key, value]) => value !== '');
+		const filtered = asArray.filter(([, value]) => value !== '');
 
 	return Object.fromEntries(filtered);
 }

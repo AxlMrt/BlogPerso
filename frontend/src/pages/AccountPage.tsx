@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Svg from '../components/svg/Svg';
 import { useForm } from 'react-hook-form';
-import { IRegister, IUser } from '../app/types';
+import { IRegister } from '../app/types';
 import {
 	useGetUserQuery,
 	useUpdateUserMutation,
@@ -9,6 +9,7 @@ import {
 import { useState } from 'react';
 import FormInput from '../components/form_input/FormInput';
 import { trimUserObject } from '../app/utils';
+import DeleteModal from '../components/modal/DeleteModal';
 
 export default function AccountPage() {
 	const imageIcon = {
@@ -19,11 +20,11 @@ export default function AccountPage() {
 
 	const user = JSON.parse(localStorage.getItem('user')!);
 	const currentUser = useGetUserQuery(user.id).data || user;
-	
+
 	const [updateUser, { isLoading }] = useUpdateUserMutation();
 	const [file, setFile] = useState(null);
 	const { register, handleSubmit } = useForm<IRegister>();
-	
+
 	const submitForm = async (data: any) => {
 		data = trimUserObject(data);
 		if (data.password !== data.confirmPassword) alert('Password mismatch');
@@ -45,7 +46,9 @@ export default function AccountPage() {
 		} else {
 			data.photo = currentUser.photo;
 			try {
-				await updateUser({ id: currentUser.id, formData: data }).then(() => window.location.reload());
+				await updateUser({ id: currentUser.id, formData: data }).then(() =>
+					window.location.reload()
+				);
 			} catch (error) {
 				console.error('Failed to update the user: ', error);
 			}
@@ -150,9 +153,19 @@ export default function AccountPage() {
 						</div>
 					</div>
 
-					<div className='flex justify-end mt-6'>
-						<button className='text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800'>
-							{isLoading ? 'Chargement..' : 'Valider'}
+					<div className='flex flex-col-reverse gap-6 mt-6 md:flex-row md:justify-between'>
+						<button
+							id='deleteButton'
+							className='block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-red-800'
+							type='button'
+							onClick={() => (window as any).deleteModal.showModal()}
+						>
+							Supprimer mon compte
+						</button>
+						<DeleteModal user={user} />
+
+						<button className='block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:focus:ring-primary-800'>
+							{isLoading ? 'Chargement..' : 'Valider mes informations'}
 						</button>
 					</div>
 				</form>
