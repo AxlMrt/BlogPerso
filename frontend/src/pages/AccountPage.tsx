@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Svg from '../components/svg/Svg';
 import { useForm } from 'react-hook-form';
-import { IRegister } from '../app/types';
+import { IRegister, IUser } from '../app/types';
 import {
 	useGetUserQuery,
 	useUpdateUserMutation,
 } from '../app/store/api/usersApi';
 import { useState } from 'react';
+import FormInput from '../components/form_input/FormInput';
+import { trimUserObject } from '../app/utils';
 
 export default function AccountPage() {
 	const imageIcon = {
@@ -23,11 +25,10 @@ export default function AccountPage() {
 	const { register, handleSubmit } = useForm<IRegister>();
 	
 	const submitForm = async (data: any) => {
+		data = trimUserObject(data);
 		if (data.password !== data.confirmPassword) alert('Password mismatch');
-		if (!data.password) delete data.password;
-
 		delete data.confirmPassword;
-		
+
 		if (file) {
 			const formData = new FormData();
 			formData.append('photo', data.photo[0]);
@@ -63,79 +64,41 @@ export default function AccountPage() {
 				</h1>
 				<form onSubmit={handleSubmit(submitForm)}>
 					<div className='grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'>
-						<div>
-							<label className=' dark:text-gray-200' htmlFor='firstName'>
-								Prénom
-							</label>
-							<input
-								id='firstName'
-								type='text'
-								className='block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
-								placeholder={currentUser.firstName}
-								{...register('firstName', {
-									setValueAs: (x: string) => (x ? x : currentUser.firstName),
-								})}
-							/>
-						</div>
-						<div>
-							<label className=' dark:text-gray-200' htmlFor='lastName'>
-								Nom
-							</label>
-							<input
-								id='lastName'
-								type='text'
-								className='block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
-								placeholder={user.lastName}
-								{...register('lastName', {
-									setValueAs: (x: string) => (x ? x : currentUser.lastName),
-								})}
-							/>
-						</div>
-						<div>
-							<label className=' dark:text-white' htmlFor='emailAddress'>
-								Email
-							</label>
-							<input
-								id='emailAddress'
-								type='email'
-								className='block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
-								placeholder={user.email}
-								{...register('email', {
-									setValueAs: (x: string) => (x ? x : currentUser.email),
-								})}
-							/>
-						</div>
-						<div>
-							<label className=' dark:text-white' htmlFor='password'>
-								Mot de passe
-							</label>
-							<input
-								id='password'
-								type='password'
-								className='block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
-								placeholder='••••••••'
-								{...register('password', {
-									setValueAs: (x: string) => (x ? x : null),
-								})}
-							/>
-						</div>
-						<div>
-							<label
-								className=' dark:text-white'
-								htmlFor='passwordConfirmation'
-							>
-								Confirmer mot de passe
-							</label>
-							<input
-								id='passwordConfirmation'
-								type='password'
-								className='block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
-								placeholder='••••••••'
-								{...register('confirmPassword', {
-									setValueAs: (x: string) => (x ? x : null),
-								})}
-							/>
-						</div>
+						<FormInput
+							type={'text'}
+							text={'Prénom'}
+							holder={currentUser.firstName}
+							register={register}
+							registerName={'firstName'}
+						/>
+						<FormInput
+							type={'text'}
+							text={'Nom'}
+							holder={currentUser.lastName}
+							register={register}
+							registerName={'lastName'}
+						/>
+						<FormInput
+							type={'email'}
+							text={'E-mail'}
+							holder={currentUser.email}
+							register={register}
+							registerName={'email'}
+						/>
+						<FormInput
+							type={'password'}
+							text={'Mot de passe'}
+							holder={'••••••••'}
+							register={register}
+							registerName={'password'}
+						/>
+						<FormInput
+							type={'password'}
+							text={'Confirmer mot de passe'}
+							holder={'••••••••'}
+							register={register}
+							registerName={'confirmPassword'}
+						/>
 						<div className='hidden'>
 							<input
 								type='text'
@@ -165,7 +128,7 @@ export default function AccountPage() {
 											htmlFor='file-upload'
 											className='relative cursor-pointer font-medium text-primary-500 hover:text-primary-800 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500'
 										>
-											<span className=''>Upload a file</span>
+											<span className=''>Télécharger un fichier</span>
 											<input
 												id='file-upload'
 												type='file'
@@ -177,10 +140,10 @@ export default function AccountPage() {
 												})}
 											/>
 										</label>
-										<p className='pl-1 dark:text-white'>or drag and drop</p>
+										<p className='pl-1 dark:text-white'>ou glisser-déposer</p>
 									</div>
 									<p className='text-xs dark:text-white'>
-										PNG, JPG, GIF up to 10MB
+										PNG, JPG, GIF jusqu'à 10MB
 									</p>
 								</div>
 							</div>

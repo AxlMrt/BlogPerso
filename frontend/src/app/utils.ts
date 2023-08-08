@@ -1,5 +1,6 @@
 import { AppDispatch } from "./store/configureStore";
 import { toggleTheme } from "./store/slices/themeSlice";
+import { IUser } from "./types";
 
 export const isDark = () =>
 	//Function that will return boolean if any of the condition is satisfied
@@ -24,4 +25,9 @@ export const toggleMode = (dispatch: AppDispatch, darkMode: boolean) => {
 	dispatch(toggleTheme(!darkMode)); //set dark mode state to opposite of initial value
 };
 
-export const sleep = () => new Promise((resolve) => setTimeout(resolve, 1000));
+export const trimUserObject = (data: IUser) => {
+		const asArray = Object.entries(data);
+		const filtered = asArray.filter(([key, value]) => value !== '');
+
+	return Object.fromEntries(filtered);
+}
