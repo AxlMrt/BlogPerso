@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { IRegister } from '../app/types';
 import { useAddNewUserMutation } from '../app/store/api/usersApi';
+import FormInput from '../components/form_input/FormInput';
 
 export default function RegisterPage() {
 	const [addUser, { isLoading, isError, isSuccess }] = useAddNewUserMutation();
@@ -21,7 +22,9 @@ export default function RegisterPage() {
 		data.email = data.email.toLowerCase();
 		delete data.confirmPassword;
 
+		
 		try {
+			console.log(data)
 			await addUser(data).unwrap();
 		} catch (error) {
 			console.error('Failed to create user ', error);
@@ -46,86 +49,41 @@ export default function RegisterPage() {
 							className='space-y-4 md:space-y-6'
 							onSubmit={handleSubmit(submitForm)}
 						>
-							<div>
-								<label
-									htmlFor='email'
-									className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
-								>
-									Votre email
-								</label>
-								<input
-									type='email'
-									id='email'
-									className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-									placeholder='john.doe@mail.fr'
-									{...register('email')}
-									required
-								/>
-							</div>
-							<div>
-								<label
-									htmlFor='firstname'
-									className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
-								>
-									Prénom
-								</label>
-								<input
-									type='firstname'
-									id='firstname'
-									className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-									placeholder='John'
-									{...register('firstName')}
-									required
-								/>
-							</div>
-							<div>
-								<label
-									htmlFor='lastname'
-									className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
-								>
-									Nom
-								</label>
-								<input
-									type='lastname'
-									id='lastname'
-									className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-									placeholder='Doe'
-									{...register('lastName')}
-									required
-								/>
-							</div>
-							<div>
-								<label
-									htmlFor='password'
-									className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
-								>
-									Mot de passe
-								</label>
-								<input
-									type='password'
-									id='password'
-									placeholder='••••••••'
-									className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-									{...register('password')}
-									required
-								/>
-							</div>
-							<div>
-								<label
-									htmlFor='confirm-password'
-									className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
-								>
-									Confirmer mot de passe
-								</label>
-								<input
-									type='confirm-password'
-									id='confirm-password'
-									placeholder='••••••••'
-									className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-									{...register('confirmPassword')}
-									required
-								/>
-							</div>
+							<FormInput
+								type={'email'}
+								text={'Votre email'}
+								holder={'john.doe@gmail.com'}
+								register={register}
+								registerName={'email'}
+							/>
+							<FormInput
+								type={'text'}
+								text={'Prénom'}
+								holder={'John'}
+								register={register}
+								registerName={'firstName'}
+							/>
+							<FormInput
+								type={'text'}
+								text={'Nom'}
+								holder={'Doe'}
+								register={register}
+								registerName={'lastName'}
+							/>
+							<FormInput
+								type={'password'}
+								text={'Mot de passe'}
+								holder={'••••••••'}
+								register={register}
+								registerName={'password'}
+							/>
+							<FormInput
+								type={'password'}
+								text={'Confirmer mot de passe'}
+								holder={'••••••••'}
+								register={register}
+								registerName={'confirmPassword'}
+							/>
 							<button
 								type='submit'
 								className='w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'

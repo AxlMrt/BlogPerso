@@ -13,7 +13,7 @@ export const userApi = createApi({
     getUser: builder.query<IUser, string>({
       query: (id) => ({ url: `/users/${id}`, method: 'get' })
     }),
-    addNewUser: builder.mutation<IUser, any>({
+    addNewUser: builder.mutation<IUser, IUser>({
       query: (user) => ({
         url: '/users',
         method: 'post',
