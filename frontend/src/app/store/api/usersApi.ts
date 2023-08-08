@@ -22,7 +22,7 @@ export const userApi = createApi({
     }),
     updateUser: builder.mutation<any, any>({
       query: (data) => ({
-        url: `/users/${data.formData.id}`,
+        url: `/users/${data.id}`,
         method: 'put',
         body: data.formData
       }),
