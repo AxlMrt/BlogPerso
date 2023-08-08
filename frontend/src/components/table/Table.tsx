@@ -1,28 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import Spinner from '../spinner/Spinner';
 import TableBody from './TableBody';
 import TableHead from './TableHead';
-import { useForm } from 'react-hook-form';
 import { IBook } from '../../app/types';
+import { useAppSelector } from '../../app/store/configureStore';
 import {useGetBooksQuery, useUpdateBookMutation} from '../../app/store/api/booksApi';
-import Spinner from '../spinner/Spinner';
 
 export default function Table() {
+	const { user } = useAppSelector((state) => state.auth);
 	const [updateBook] = useUpdateBookMutation();
 	const {
 		data: books = [],
 		isLoading
 	} = useGetBooksQuery<any>();
-
-	const currentUser = JSON.parse(localStorage.getItem("user")!);
-	const id = currentUser.id;
-	const userBooks = books.filter((book: IBook) => book.userId === id)
-
+	const userBooks = books.filter((book: IBook) => book.userId === user.id);
 	const { register, handleSubmit } = useForm<IBook>();
+	const navigate = useNavigate();
 
 	const handleUpdate = async (data: IBook) => {
 		try {
-			await updateBook(data).unwrap();
-			window.location.reload();
+			await updateBook(data).then(() => navigate(0));
 		} catch (error) {
 			console.error('Failed to update the book: ', error);
 		}

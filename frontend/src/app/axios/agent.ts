@@ -19,33 +19,13 @@ const requests = {
   delete: (url: string) => axios.delete(url).then(responseBody),
 }
 
-const User = {
-  userList: () => requests.get('users'),
-  getUser: (id: string) => requests.get(`users/${id}`),
-  addUser: (data: any) => requests.post('users', data),
-  updateUser: (data: any) => requests.put(`users/${data.id}`, data),
-  deleteUser: (id: string) => requests.delete(`users/${id}`),
-}
-
 const Auth = {
   auth: (email: string, password: string) => requests.post('login', { email, password }),
   logout: () => requests.post('logout', {})
 }
 
-const Book = {
-  bookList: () => requests.get('books/feed'),
-  getBook: (id: string) => requests.get(`books/${id}`),
-  addBook: (data: any) => requests.post('books', data),
-  updateBook: (data: any) => requests.put(`books/${data.id}`, data),
-  updateFeedBack: (data: any) => requests.put(`books/${data.id}`, data),
-  deleteBook: (id: string) => requests.delete(`books/${id}`),
-}
-
 const agent = {
-  requests,
-  User,
   Auth,
-  Book
 }
 
 export default agent;

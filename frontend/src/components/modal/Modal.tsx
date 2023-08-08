@@ -1,31 +1,32 @@
-import { useForm } from "react-hook-form";
-import { IBookRegister } from "../../app/types";
-import Svg from "../svg/Svg"
-import { useAddNewBookMutation } from "../../app/store/api/booksApi";
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { useAddNewBookMutation } from '../../app/store/api/booksApi';
+import { useAppSelector } from '../../app/store/configureStore';
+import { IBookRegister } from '../../app/types';
+import Svg from '../svg/Svg';
 
 export default function Modal() {
-	const user = localStorage.getItem("user");
+	const { user } = useAppSelector((state) => state.auth);
 	const [addNewBook, { isLoading }] = useAddNewBookMutation();
 	const { register, handleSubmit } = useForm<IBookRegister>();
+	const navigate = useNavigate();
 
 	const closeIcon = {
 		icon: 'M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z',
 		class: 'w-5 h-5',
-		viewBox: '0 0 20 20'
-	}
+		viewBox: '0 0 20 20',
+	};
 
 	const closeModal = () => {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		(window as any).add_book.close();
 	};
-	
+
 	const submitForm = async (data: IBookRegister) => {
-		if (user)
-			data.userMail = JSON.parse(user).email;
+		if (user) data.userMail = user.email;
 
 		try {
-			await addNewBook(data).unwrap();
-			window.location.reload();
+			await addNewBook(data).then(() => navigate(0));
 		} catch (error) {
 			console.error('Failed to save the book: ', error);
 		}

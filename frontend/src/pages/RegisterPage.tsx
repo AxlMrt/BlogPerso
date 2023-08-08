@@ -22,9 +22,7 @@ export default function RegisterPage() {
 		data.email = data.email.toLowerCase();
 		delete data.confirmPassword;
 
-		
 		try {
-			console.log(data)
 			await addUser(data).unwrap();
 		} catch (error) {
 			console.error('Failed to create user: ', error);

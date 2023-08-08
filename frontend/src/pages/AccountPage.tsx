@@ -37,9 +37,9 @@ export default function AccountPage() {
 			formData.append('user', JSON.stringify(data));
 
 			try {
-				await updateUser({ id: user.id, formData }).then(() =>
-					window.location.reload()
-				);
+				await updateUser({ id: user.id, formData })
+					.then((res: any) => dispatch(setUser(res.data)))
+					.finally(() => navigate(0));
 			} catch (error) {
 				console.error('Failed to update the user: ', error);
 			}
