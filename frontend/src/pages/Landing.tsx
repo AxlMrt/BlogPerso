@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import heroImg from '../assets/hero.png'
 
 export default function Landing() {
+	localStorage.removeItem('user');
   return (
 		<section className='bg-gray-100 dark:bg-gray-900'>
 			<div className='h-screen flex flex-col lg:flex-row items-center justify-center px-6'>

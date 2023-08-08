@@ -2,9 +2,11 @@
 import Svg from '../svg/Svg';
 import { useDeleteUserMutation } from '../../app/store/api/usersApi';
 import { useDeleteBookMutation } from '../../app/store/api/booksApi';
-import { IBook, IUser } from '../../app/types';
+import { IBook } from '../../app/types';
+import { useAppSelector } from '../../app/store/configureStore';
 
-export default function DeleteModal({ user }: { user: IUser }) {
+export default function DeleteModal() {
+	const { user } = useAppSelector((state) => state.auth);
   const [deleteUser] = useDeleteUserMutation();
   const [deleteBook] = useDeleteBookMutation();
 
@@ -18,10 +20,10 @@ export default function DeleteModal({ user }: { user: IUser }) {
 		(window as any).deleteModal.close();
   };
   
-  const handleDelete = async () => {
-    try {
-      user.books.forEach((book: IBook) => deleteBook(book.id));
-      await deleteUser(user.id).then(() => localStorage.clear());
+	const handleDelete = async () => {
+		try {
+			await user.books.map((book: IBook) => deleteBook(book.id));
+			await deleteUser(user.id).then(() => localStorage.clear());
     } catch (error) {
       console.log("Couldn't delete this user:", error)
     }
