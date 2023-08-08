@@ -22,7 +22,7 @@ export default function Navigation() {
 							Ajouter
 						</Link>
 						<Link
-							to='#'
+							to='/'
 							className='hover:bg-gray-200 hover:text-black rounded-md px-3 py-2 text-sm font-medium dark:hover:text-white dark:hover:bg-gray-700'
 						>
 							Accueil

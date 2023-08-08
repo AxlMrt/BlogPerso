@@ -9,7 +9,7 @@ const token = localStorage.getItem('token')
 : null;
 
 const user = localStorage.getItem('user')
-? localStorage.getItem('user')
+? JSON.parse(localStorage.getItem('user')!)
 : null;
 
 const usersAdapter = createEntityAdapter<IUser>();
@@ -38,7 +38,11 @@ reducers: {
       state.user = null;
       state.token = null;
       state.error = null;
-    },
+  },
+  setUser: (state, action) => {
+    state.user = action.payload;
+    localStorage.setItem('user', JSON.stringify(action.payload));
+  }
   },
   extraReducers: (builder) => {
     // login user
@@ -48,7 +52,7 @@ reducers: {
     });
     builder.addCase(userLogin.fulfilled, (state, { payload }) => {
       state.loading = false;
-      state.user = payload.user;
+      state.user = payload.others;
       state.token = payload.token;
     });
     builder.addCase(userLogin.rejected, (state, { payload }) => {
@@ -73,6 +77,6 @@ reducers: {
 });
 
 export const usersSelectors = usersAdapter.getSelectors((state: RootState) => state.auth);
-export const { logout } = authSlice.actions;
+export const { logout, setUser } = authSlice.actions;
 
 export default authSlice;

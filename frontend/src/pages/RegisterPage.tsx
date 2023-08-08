@@ -27,7 +27,7 @@ export default function RegisterPage() {
 			console.log(data)
 			await addUser(data).unwrap();
 		} catch (error) {
-			console.error('Failed to create user ', error);
+			console.error('Failed to create user: ', error);
 		}
 	};
 

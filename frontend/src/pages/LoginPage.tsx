@@ -4,14 +4,16 @@ import { userLogin } from "../app/store/actions/authActions";
 import { useForm } from "react-hook-form";
 import { IUserLogin } from "../app/types";
 import FormInput from "../components/form_input/FormInput";
+import { useNavigate } from "react-router-dom";
 export default function LoginPage() {
 	const { loading } = useAppSelector((state) => state.auth);
+	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 	
 	const { register, handleSubmit } = useForm<IUserLogin>();
 
 	const submitForm = (data: IUserLogin) => {
-		dispatch(userLogin(data)).then(() => window.location.replace('/'));
+		dispatch(userLogin(data)).then(() => navigate('/'));
 	};
 
 	return (

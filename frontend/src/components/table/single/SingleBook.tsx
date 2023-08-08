@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { UseFormRegister } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { IBook } from '../../../app/types';
+import BookYear from './BookYear';
 import ReadState from './ReadState';
 import BookTitle from './BookTitle';
 import BookAuthor from './BookAuthor';
-import BookYear from './BookYear';
 import BookButtons from './BookButtons';
-import { UseFormRegister } from 'react-hook-form';
+import { IBook } from '../../../app/types';
 import { useDeleteBookMutation } from '../../../app/store/api/booksApi';
 
 export default function SingleBook({
@@ -18,10 +19,11 @@ export default function SingleBook({
 }) {
 	const [deleteBook] = useDeleteBookMutation();
 	const [updating, setUpdating] = useState<boolean>(false);
+	const navigate = useNavigate();
 
 	const handleDelete = async () => {
 		try {
-			await deleteBook(book.id).unwrap();
+			await deleteBook(book.id).then(() => navigate(0));
 			window.location.reload();
 		} catch (error) {
 			console.error('Failed to delete the book: ', error);

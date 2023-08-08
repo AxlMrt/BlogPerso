@@ -1,14 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import agent from '../../axios/agent';
+import { setUser } from '../slices/authSlice';
 
 export const userLogin = createAsyncThunk(
   'auth/login',
-  async ({ email, password }: { email: string, password: string }, { rejectWithValue }) => {
+  async ({ email, password }: { email: string, password: string }, { rejectWithValue, dispatch }) => {
     try {
       const data = await agent.Auth.auth(email, password);
       localStorage.setItem('token', data.tokenData.token);
       localStorage.setItem('user', JSON.stringify(data.others));
+
+      dispatch(setUser(data.others));
 
       return data;
     } catch (error: any) {

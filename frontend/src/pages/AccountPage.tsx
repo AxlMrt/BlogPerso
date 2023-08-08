@@ -1,29 +1,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import Svg from '../components/svg/Svg';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { IRegister } from '../app/types';
-import {
-	useGetUserQuery,
-	useUpdateUserMutation,
-} from '../app/store/api/usersApi';
 import { useState } from 'react';
-import FormInput from '../components/form_input/FormInput';
+import { IRegister } from '../app/types';
 import { trimUserObject } from '../app/utils';
+import { setUser } from '../app/store/slices/authSlice';
+import { useUpdateUserMutation } from '../app/store/api/usersApi';
+import { useAppDispatch, useAppSelector } from '../app/store/configureStore';
+import FormInput from '../components/form_input/FormInput';
 import DeleteModal from '../components/modal/DeleteModal';
+import Svg from '../components/svg/Svg';
+
+const imageIcon = {
+	icon: 'M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02',
+	class: 'mx-auto h-12 w-12 dark:text-white',
+	viewBox: '0 0 48 48',
+};
 
 export default function AccountPage() {
-	const imageIcon = {
-		icon: 'M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02',
-		class: 'mx-auto h-12 w-12 dark:text-white',
-		viewBox: '0 0 48 48',
-	};
-
-	const user = JSON.parse(localStorage.getItem('user')!);
-	const currentUser = useGetUserQuery(user.id).data || user;
-
+	const dispatch = useAppDispatch();
+	const { user } = useAppSelector((state) => state.auth);
 	const [updateUser, { isLoading }] = useUpdateUserMutation();
-	const [file, setFile] = useState(null);
 	const { register, handleSubmit } = useForm<IRegister>();
+	const [file, setFile] = useState(null);
+	const navigate = useNavigate();
 
 	const submitForm = async (data: any) => {
 		data = trimUserObject(data);
@@ -37,27 +37,23 @@ export default function AccountPage() {
 			formData.append('user', JSON.stringify(data));
 
 			try {
-				await updateUser({ id: currentUser.id, formData }).then(() =>
+				await updateUser({ id: user.id, formData }).then(() =>
 					window.location.reload()
 				);
 			} catch (error) {
 				console.error('Failed to update the user: ', error);
 			}
 		} else {
-			data.photo = currentUser.photo;
+			data.photo = user.photo;
 			try {
-				await updateUser({ id: currentUser.id, formData: data }).then(() =>
-					window.location.reload()
-				);
+				await updateUser({ id: user.id, formData: data })
+					.then((res: any) => dispatch(setUser(res.data)))
+					.finally(() => navigate(0));
 			} catch (error) {
 				console.error('Failed to update the user: ', error);
 			}
 		}
 	};
-
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { password, role, createdAt, updatedAt, ...others } = currentUser;
-	localStorage.setItem('user', JSON.stringify(others));
 
 	return (
 		<section className='px-6 py-4 bg-gray-50 dark:bg-gray-900'>
@@ -70,21 +66,21 @@ export default function AccountPage() {
 						<FormInput
 							type={'text'}
 							text={'Prénom'}
-							holder={currentUser.firstName}
+							holder={user.firstName}
 							register={register}
 							registerName={'firstName'}
 						/>
 						<FormInput
 							type={'text'}
 							text={'Nom'}
-							holder={currentUser.lastName}
+							holder={user.lastName}
 							register={register}
 							registerName={'lastName'}
 						/>
 						<FormInput
 							type={'email'}
 							text={'E-mail'}
-							holder={currentUser.email}
+							holder={user.email}
 							register={register}
 							registerName={'email'}
 						/>
@@ -138,8 +134,7 @@ export default function AccountPage() {
 												className='sr-only'
 												{...register('photo', {
 													onChange: (e) => setFile(e.target.files[0]),
-													setValueAs: (x: string) =>
-														x ? x : currentUser.photo,
+													setValueAs: (x: string) => (x ? x : user.photo),
 												})}
 											/>
 										</label>
