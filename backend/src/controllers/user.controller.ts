@@ -22,7 +22,7 @@ const getUser: RequestHandler<{ id: string }> = async (req: Request, res: Respon
       where: { id },
       include: { books: true }
     });
-  
+    
     res.json(user);
   } catch (error) {
     next(new HttpException(500, "Something went wrong"));
@@ -43,8 +43,10 @@ const createUser: RequestHandler = async (req: Request, res: Response, next: Nex
     });
 
     const tokenData = createToken(newUser);
+    const { password, role, createdAt, updatedAt, ...others } = newUser;
+
     res.setHeader('Set-Cookie', [createCookie(tokenData)]);
-    res.status(201).json({ newUser, tokenData });
+    res.status(201).json({ others, tokenData });
   } catch (error) {
     next(new HttpException(500, "Something went wrong"));
   }
@@ -52,23 +54,24 @@ const createUser: RequestHandler = async (req: Request, res: Response, next: Nex
 
 const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  let password: string = req.body.password;
 
   if (req.body.user)
     req.body = JSON.parse(req.body.user);
-  console.log(req.body)
-  if (password) {
+
+  if (req.body.password) {
     const salt = await bcrypt.genSalt(10);
-    password = await bcrypt.hash(password, salt);
+    req.body.password = await bcrypt.hash(req.body.password, salt);
   }
 
   try {
     const updatedUser = await prisma.user.update({
       where: { id },
-      data: { ...req.body, password, photo: req.file?.filename }
+      data: { ...req.body, password: req.body.password, photo: req.file?.filename }
     });
 
-    res.json(updatedUser);
+    const { password, role, createdAt, updatedAt, ...others } = updatedUser;
+  
+    res.json(others);
   } catch (error) {
     next(new HttpException(500, "Something went wrong"));
   }

@@ -2,17 +2,15 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import { userLogin, userLogout } from '../actions/authActions';
 import { IUser } from '../../types';
-import { fetchUserAsync } from '../actions/authActions';
 import { RootState } from '../configureStore';
 
-// initialize userToken from local storage
 const token = localStorage.getItem('token')
-  ? localStorage.getItem('token')
-  : null;
+? localStorage.getItem('token')
+: null;
 
 const user = localStorage.getItem('user')
-  ? localStorage.getItem('user')
-  : null;
+? localStorage.getItem('user')
+: null;
 
 const usersAdapter = createEntityAdapter<IUser>();
 interface UserState {
@@ -32,7 +30,7 @@ const authSlice = createSlice({
   error: null,
   success: false,
 }),
-  reducers: {
+reducers: {
     logout: (state) => {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
@@ -40,9 +38,6 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       state.error = null;
-    },
-    setUser: (state, { payload }) => {
-      state.user = payload;
     },
   },
   extraReducers: (builder) => {
@@ -74,25 +69,10 @@ const authSlice = createSlice({
       state.loading = false;
       (state.error as any) = payload;
     });
-    //current user
-    builder.addCase(fetchUserAsync.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    });
-    builder.addCase(fetchUserAsync.fulfilled, (state, action) => {
-      usersAdapter.upsertOne(state, action.payload);
-      state.loading = false;
-      state.success = true;
-    });
-    builder.addCase(fetchUserAsync.rejected, (state, { payload }) => {
-      state.loading = false;
-      (state.error as any) = payload;
-    });
-
   },
 });
 
 export const usersSelectors = usersAdapter.getSelectors((state: RootState) => state.auth);
-export const { logout, setUser } = authSlice.actions;
+export const { logout } = authSlice.actions;
 
 export default authSlice;

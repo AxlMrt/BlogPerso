@@ -22,8 +22,9 @@ const login: RequestHandler<{ email: string, password: string }> = async (req: R
     const isPasswordMatching = bcrypt.compareSync(password, user.password);
     if (isPasswordMatching) {
       const tokenData = createToken(user);
+      const { password, role, createdAt, updatedAt, ...others } = user;
       res.setHeader('Set-Cookie', [createCookie(tokenData)]);
-      res.json({ user, tokenData });
+      res.json({ others, tokenData });
     } else {
       next(new WrongCredentials());
     }

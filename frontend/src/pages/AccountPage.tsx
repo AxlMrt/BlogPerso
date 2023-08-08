@@ -1,44 +1,61 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Svg from '../components/svg/Svg';
 import { useForm } from 'react-hook-form';
 import { IRegister } from '../app/types';
-import { useUpdateUserMutation } from '../app/store/api/usersApi';
+import {
+	useGetUserQuery,
+	useUpdateUserMutation,
+} from '../app/store/api/usersApi';
 import { useState } from 'react';
 
 export default function AccountPage() {
-  const imageIcon = {
+	const imageIcon = {
 		icon: 'M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02',
 		class: 'mx-auto h-12 w-12 dark:text-white',
 		viewBox: '0 0 48 48',
 	};
-	const user = JSON.parse(localStorage.getItem("user")!);
+
+	const user = JSON.parse(localStorage.getItem('user')!);
+	const currentUser = useGetUserQuery(user.id).data || user;
+	
 	const [updateUser, { isLoading }] = useUpdateUserMutation();
-	const [file, setFile] = useState(null)
+	const [file, setFile] = useState(null);
 	const { register, handleSubmit } = useForm<IRegister>();
-
-	const submitForm = async (data: IRegister) => {
+	
+	const submitForm = async (data: any) => {
 		if (data.password !== data.confirmPassword) alert('Password mismatch');
-		delete data.confirmPassword;
+		if (!data.password) delete data.password;
 
+		delete data.confirmPassword;
+		
 		if (file) {
 			const formData = new FormData();
 			formData.append('photo', data.photo[0]);
-			data = { ...data, photo: data.photo[0].name };
+			data = { ...data, photo: Date.now() + data.photo[0].name };
+			formData.append('user', JSON.stringify(data));
 
 			try {
-				await updateUser({ id: data.id, formData });
+				await updateUser({ id: currentUser.id, formData }).then(() =>
+					window.location.reload()
+				);
 			} catch (error) {
-				console.error('Failed to upload the profile picture: ', error);
+				console.error('Failed to update the user: ', error);
 			}
-		}
-		
-		try {
-			await updateUser(data);
-		} catch (error) {
-			console.error('Failed to update the user: ', error);
+		} else {
+			data.photo = currentUser.photo;
+			try {
+				await updateUser({ id: currentUser.id, formData: data }).then(() => window.location.reload());
+			} catch (error) {
+				console.error('Failed to update the user: ', error);
+			}
 		}
 	};
 
-  return (
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const { password, role, createdAt, updatedAt, ...others } = currentUser;
+	localStorage.setItem('user', JSON.stringify(others));
+
+	return (
 		<section className='px-6 py-4 bg-gray-50 dark:bg-gray-900'>
 			<div className='max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800 mt-20'>
 				<h1 className='text-xl font-bold capitalize dark:text-white'>
@@ -54,9 +71,9 @@ export default function AccountPage() {
 								id='firstName'
 								type='text'
 								className='block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
-								placeholder={user.firstName}
+								placeholder={currentUser.firstName}
 								{...register('firstName', {
-									setValueAs: (x: string) => (x ? x : user.firstName),
+									setValueAs: (x: string) => (x ? x : currentUser.firstName),
 								})}
 							/>
 						</div>
@@ -70,7 +87,7 @@ export default function AccountPage() {
 								className='block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
 								placeholder={user.lastName}
 								{...register('lastName', {
-									setValueAs: (x: string) => (x ? x : user.lastName),
+									setValueAs: (x: string) => (x ? x : currentUser.lastName),
 								})}
 							/>
 						</div>
@@ -84,7 +101,7 @@ export default function AccountPage() {
 								className='block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
 								placeholder={user.email}
 								{...register('email', {
-									setValueAs: (x: string) => (x ? x : user.email),
+									setValueAs: (x: string) => (x ? x : currentUser.email),
 								})}
 							/>
 						</div>
@@ -98,7 +115,7 @@ export default function AccountPage() {
 								className='block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
 								placeholder='••••••••'
 								{...register('password', {
-									setValueAs: (x: string) => (x ? x : user.password),
+									setValueAs: (x: string) => (x ? x : null),
 								})}
 							/>
 						</div>
@@ -115,7 +132,7 @@ export default function AccountPage() {
 								className='block w-full px-4 py-2 mt-2 text-gray-700 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring'
 								placeholder='••••••••'
 								{...register('confirmPassword', {
-									setValueAs: (x: string) => (x ? x : user.password),
+									setValueAs: (x: string) => (x ? x : null),
 								})}
 							/>
 						</div>
@@ -155,7 +172,8 @@ export default function AccountPage() {
 												className='sr-only'
 												{...register('photo', {
 													onChange: (e) => setFile(e.target.files[0]),
-													setValueAs: (x: string) => (x ? x : user.photo),
+													setValueAs: (x: string) =>
+														x ? x : currentUser.photo,
 												})}
 											/>
 										</label>

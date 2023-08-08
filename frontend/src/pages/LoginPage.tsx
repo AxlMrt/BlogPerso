@@ -1,24 +1,16 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/store/configureStore";
 import { userLogin } from "../app/store/actions/authActions";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
 import { IUserLogin } from "../app/types";
 export default function LoginPage() {
-	const { loading, user } = useAppSelector((state) => state.auth);
-	const navigate = useNavigate();
+	const { loading } = useAppSelector((state) => state.auth);
 	const dispatch = useAppDispatch();
 	
 	const { register, handleSubmit } = useForm<IUserLogin>();
 
-	useEffect(() => {
-		if (user) {
-			navigate('/');
-		}
-	}, [navigate, user]);
-
 	const submitForm = (data: IUserLogin) => {
-		dispatch(userLogin(data));
+		dispatch(userLogin(data)).then(() => window.location.replace('/'));
 	};
 
 	return (

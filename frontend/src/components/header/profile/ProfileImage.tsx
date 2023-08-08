@@ -9,9 +9,9 @@ export default function ProfileImage({
 	profileBar: boolean;
 	setProfilebar: Dispatch<SetStateAction<boolean>>;
 }) {
-	const currentUser = JSON.parse(localStorage.getItem('user')!);
+	const user = JSON.parse(localStorage.getItem('user')!);
 
-	if (currentUser) {
+	if (user) {
 		const PF = `${process.env.BASE_IMG}/uploads/`;
 
 		return (
@@ -26,11 +26,14 @@ export default function ProfileImage({
 				>
 					<span className='absolute -inset-1.5'></span>
 					<span className='sr-only'>Open user menu</span>
-					<img
-						className='h-8 w-8 rounded-full'
-						src={PF + currentUser.photo}
-						alt=''
-					/>
+					<div className='h-8 w-8 rounded-full overflow-hidden'>
+
+						<img
+							className='min-h-full min-w-full w-auto h-auto '
+							src={PF + user.photo}
+							alt=''
+						/>
+					</div>
 				</button>
 			</div>
 		);
