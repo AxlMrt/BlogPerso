@@ -22,8 +22,8 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
-RUN mkdir public
-RUN mkdir public/uploads
+RUN mkdir /dist/src/public
+RUN mkdir /dist/src/public/uploads
 # expose the api port
 EXPOSE 8000
 

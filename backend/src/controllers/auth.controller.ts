@@ -14,6 +14,7 @@ const login: RequestHandler<{ email: string, password: string }> = async (req: R
       where: {
         email
       },
+      include: { books: true }
     });
 
     if (!user)

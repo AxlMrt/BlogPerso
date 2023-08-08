@@ -66,6 +66,7 @@ const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
   try {
     const updatedUser = await prisma.user.update({
       where: { id },
+      include: { books: true },
       data: { ...req.body, password: req.body.password, photo: req.file?.filename }
     });
 
