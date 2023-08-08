@@ -36,11 +36,9 @@ export default function ReadState({
 					<select
 						className='bg-gray-100 dark:bg-gray-700 rounded-md px-2 py-1'
 						form='table_form'
+						defaultValue={isRead}
 						{...register('isRead')}
 					>
-						<option defaultValue={isRead} value={isRead} hidden>
-							{readingState[isRead as keyof IsBookRead].text}
-						</option>
 						<option value='NOT_READ'>Non lu</option>
 						<option value='IN_PROGRESS'>En cours</option>
 						<option value='IS_READ'>Lu</option>
