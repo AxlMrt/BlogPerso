@@ -11,18 +11,27 @@ import {
 import { useCallback, useState } from 'react';
 import { sortData } from './HandleSortTable';
 import TableHead from './table_head/TableHead';
-import { BaseQueryArg, BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
+import {
+	BaseQueryArg,
+	BaseQueryFn,
+} from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 
-export default function Table() {
+export default function Table({ searchField }) {
 	const { user } = useAppSelector((state) => state.auth);
 	const [updateBook] = useUpdateBookMutation();
-	const { data: books = [], isLoading } = useGetBooksQuery<BaseQueryArg<BaseQueryFn>>();
-	const userBooks: IBook = books.filter((book: IBook) => book.userId === user.id);
+	const { data: books = [], isLoading } =
+		useGetBooksQuery<BaseQueryArg<BaseQueryFn>>();
+	const userBooks: IBook = books.filter((book: IBook) => {
+		return searchField
+			? book.userId === user.id &&
+					book.title.toLowerCase().includes(searchField.toLowerCase())
+			: book.userId === user.id;
+	});
 	const { register, handleSubmit } = useForm<IBook>();
 	const [sortKey, setSortKey] = useState<SortKeys>('title');
 	const [sortOrder, setSortOrder] = useState<SortOrder>('ascn');
 	const navigate = useNavigate();
-	
+
 	const handleUpdate = async (data: IBook) => {
 		try {
 			await updateBook(data).then(() => navigate(0));
@@ -57,7 +66,11 @@ export default function Table() {
 				<Spinner />
 			) : (
 				<table className='w-full text-sm  text-left text-gray-500 dark:text-gray-400'>
-					<TableHead changeSort={changeSort} sortOrder={sortOrder} sortKey={sortKey} />
+					<TableHead
+						changeSort={changeSort}
+						sortOrder={sortOrder}
+						sortKey={sortKey}
+					/>
 					{userBooks && <TableBody books={sortedData()} register={register} />}
 				</table>
 			)}
