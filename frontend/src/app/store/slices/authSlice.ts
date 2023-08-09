@@ -18,7 +18,6 @@ interface UserState {
   user: any,
   token: string | null,
   error: null,
-  success: boolean,
 }
 
 const authSlice = createSlice({
@@ -28,7 +27,6 @@ const authSlice = createSlice({
   user,
   token,
   error: null,
-  success: false,
 }),
 reducers: {
     logout: (state) => {
@@ -38,11 +36,11 @@ reducers: {
       state.user = null;
       state.token = null;
       state.error = null;
-  },
-  setUser: (state, action) => {
-    state.user = action.payload;
-    localStorage.setItem('user', JSON.stringify(action.payload));
-  }
+    },
+    setUser: (state, action) => {
+      state.user = action.payload;
+      localStorage.setItem('user', JSON.stringify(action.payload));
+    }
   },
   extraReducers: (builder) => {
     // login user

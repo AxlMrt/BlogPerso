@@ -9,6 +9,7 @@ import BookAuthor from './BookAuthor';
 import BookButtons from './BookButtons';
 import { IBook } from '../../../app/types';
 import { useDeleteBookMutation } from '../../../app/store/api/booksApi';
+import BookType from './BookType';
 
 export default function SingleBook({
 	book,
@@ -40,6 +41,7 @@ export default function SingleBook({
 				register={register}
 			/>
 			<ReadState isRead={book.isRead} updating={updating} register={register} />
+			<BookType type={book.type} updating={updating} register={register} />
 			<BookButtons
 				updating={updating}
 				setUpdating={setUpdating}

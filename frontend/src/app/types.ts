@@ -64,3 +64,7 @@ export enum Read {
   IN_PROGRESS,
   NOT_READ
 }
+
+export type BookData = IBook;
+export type SortKeys = keyof BookData;
+export type SortOrder = 'ascn' | 'desc';
