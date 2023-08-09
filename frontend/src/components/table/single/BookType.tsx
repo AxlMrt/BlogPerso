@@ -23,7 +23,7 @@ export default function BookType({
 					})}
 				/>
 			) : (
-				type
+				type ? type : '----'
 			)}
 		</td>
 	);

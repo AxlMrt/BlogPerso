@@ -24,7 +24,7 @@ export default function BookYear({
 						})}
 					/>
 				) : (
-					year
+					year ? year : '----'
 				)}
 			</div>
 		</td>
