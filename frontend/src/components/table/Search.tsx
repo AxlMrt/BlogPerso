@@ -1,12 +1,5 @@
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
-import DropDownButton from '../drop_down/DropDownButton';
-import Svg from '../svg/Svg';
-
-const magnyfying = {
-	icon: 'm19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z',
-	class: 'w-4 h-4 text-gray-500 dark:text-gray-400',
-	viewBox: '0 0 20 20',
-};
+import { PiMagnifyingGlassBold } from 'react-icons/pi';
 
 export default function Search({ setSearchField }: { setSearchField: Dispatch<SetStateAction<string>>; }) {
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -14,19 +7,12 @@ export default function Search({ setSearchField }: { setSearchField: Dispatch<Se
 	};
 	return (
 		<div className='flex flex-col items-left justify-between pb-4 bg-gray-100 dark:bg-gray-900 md:flex-row md:items-center'>
-			<div>
-				<DropDownButton />
-			</div>
 			<label htmlFor='table-search' className='sr-only'>
 				Search
 			</label>
 			<div className='relative'>
 				<div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
-					<Svg
-						icon={magnyfying.icon}
-						iconClass={magnyfying.class}
-						viewBox={magnyfying.viewBox}
-					/>
+					<PiMagnifyingGlassBold />
 				</div>
 				<input
 					type='text'
