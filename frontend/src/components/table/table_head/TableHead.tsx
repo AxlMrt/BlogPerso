@@ -21,7 +21,6 @@ export default function TableHead({
 		<thead className='text-xs text-gray-700 uppercase bg-gray-200  dark:bg-gray-700 dark:text-gray-400'>
 			<tr>
 				{headers.map((row, index) => {
-					console.log(row);
 					return (
 						<TableTitle
 							row={row}

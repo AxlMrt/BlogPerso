@@ -1,5 +1,5 @@
-import { UseFormRegister } from "react-hook-form";
-import { IBook } from "../../../app/types";
+import { UseFormRegister } from 'react-hook-form';
+import { IBook } from '../../../app/types';
 
 export default function BookType({
 	type,
@@ -18,7 +18,7 @@ export default function BookType({
 					className='bg-gray-100 dark:bg-gray-700 rounded-md px-2 py-1'
 					placeholder={type}
 					form='table_form'
-					{...register('author', {
+					{...register('type', {
 						setValueAs: (x: string) => (x ? x : type),
 					})}
 				/>

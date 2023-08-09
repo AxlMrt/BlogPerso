@@ -21,6 +21,7 @@ export interface IRegister extends IUser {
 }
 
 export interface IBook {
+	[x: string]: any;
   id: string;
   title: string;
   author: string;

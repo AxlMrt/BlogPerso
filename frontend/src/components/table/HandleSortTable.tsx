@@ -1,5 +1,5 @@
 import { MouseEventHandler } from "react";
-import { BookData, SortKeys, SortOrder } from "../../app/types";
+import { BookData, IBook, SortKeys, SortOrder } from "../../app/types";
 
 export function sortData({
 	tableData,
@@ -12,12 +12,12 @@ export function sortData({
 }) {
 	if (!sortKey) return tableData;
 
-	const sortedData = tableData.sort(
+	const sortedData: IBook = tableData.sort(
 		(
 			a: { [x: string]: number | string },
 			b: { [x: string]: number | string }
 		) => {
-			console.log(a[sortKey]);
+
 			return a[sortKey] > b[sortKey] ? 1 : -1;
 		}
 	);

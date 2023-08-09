@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import Spinner from '../spinner/Spinner';
@@ -12,17 +11,18 @@ import {
 import { useCallback, useState } from 'react';
 import { sortData } from './HandleSortTable';
 import TableHead from './table_head/TableHead';
+import { BaseQueryArg, BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 
 export default function Table() {
 	const { user } = useAppSelector((state) => state.auth);
 	const [updateBook] = useUpdateBookMutation();
-	const { data: books = [], isLoading } = useGetBooksQuery<any>();
-	const userBooks = books.filter((book: IBook) => book.userId === user.id);
+	const { data: books = [], isLoading } = useGetBooksQuery<BaseQueryArg<BaseQueryFn>>();
+	const userBooks: IBook = books.filter((book: IBook) => book.userId === user.id);
 	const { register, handleSubmit } = useForm<IBook>();
 	const [sortKey, setSortKey] = useState<SortKeys>('title');
 	const [sortOrder, setSortOrder] = useState<SortOrder>('ascn');
 	const navigate = useNavigate();
-
+	
 	const handleUpdate = async (data: IBook) => {
 		try {
 			await updateBook(data).then(() => navigate(0));
