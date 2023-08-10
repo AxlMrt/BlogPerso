@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction } from 'react';
 import ProfileImage from './ProfileImage';
 
 export default function Profile({
@@ -9,9 +9,7 @@ export default function Profile({
 	setProfilebar: Dispatch<SetStateAction<boolean>>;
 }) {
 	return (
-		<div className='relative ml-3'
-			onClick={(e) => e.stopPropagation()}
-		>
+		<div className='relative ml-3'>
 			<ProfileImage profileBar={profileBar} setProfilebar={setProfilebar} />
 		</div>
 	);

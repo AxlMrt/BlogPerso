@@ -21,7 +21,6 @@ export interface IRegister extends IUser {
 }
 
 export interface IBook {
-	[x: string]: any;
   id: string;
   title: string;
   author: string;
@@ -69,3 +68,7 @@ export enum Read {
 export type BookData = IBook;
 export type SortKeys = keyof BookData;
 export type SortOrder = 'ascn' | 'desc';
+
+export	interface HTMLInputEvent extends Event {
+	target: HTMLInputElement & EventTarget;
+}

@@ -1,7 +1,11 @@
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { PiMagnifyingGlassBold } from 'react-icons/pi';
 
-export default function Search({ setSearchField }: { setSearchField: Dispatch<SetStateAction<string>>; }) {
+interface Props {
+	setSearchField: Dispatch<SetStateAction<string>>;
+}
+
+export default function Search({ setSearchField }: Props) {
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setSearchField(e.target.value);
 	};
@@ -12,7 +16,7 @@ export default function Search({ setSearchField }: { setSearchField: Dispatch<Se
 			</label>
 			<div className='relative'>
 				<div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
-					<PiMagnifyingGlassBold />
+					<PiMagnifyingGlassBold className={'dark:text-white'} />
 				</div>
 				<input
 					type='text'
