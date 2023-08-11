@@ -6,18 +6,17 @@ export function sortData({
 	sortKey,
 	reverse,
 }: {
-	tableData: BookData;
+	tableData: BookData[];
 	sortKey: SortKeys;
 	reverse: boolean;
-}) {
+}): IBook[] {
 	if (!sortKey) return tableData;
 
-	const sortedData: IBook = tableData.sort(
+	const sortedData  = tableData.sort(
 		(
-			a: { [x: string]: number | string },
-			b: { [x: string]: number | string }
+			a: IBook,
+			b: IBook
 		) => {
-
 			return a[sortKey] > b[sortKey] ? 1 : -1;
 		}
 	);

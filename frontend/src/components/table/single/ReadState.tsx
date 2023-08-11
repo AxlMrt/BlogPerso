@@ -1,15 +1,17 @@
 import { UseFormRegister } from 'react-hook-form';
 import { IBook, IsBookRead } from '../../../app/types';
 
-export default function ReadState({
-	isRead,
-	updating,
-	register,
-}: {
+interface Props {
 	isRead: string;
 	updating: boolean;
 	register: UseFormRegister<IBook>;
-}) {
+}
+
+export default function ReadState({
+	book,
+	updating,
+	onChangeInput,
+}: Props) {
 	const readingState: IsBookRead = {
 		NOT_READ: {
 			color: 'bg-red-600',
@@ -29,22 +31,23 @@ export default function ReadState({
 			<div className='flex items-center'>
 				<div
 					className={`h-2.5 w-2.5 rounded-full ${
-						readingState[isRead as keyof IsBookRead].color
+						readingState[book.isRead as keyof IsBookRead].color
 					} mr-2`}
 				></div>{' '}
 				{updating ? (
 					<select
 						className='bg-gray-100 dark:bg-gray-700 rounded-md px-2 py-1'
 						form='table_form'
-						defaultValue={isRead}
-						{...register('isRead')}
+						name='isRead'
+						defaultValue={book.isRead}
+						onChange={(e) => onChangeInput(e, book.id)}
 					>
 						<option value='NOT_READ'>Non lu</option>
 						<option value='IN_PROGRESS'>En cours</option>
 						<option value='IS_READ'>Lu</option>
 					</select>
 				) : (
-					readingState[isRead as keyof IsBookRead].text
+					readingState[book.isRead as keyof IsBookRead].text
 				)}
 			</div>
 		</td>

@@ -2,52 +2,44 @@ import { useForm } from 'react-hook-form';
 import Spinner from '../spinner/Spinner';
 import TableBody from './TableBody';
 import { IBook, SortKeys, SortOrder } from '../../app/types';
-import { useAppSelector } from '../../app/store/configureStore';
-import {
-	useGetBooksQuery,
-} from '../../app/store/api/booksApi';
 import {
 	ChangeEvent,
 	Dispatch,
 	SetStateAction,
 	useCallback,
+	useEffect,
 	useState,
 } from 'react';
 import { sortData } from './HandleSortTable';
 import TableHead from './table_head/TableHead';
-import {
-	BaseQueryArg,
-	BaseQueryFn,
-} from '@reduxjs/toolkit/dist/query/baseQueryTypes';
-
+import { useUpdateBookMutation } from '../../app/store/api/booksApi';
+import { useNavigate } from 'react-router-dom';
 interface Props {
 	searchField: string;
 	handleCheckBox: (e: ChangeEvent<HTMLInputElement>, value: IBook) => void;
-	handleUpdate: (data: IBook) => void;
 	updateFields: boolean;
 	setUpdateFields: Dispatch<SetStateAction<boolean>>;
+	books: IBook[];
+	isLoading: boolean;
 }
 
 export default function Table({
 	searchField,
 	handleCheckBox,
-	handleUpdate,
 	updateFields,
 	setUpdateFields,
+	books,
+	isLoading,
 }: Props) {
-	const { user } = useAppSelector((state) => state.auth);
-	const { register, handleSubmit } = useForm<IBook>();
-
-	const { data: books = [], isLoading } =
-		useGetBooksQuery<BaseQueryArg<BaseQueryFn>>();
-	const userBooks: IBook = books.filter((book: IBook) => {
-		return searchField
-			? book.userId === user.id &&
-					book.title.toLowerCase().includes(searchField.toLowerCase())
-			: book.userId === user.id;
-	});
+	const userBooks: IBook[] = books.filter((book: IBook) =>
+	book.title.toLowerCase().includes(searchField.toLowerCase())
+	);
 	const [sortKey, setSortKey] = useState<SortKeys>('title');
 	const [sortOrder, setSortOrder] = useState<SortOrder>('ascn');
+	const [updateBook] = useUpdateBookMutation();
+	const navigate = useNavigate();
+	const { register, handleSubmit } = useForm<IBook>();
+	const [edit, setEdit] = useState<IBook[] | null>(null)
 
 	const sortedData = useCallback(
 		() =>
@@ -59,38 +51,67 @@ export default function Table({
 		[userBooks, sortKey, sortOrder]
 	);
 
-	function changeSort(key: SortKeys) {
+	function changeSort(key: SortKeys): void {
 		setSortOrder(sortOrder === 'ascn' ? 'desc' : 'ascn');
 		setSortKey(key);
 	}
 
+	const handleUpdate = async (e) => {
+		e.preventDefault();
+		edit.forEach((book) => {
+			try {
+				updateBook(book)//.then(() => navigate(0));
+			} catch (error) {
+				console.error('Failed to update the book: ', error);
+			}
+		})
+	};
+
+	const onChangeInput = (e, bookId) => {
+			const { name, value } = e.target;
+			console.log('name', name);
+			console.log('value', value);
+			console.log('bookId', bookId);
+
+			const editData = edit.map((item) =>
+				item.id === bookId && name ? { ...item, [name]: value } : item
+			);
+
+			console.log('editData', editData);
+
+			setEdit(editData);
+	};
+
+	useEffect(() => {
+		setEdit(books)
+	}, [books])
+
 	return (
 		<div className='overflow-x-auto shadow-md sm:rounded-lg'>
-			<form
-				action=''
-				id='table_form'
-				onSubmit={handleSubmit(handleUpdate)}
-			></form>
 			{isLoading ? (
 				<Spinner />
 			) : (
-				<table className='w-full text-sm  text-left text-gray-500 dark:text-gray-400'>
-					<TableHead
-						changeSort={changeSort}
-						sortOrder={sortOrder}
-						sortKey={sortKey}
-						updateFields={updateFields}
-						setUpdateFields={setUpdateFields}
-					/>
-					{userBooks && (
-						<TableBody
-							books={sortedData()}
-							handleCheckBox={handleCheckBox}
+				<form action='' id='table_form' onSubmit={handleUpdate}>
+					<table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
+						<TableHead
+							changeSort={changeSort}
+							sortOrder={sortOrder}
+							sortKey={sortKey}
 							updateFields={updateFields}
-							register={register}
+							setUpdateFields={setUpdateFields}
+							books={userBooks}
 						/>
-					)}
-				</table>
+						{userBooks && (
+							<TableBody
+								books={sortedData()}
+								onChangeInput={onChangeInput}
+								handleCheckBox={handleCheckBox}
+								updateFields={updateFields}
+								register={register}
+							/>
+						)}
+					</table>
+				</form>
 			)}
 
 			{!userBooks.length && (

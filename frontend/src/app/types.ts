@@ -68,7 +68,3 @@ export enum Read {
 export type BookData = IBook;
 export type SortKeys = keyof BookData;
 export type SortOrder = 'ascn' | 'desc';
-
-export	interface HTMLInputEvent extends Event {
-	target: HTMLInputElement & EventTarget;
-}

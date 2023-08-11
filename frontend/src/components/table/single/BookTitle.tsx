@@ -1,16 +1,14 @@
-import StarRating from '../starRating/StarRating';
-import { IBook } from '../../../app/types';
 import { UseFormRegister } from 'react-hook-form';
+import { IBook } from '../../../app/types';
+import StarRating from '../starRating/StarRating';
 
-export default function BookTitle({
-	book,
-	updating,
-	register,
-}: {
+interface Props {
 	book: IBook;
 	updating: boolean;
 	register: UseFormRegister<IBook>;
-}) {
+}
+
+export default function BookTitle({ book, updating, onChangeInput }: Props) {
 	return (
 		<th
 			scope='row'
@@ -21,12 +19,11 @@ export default function BookTitle({
 					{updating ? (
 						<input
 							type='text'
+							name='title'
 							placeholder={book.title}
 							className='bg-gray-100 dark:bg-gray-700 rounded-md px-2 py-1'
 							form='table_form'
-							{...register('title', {
-								setValueAs: (x: string) => (x ? x : book.title),
-							})}
+							onChange={(e) => onChangeInput(e, book.id)}
 						/>
 					) : (
 						book.title

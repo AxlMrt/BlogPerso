@@ -21,7 +21,7 @@ export const toggleMode = (dispatch: AppDispatch, darkMode: boolean) => {
 	dispatch(toggleTheme(!darkMode));
 };
 
-export const trimUserObject = (data: IUser) => {
+export const trimUserObject = (data: any) => {
 		const asArray = Object.entries(data);
 		const filtered = asArray.filter(([, value]) => value !== '');
 

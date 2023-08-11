@@ -1,9 +1,9 @@
-import { BsFillCheckSquareFill } from 'react-icons/bs'
+import { BsCheckCircle } from 'react-icons/bs';
 
 export default function ValidBtn() {
-  return (
+	return (
 		<button type='submit' form='table_form'>
-			<BsFillCheckSquareFill className={'text-green-600'} />
+			<BsCheckCircle />
 		</button>
 	);
 }

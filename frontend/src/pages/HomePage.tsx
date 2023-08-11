@@ -3,29 +3,25 @@ import Search from '../components/table/Search';
 import Table from '../components/table/Table';
 import TableUpdate from '../components/table_update/TableUpdate';
 import { IBook } from '../app/types';
-import { useUpdateBookMutation } from '../app/store/api/booksApi';
+import { useGetBooksQuery, useUpdateBookMutation } from '../app/store/api/booksApi';
+import { BaseQueryFn } from '@reduxjs/toolkit/dist/query';
+import { BaseQueryArg } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
+import { useAppSelector } from '../app/store/configureStore';
 import { useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
+	const { user } = useAppSelector((state) => state.auth);
 	const [searchField, setSearchField] = useState<string>('');
 	const [bookToUpdate, setBookToUpdate] = useState<IBook[]>([]);
 	const [updateFields, setUpdateFields] = useState<boolean>(false);
 
-	const [updateBook] = useUpdateBookMutation();
-	const navigate = useNavigate();
+
+	const { data: books = [], isLoading } = useGetBooksQuery<BaseQueryArg<BaseQueryFn>>();
+	const userBooks = books.filter((book: IBook) => book.userId === user.id);
 
 	const handleCheckBox = (e: ChangeEvent<HTMLInputElement>, value: IBook) => {
-		e.target.checked && setBookToUpdate([...bookToUpdate, value]);
-		!e.target.checked && setBookToUpdate(bookToUpdate.filter((book: IBook) => book !== value));
-	};
-
-	const handleUpdate = async (data: IBook) => {
-		try {
-			console.log(data)
-			await updateBook(data).then(() => navigate(0));
-		} catch (error) {
-			console.error('Failed to update the book: ', error);
-		}
+		setBookToUpdate([...bookToUpdate, value]);
+		!e.target.checked && setBookToUpdate(bookToUpdate.filter((book: IBook) => book.id !== value.id));
 	};
 
 	return (
@@ -35,13 +31,15 @@ export default function HomePage() {
 				<TableUpdate
 					bookToUpdate={bookToUpdate}
 					updateFields={updateFields}
-					/>
+					books={userBooks}
+				/>
 				<Table
 					searchField={searchField}
 					handleCheckBox={handleCheckBox}
-					handleUpdate={handleUpdate}
 					setUpdateFields={setUpdateFields}
 					updateFields={updateFields}
+					books={userBooks}
+					isLoading={isLoading}
 				/>
 			</div>
 		</section>

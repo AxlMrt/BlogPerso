@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { SortKeys, SortOrder } from '../../../app/types';
+import { IBook, SortKeys, SortOrder } from '../../../app/types';
 import UpdateBtn from '../../buttons/update_btn/UpdateBtn';
 import TableTitle from './TableHeaderCell';
 
@@ -9,6 +9,7 @@ interface Props {
 	sortKey: SortKeys;
 	updateFields: boolean;
 	setUpdateFields: Dispatch<SetStateAction<boolean>>;
+	books: IBook[]
 }
 
 export default function TableHead({
@@ -17,6 +18,7 @@ export default function TableHead({
 	sortKey,
 	updateFields,
 	setUpdateFields,
+	books
 }: Props ) {
 	const headers: { key: SortKeys; label: string }[] = [
 		{ key: 'year', label: 'Année' },
@@ -28,7 +30,7 @@ export default function TableHead({
 	return (
 		<thead className='text-xs text-gray-700 uppercase bg-gray-200  dark:bg-gray-700 dark:text-gray-400'>
 			<tr>
-				<th scope='col' className='p-4'>
+				<th scope='col' className={`${books.length ? 'block' : 'hidden'} p-4`}>
 					<UpdateBtn
 						updateFields={updateFields}
 						setUpdateFields={setUpdateFields}

@@ -8,7 +8,7 @@ interface Props {
 
 export default function UpdateBtn({ updateFields, setUpdateFields }: Props) {
 	return (
-		<button onClick={() => setUpdateFields(!updateFields)}>
+		<button type='button' onClick={() => setUpdateFields(!updateFields)}>
 			<LiaEdit size={20} />
 		</button>
 	);

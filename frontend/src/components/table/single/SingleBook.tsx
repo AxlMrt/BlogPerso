@@ -15,7 +15,7 @@ interface Props {
 	updateFields: boolean;
 }
 
-export default function SingleBook({ book, register, handleCheckBox, updateFields }: Props) {
+export default function SingleBook({ book, onChangeInput, register, handleCheckBox, updateFields }: Props) {
 	const [updating, setUpdating] = useState<boolean>(false);
 
 	const handleUpdate = (e: ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +31,7 @@ export default function SingleBook({ book, register, handleCheckBox, updateField
 						id='checkbox-table-search-1'
 						type='checkbox'
 						className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-						onChange={(e) => handleUpdate(e)}
+						onChange={handleUpdate}
 						disabled={!updateFields}
 					/>
 					<label htmlFor='checkbox-table-search-1' className='sr-only'>
@@ -39,23 +39,24 @@ export default function SingleBook({ book, register, handleCheckBox, updateField
 					</label>
 				</div>
 			</td>
-			<BookYear year={book.year} updating={updating} register={register} />
-			<BookTitle book={book} updating={updating} register={register} />
-			<BookAuthor
-				author={book.author}
+
+			<BookYear book={book} updating={updating} onChangeInput={onChangeInput} />
+			<BookTitle
+				book={book}
 				updating={updating}
-				register={register}
+				onChangeInput={onChangeInput}
 			/>
-			<ReadState isRead={book.isRead} updating={updating} register={register} />
-			<BookType type={book.type} updating={updating} register={register} />
-			<td className='hidden'>
-				<input
-					type='text'
-					{...register('id', {
-						setValueAs: (x: string) => (x ? book.id : book.id),
-					})}
-				/>
-			</td>
+			<BookAuthor
+				book={book}
+				updating={updating}
+				onChangeInput={onChangeInput}
+			/>
+			<ReadState
+				book={book}
+				updating={updating}
+				onChangeInput={onChangeInput}
+			/>
+			<BookType book={book} updating={updating} onChangeInput={onChangeInput} />
 		</tr>
 	);
 }
