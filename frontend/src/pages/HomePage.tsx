@@ -3,20 +3,17 @@ import Search from '../components/table/Search';
 import Table from '../components/table/Table';
 import TableUpdate from '../components/table_update/TableUpdate';
 import { IBook } from '../app/types';
-import { useGetBooksQuery } from '../app/store/api/booksApi';
 import { BaseQueryFn } from '@reduxjs/toolkit/dist/query';
 import { BaseQueryArg } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 import { useAppSelector } from '../app/store/configureStore';
+import { useGetUserBookQuery } from '../app/store/api/userQueryApi';
 
 export default function HomePage() {
 	const { user } = useAppSelector((state) => state.auth);
 	const [searchField, setSearchField] = useState<string>('');
 	const [bookToUpdate, setBookToUpdate] = useState<IBook[]>([]);
 	const [updateFields, setUpdateFields] = useState<boolean>(false);
-
-
-	const { data: books = [], isLoading } = useGetBooksQuery<BaseQueryArg<BaseQueryFn>>();
-	const userBooks = books.filter((book: IBook) => book.userId === user.id);
+	const { data: books = [], isLoading } = useGetUserBookQuery<BaseQueryArg<BaseQueryFn>>(user.id);
 
 	const handleCheckBox = (e: ChangeEvent<HTMLInputElement>, value: IBook) => {
 		setBookToUpdate([...bookToUpdate, value]);
@@ -30,14 +27,14 @@ export default function HomePage() {
 				<TableUpdate
 					bookToUpdate={bookToUpdate}
 					updateFields={updateFields}
-					books={userBooks}
+					books={books}
 				/>
 				<Table
 					searchField={searchField}
 					handleCheckBox={handleCheckBox}
 					setUpdateFields={setUpdateFields}
 					updateFields={updateFields}
-					books={userBooks}
+					books={books}
 					isLoading={isLoading}
 				/>
 			</div>

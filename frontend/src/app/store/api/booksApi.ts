@@ -13,7 +13,7 @@ export const bookApi = createApi({
     getBook: builder.query<IBook, string>({
       query: (id) => ({ url: `/books/${id}`, method: 'get' })
     }),
-    addNewBook: builder.mutation<IBook, any>({
+    addNewBook: builder.mutation<IBook, IBook>({
       query: (book) => ({
         url: '/books',
         method: 'post',

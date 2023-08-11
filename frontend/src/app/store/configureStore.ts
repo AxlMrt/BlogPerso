@@ -4,15 +4,17 @@ import { themeSlice } from './slices/themeSlice';
 import authSlice from './slices/authSlice';
 import { bookApi } from './api/booksApi';
 import { userApi } from './api/usersApi';
+import { userQueryApi } from './api/userQueryApi';
 
 export const store = configureStore({
   reducer: {
     theme: themeSlice.reducer,
     auth: authSlice.reducer,
     [bookApi.reducerPath]: bookApi.reducer,
-    [userApi.reducerPath]: userApi.reducer
+    [userApi.reducerPath]: userApi.reducer,
+    [userQueryApi.reducerPath]: userQueryApi.reducer
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([bookApi.middleware, userApi.middleware])
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat([bookApi.middleware, userApi.middleware, userQueryApi.middleware])
 });
 
 export type RootState = ReturnType<typeof store.getState>;

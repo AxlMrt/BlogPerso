@@ -4,6 +4,7 @@ import { IBook, SortKeys, SortOrder } from '../../app/types';
 import {
 	ChangeEvent,
 	Dispatch,
+	FormEvent,
 	SetStateAction,
 	useCallback,
 	useEffect,
@@ -54,7 +55,7 @@ export default function Table({
 		setSortKey(key);
 	}
 
-	const handleUpdate = async (e) => {
+	const handleUpdate = async (e: FormEvent) => {
 		e.preventDefault();
 		edit!.forEach((book) => {
 			try {
@@ -65,16 +66,16 @@ export default function Table({
 		})
 	};
 
-	const onChangeInput = (e, bookId) => {
-			const { name, value } = e.target;
-			//console.log('name', name);
-			//console.log('value', value);
-			//console.log('bookId', bookId);
-			const editData = edit!.map((item) =>
-				item.id === bookId && name ? { ...item, [name]: value } : item
-			);
-			//console.log('editData', editData);
-			setEdit(editData);
+	const onChangeInput = (e: ChangeEvent<HTMLElement>, bookId: string) => {
+		const { name, value } = e.target as HTMLInputElement;
+		//console.log('name', name);
+		//console.log('value', value);
+		//console.log('bookId', bookId);
+		const editData = edit!.map((item) =>
+			item.id === bookId && name ? { ...item, [name]: value } : item
+		);
+		//console.log('editData', editData);
+		setEdit(editData);
 	};
 
 	useEffect(() => {
