@@ -1,4 +1,3 @@
-import Spinner from '../spinner/Spinner';
 import TableBody from './TableBody';
 import { IBook, SortKeys, SortOrder } from '../../app/types';
 import {
@@ -20,7 +19,6 @@ interface Props {
 	updateFields: boolean;
 	setUpdateFields: Dispatch<SetStateAction<boolean>>;
 	books: IBook[];
-	isLoading: boolean;
 }
 
 export default function Table({
@@ -29,15 +27,14 @@ export default function Table({
 	updateFields,
 	setUpdateFields,
 	books,
-	isLoading,
 }: Props) {
-	const [edit, setEdit] = useState<IBook[] | null>(null)
+	const [edit, setEdit] = useState<IBook[] | null>(null);
 	const [sortKey, setSortKey] = useState<SortKeys>('title');
 	const [sortOrder, setSortOrder] = useState<SortOrder>('ascn');
 	const [updateBook] = useUpdateBookMutation();
 	const navigate = useNavigate();
 	const userBooks: IBook[] = books.filter((book: IBook) =>
-	book.title.toLowerCase().includes(searchField.toLowerCase())
+		book.title.toLowerCase().includes(searchField.toLowerCase())
 	);
 
 	const sortedData = useCallback(
@@ -63,7 +60,7 @@ export default function Table({
 			} catch (error) {
 				console.error('Failed to update the book: ', error);
 			}
-		})
+		});
 	};
 
 	const onChangeInput = (e: ChangeEvent<HTMLElement>, bookId: string) => {
@@ -79,35 +76,31 @@ export default function Table({
 	};
 
 	useEffect(() => {
-		setEdit(books)
-	}, [books])
+		setEdit(books);
+	}, [books]);
 
 	return (
 		<div className='overflow-x-auto shadow-md sm:rounded-lg'>
-			{isLoading ? (
-				<Spinner />
-			) : (
-				<form action='' id='table_form' onSubmit={handleUpdate}>
-					<table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
-						<TableHead
-							changeSort={changeSort}
-							sortOrder={sortOrder}
-							sortKey={sortKey}
+			<form action='' id='table_form' onSubmit={handleUpdate}>
+				<table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
+					<TableHead
+						changeSort={changeSort}
+						sortOrder={sortOrder}
+						sortKey={sortKey}
+						updateFields={updateFields}
+						setUpdateFields={setUpdateFields}
+						books={userBooks}
+					/>
+					{userBooks && (
+						<TableBody
+							books={sortedData()}
+							onChangeInput={onChangeInput}
+							handleCheckBox={handleCheckBox}
 							updateFields={updateFields}
-							setUpdateFields={setUpdateFields}
-							books={userBooks}
 						/>
-						{userBooks && (
-							<TableBody
-								books={sortedData()}
-								onChangeInput={onChangeInput}
-								handleCheckBox={handleCheckBox}
-								updateFields={updateFields}
-							/>
-						)}
-					</table>
-				</form>
-			)}
+					)}
+				</table>
+			</form>
 
 			{!userBooks.length && (
 				<div className='text-center my-5 dark:text-white'>

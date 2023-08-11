@@ -39,6 +39,12 @@ export interface IBookRegister extends IBook {
   userMail: string;
 }
 
+export interface IBooksParams {
+  orderBy: string;
+  searchTerm?: string;
+  types: string[];
+}
+
 export interface IGenericResponse {
   status: string;
   message: string;

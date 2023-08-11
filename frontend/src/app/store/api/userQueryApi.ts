@@ -9,8 +9,8 @@ export const userQueryApi = createApi({
     getUserBook: builder.query<IBook, string>({
       query: (id) => ({ url: `/query/bookList/${id}`, method: 'get' })
     }),
-    getBookFilters: builder.query<string, void>({
-      query: () => ({ url: '/query/filters', method: 'get' })
+    getBookFilters: builder.query<string, string>({
+      query: (id) => ({ url: `/query/filters/${id}`, method: 'get' })
     }),
   }),
 });

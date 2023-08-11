@@ -24,8 +24,14 @@ const Auth = {
   logout: () => requests.post('logout', {})
 }
 
+const UserQuery = {
+  list: (id: string, params: URLSearchParams) => requests.get(`query/bookList/${id}`, params),
+  fetchFilters: (id: string) => requests.get(`query/filters/${id}`)
+}
+
 const agent = {
   Auth,
+  UserQuery
 }
 
 export default agent;

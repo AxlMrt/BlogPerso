@@ -5,11 +5,13 @@ import authSlice from './slices/authSlice';
 import { bookApi } from './api/booksApi';
 import { userApi } from './api/usersApi';
 import { userQueryApi } from './api/userQueryApi';
+import { userQuerySlice } from './slices/userQuerySlice';
 
 export const store = configureStore({
   reducer: {
     theme: themeSlice.reducer,
     auth: authSlice.reducer,
+    userQuery: userQuerySlice.reducer,
     [bookApi.reducerPath]: bookApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [userQueryApi.reducerPath]: userQueryApi.reducer

@@ -3,17 +3,15 @@ import Search from '../components/table/Search';
 import Table from '../components/table/Table';
 import TableUpdate from '../components/table_update/TableUpdate';
 import { IBook } from '../app/types';
-import { BaseQueryFn } from '@reduxjs/toolkit/dist/query';
-import { BaseQueryArg } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 import { useAppSelector } from '../app/store/configureStore';
-import { useGetUserBookQuery } from '../app/store/api/userQueryApi';
+import { booksSelectors } from '../app/store/slices/userQuerySlice';
 
 export default function HomePage() {
-	const { user } = useAppSelector((state) => state.auth);
+	const books = useAppSelector(booksSelectors.selectAll);
+
 	const [searchField, setSearchField] = useState<string>('');
 	const [bookToUpdate, setBookToUpdate] = useState<IBook[]>([]);
 	const [updateFields, setUpdateFields] = useState<boolean>(false);
-	const { data: books = [], isLoading } = useGetUserBookQuery<BaseQueryArg<BaseQueryFn>>(user.id);
 
 	const handleCheckBox = (e: ChangeEvent<HTMLInputElement>, value: IBook) => {
 		setBookToUpdate([...bookToUpdate, value]);
@@ -35,7 +33,6 @@ export default function HomePage() {
 					setUpdateFields={setUpdateFields}
 					updateFields={updateFields}
 					books={books}
-					isLoading={isLoading}
 				/>
 			</div>
 		</section>
