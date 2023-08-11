@@ -82,7 +82,7 @@ export default function DragAndDrop({ file, setFile, register }: Props) {
 						viewBox={imageIcon.viewBox}
 					/>
 				)}
-				<div>
+				<div className='dark:text-white'>
 					<p>Glisser-déposer ou</p>
 					<button
 						className='cursor-pointer font-medium text-primary-500 hover:text-primary-800 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500'
@@ -90,7 +90,7 @@ export default function DragAndDrop({ file, setFile, register }: Props) {
 					>
 						Télécharger un fichier
 					</button>
-					<p className='text-xs dark:text-white'>PNG, JPG jusqu'à 10MB</p>
+					<p className='text-xs'>PNG, JPG jusqu'à 10MB</p>
 				</div>
 			</label>
 			{dragActive && (
