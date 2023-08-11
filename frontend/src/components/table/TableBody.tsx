@@ -1,23 +1,21 @@
-import { UseFormRegister } from 'react-hook-form';
+import { ChangeEvent } from 'react';
 import { IBook } from '../../app/types';
 import SingleBook from './single/SingleBook';
-import { ChangeEvent } from 'react';
 
 interface Props {
 	books: IBook[];
-	register: UseFormRegister<IBook>;
+	onChangeInput: (e: ChangeEvent<HTMLElement>, bookId: string) => void;
 	handleCheckBox: (e: ChangeEvent<HTMLInputElement>, value: IBook) => void;
 	updateFields: boolean;
 }
 
-export default function TableBody({ books, onChangeInput, register, handleCheckBox, updateFields }: Props) {
+export default function TableBody({ books, onChangeInput, handleCheckBox, updateFields }: Props) {
 	return (
 		<tbody>
 			{books.map((book: IBook, index: number) => (
 				<SingleBook
 					book={book}
 					onChangeInput={onChangeInput}
-					register={register}
 					handleCheckBox={handleCheckBox}
 					updateFields={updateFields}
 					key={index}

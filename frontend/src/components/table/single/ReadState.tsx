@@ -1,10 +1,10 @@
-import { UseFormRegister } from 'react-hook-form';
+import { ChangeEvent } from 'react';
 import { IBook, IsBookRead } from '../../../app/types';
 
 interface Props {
-	isRead: string;
+	book: IBook;
 	updating: boolean;
-	register: UseFormRegister<IBook>;
+	onChangeInput: (e: ChangeEvent<HTMLSelectElement>, bookId: string) => void;
 }
 
 export default function ReadState({

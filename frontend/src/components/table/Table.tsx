@@ -1,4 +1,3 @@
-import { useForm } from 'react-hook-form';
 import Spinner from '../spinner/Spinner';
 import TableBody from './TableBody';
 import { IBook, SortKeys, SortOrder } from '../../app/types';
@@ -31,15 +30,14 @@ export default function Table({
 	books,
 	isLoading,
 }: Props) {
-	const userBooks: IBook[] = books.filter((book: IBook) =>
-	book.title.toLowerCase().includes(searchField.toLowerCase())
-	);
+	const [edit, setEdit] = useState<IBook[] | null>(null)
 	const [sortKey, setSortKey] = useState<SortKeys>('title');
 	const [sortOrder, setSortOrder] = useState<SortOrder>('ascn');
 	const [updateBook] = useUpdateBookMutation();
 	const navigate = useNavigate();
-	const { register, handleSubmit } = useForm<IBook>();
-	const [edit, setEdit] = useState<IBook[] | null>(null)
+	const userBooks: IBook[] = books.filter((book: IBook) =>
+	book.title.toLowerCase().includes(searchField.toLowerCase())
+	);
 
 	const sortedData = useCallback(
 		() =>
@@ -58,9 +56,9 @@ export default function Table({
 
 	const handleUpdate = async (e) => {
 		e.preventDefault();
-		edit.forEach((book) => {
+		edit!.forEach((book) => {
 			try {
-				updateBook(book)//.then(() => navigate(0));
+				updateBook(book).then(() => navigate(0));
 			} catch (error) {
 				console.error('Failed to update the book: ', error);
 			}
@@ -69,16 +67,13 @@ export default function Table({
 
 	const onChangeInput = (e, bookId) => {
 			const { name, value } = e.target;
-			console.log('name', name);
-			console.log('value', value);
-			console.log('bookId', bookId);
-
-			const editData = edit.map((item) =>
+			//console.log('name', name);
+			//console.log('value', value);
+			//console.log('bookId', bookId);
+			const editData = edit!.map((item) =>
 				item.id === bookId && name ? { ...item, [name]: value } : item
 			);
-
-			console.log('editData', editData);
-
+			//console.log('editData', editData);
 			setEdit(editData);
 	};
 
@@ -107,7 +102,6 @@ export default function Table({
 								onChangeInput={onChangeInput}
 								handleCheckBox={handleCheckBox}
 								updateFields={updateFields}
-								register={register}
 							/>
 						)}
 					</table>

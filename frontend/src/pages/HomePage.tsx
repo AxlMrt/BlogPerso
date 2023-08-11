@@ -3,11 +3,10 @@ import Search from '../components/table/Search';
 import Table from '../components/table/Table';
 import TableUpdate from '../components/table_update/TableUpdate';
 import { IBook } from '../app/types';
-import { useGetBooksQuery, useUpdateBookMutation } from '../app/store/api/booksApi';
+import { useGetBooksQuery } from '../app/store/api/booksApi';
 import { BaseQueryFn } from '@reduxjs/toolkit/dist/query';
 import { BaseQueryArg } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 import { useAppSelector } from '../app/store/configureStore';
-import { useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
 	const { user } = useAppSelector((state) => state.auth);

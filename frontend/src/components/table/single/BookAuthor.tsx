@@ -1,10 +1,10 @@
-import { UseFormRegister } from "react-hook-form";
 import { IBook } from "../../../app/types";
+import { ChangeEvent } from "react";
 
 interface Props {
 	book: IBook;
 	updating: boolean;
-	register: UseFormRegister<IBook>;
+	onChangeInput: (e: ChangeEvent<HTMLInputElement>, bookId: string) => void;
 }
 
 export default function BookAuthor({ book, updating, onChangeInput }: Props) {
