@@ -1,6 +1,5 @@
 import { AppDispatch } from "./store/configureStore";
 import { toggleTheme } from "./store/slices/themeSlice";
-import { IUser } from "./types";
 
 export const isDark = () =>
 	(localStorage && localStorage.theme === 'dark') ||
@@ -21,6 +20,7 @@ export const toggleMode = (dispatch: AppDispatch, darkMode: boolean) => {
 	dispatch(toggleTheme(!darkMode));
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const trimUserObject = (data: any) => {
 		const asArray = Object.entries(data);
 		const filtered = asArray.filter(([, value]) => value !== '');

@@ -9,7 +9,7 @@ interface Props {
 
 export default function BookAuthor({ book, updating, onChangeInput }: Props) {
 	return (
-		<td className='px-6 py-4'>
+		<td className='px-6 py-4 whitespace-nowrap text-ellipsis overflow-hidden max-w-0'>
 			{updating ? (
 				<input
 					type='text'

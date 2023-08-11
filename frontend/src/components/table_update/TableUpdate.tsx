@@ -33,11 +33,11 @@ export default function TableUpdate({
 	return (
 		<div className='flex p-4'>
 			<div className='relative'>
-				<BsThreeDots />
+				<BsThreeDots className={'dark:text-white cursor-pointer'} />
 				<FilterBooks books={books} />
 			</div>
 			<div
-				className={`${!updateFields && 'hidden'} flex items-center gap-4 px-10`}
+				className={`${!updateFields && 'hidden'} flex items-center gap-4 px-10 dark:text-white`}
 			>
 				<ValidBtn />
 				<DeleteBtn handleDelete={handleDelete} />

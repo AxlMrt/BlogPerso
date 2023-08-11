@@ -33,7 +33,7 @@ export default function ProfileImage({
 				>
 					<span className='absolute -inset-1.5'></span>
 					<span className='sr-only'>Open user menu</span>
-					<div className='h-7 w-7 rounded-full overflow-hidden md:h-8 md:w-8'>
+					<div className='h-7 w-7 rounded-full overflow-hidden md:h-8 md:w-8 bg-gray-800 dark:bg-white'>
 						<img
 							className='min-h-full min-w-full w-auto h-auto '
 							src={PF + user.photo}
