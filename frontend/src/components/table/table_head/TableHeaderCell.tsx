@@ -1,16 +1,10 @@
 import { SortButton } from '../HandleSortTable';
-import { SortKeys, SortOrder } from '../../../app/types';
 
-export default function TableTitle({
+export default function TableHeaderCell({
 	row,
 	changeSort,
-	sortOrder,
-	sortKey,
-}: {
-	row: { key: SortKeys; label: string };
-	changeSort: (key: SortKeys) => void;
-	sortOrder: SortOrder;
-	sortKey: SortKeys;
+	order,
+	field,
 }) {
 	return (
 		<th scope='col' className='px-6 py-3'>
@@ -18,10 +12,10 @@ export default function TableTitle({
 				{row.label}
 				<SortButton
 					columnKey={row.key}
-					onClick={() => changeSort(row.key)}
+					onClick={(e) => changeSort(e, row.key)}
 					{...{
-						sortOrder,
-						sortKey,
+						order,
+						field,
 					}}
 				/>
 			</div>

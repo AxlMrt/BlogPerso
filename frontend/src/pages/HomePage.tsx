@@ -14,11 +14,16 @@ import {
 export default function HomePage() {
 	const [page, setPage] = useState<number>(1);
 	const [search, setSearchField] = useState<string>('');
+	const [order, setOrder] = useState<string>('desc');
+	const [field, setField] = useState<string>('createdAt');
+
 	const { user } = useAppSelector((state) => state.auth);
 	const { data, isLoading } = useGetUserBookQuery<BaseQueryArg<BaseQueryFn>>({
 		id: user.id,
 		page,
 		search,
+		field,
+		order,
 	});
 
 	const [bookToUpdate, setBookToUpdate] = useState<IBook[]>([]);
@@ -50,6 +55,10 @@ export default function HomePage() {
 					setUpdateFields={setUpdateFields}
 					updateFields={updateFields}
 					books={data.books}
+					field={field}
+					setField={setField}
+					order={order}
+					setOrder={setOrder}
 				/>
 			</div>
 		</section>

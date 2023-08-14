@@ -14,7 +14,6 @@ import TableHead from './table_head/TableHead';
 import { useUpdateBookMutation } from '../../app/store/api/booksApi';
 import { useNavigate } from 'react-router-dom';
 interface Props {
-	searchField: string;
 	handleCheckBox: (e: ChangeEvent<HTMLInputElement>, value: IBook) => void;
 	updateFields: boolean;
 	setUpdateFields: Dispatch<SetStateAction<boolean>>;
@@ -26,26 +25,19 @@ export default function Table({
 	updateFields,
 	setUpdateFields,
 	books,
+	field,
+	setField,
+	order,
+	setOrder
 }: Props) {
 	const [edit, setEdit] = useState<IBook[] | null>(null);
-	const [sortKey, setSortKey] = useState<SortKeys>('title');
-	const [sortOrder, setSortOrder] = useState<SortOrder>('ascn');
 	const [updateBook] = useUpdateBookMutation();
 	const navigate = useNavigate();
 
-	const sortedData = useCallback(
-		() =>
-			sortData({
-				tableData: books,
-				sortKey,
-				reverse: sortOrder === 'desc',
-			}),
-		[books, sortKey, sortOrder]
-	);
-
-	function changeSort(key: SortKeys): void {
-		setSortOrder(sortOrder === 'ascn' ? 'desc' : 'ascn');
-		setSortKey(key);
+	function changeSort(e, key): void {
+		e.preventDefault();
+		setOrder(order === 'asc' ? 'desc' : 'asc');
+		setField(key);
 	}
 
 	const handleUpdate = async (e: FormEvent) => {
@@ -75,15 +67,14 @@ export default function Table({
 		setEdit(books);
 	}, [books]);
 
-	console.log(books)
 	return (
 		<div className='overflow-x-auto shadow-md sm:rounded-lg'>
 			<form action='' id='table_form' onSubmit={handleUpdate}>
 				<table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
 					<TableHead
 						changeSort={changeSort}
-						sortOrder={sortOrder}
-						sortKey={sortKey}
+						order={order}
+						field={field}
 						updateFields={updateFields}
 						setUpdateFields={setUpdateFields}
 						books={books}

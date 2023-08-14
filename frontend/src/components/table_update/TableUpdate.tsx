@@ -11,6 +11,7 @@ import Pagination from '../pagination/Pagination';
 interface Props {
 	bookToUpdate: IBook[];
 	updateFields: boolean;
+	data: { books: IBook; total: number; page: string; total_pages: number };
 	page: number;
 	setPage: Dispatch<SetStateAction<number>>;
 }
@@ -20,7 +21,7 @@ export default function TableUpdate({
 	updateFields,
 	data,
 	page,
-	setPage,
+	setPage
 }: Props) {
 	const [filtersVisible, setFiltersVisible] = useState<boolean>(false);
 	const [deleteBook] = useDeleteBookMutation();

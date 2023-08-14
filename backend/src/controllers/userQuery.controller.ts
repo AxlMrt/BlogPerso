@@ -7,12 +7,16 @@ const getUserBooks: RequestHandler<{ id: string }> = async (req: Request, res: R
   const { id } = req.params;
   const page = req.query.page;
   const search = req.query.search;
-
+  const field: string = req.query.field;
+  const order = req.query.order;
 
   const currentPage = Math.max((Number(page) || 1), 1)
   const options = {
     take: PER_PAGE,
     skip: (currentPage - 1) * PER_PAGE,
+    orderBy: {
+      [field]: order
+    },
     where: {}
   }
 

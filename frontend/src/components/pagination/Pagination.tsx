@@ -1,7 +1,9 @@
 import { BsArrowRight, BsArrowLeft } from 'react-icons/bs';
 import { Dispatch, SetStateAction } from 'react';
+import { IBook } from '../../app/types';
 
 interface Props {
+  data: { books: IBook, total: number, page: string, total_pages: number}
 	page: number;
 	setPage: Dispatch<SetStateAction<number>>;
 }

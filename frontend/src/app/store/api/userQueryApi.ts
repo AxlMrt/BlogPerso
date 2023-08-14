@@ -13,8 +13,8 @@ export const userQueryApi = createApi({
   reducerPath: 'query',
   baseQuery,
   endpoints: (builder) => ({
-    getUserBook: builder.query<ListResponse<IBook>, { id: string, page: number, search?: string }>({
-      query: ({ id, page = 1, search }) => ({ url: `/query/bookList/${id}?page=${page}&search=${search}` })
+    getUserBook: builder.query<ListResponse<IBook>, { id: string, page: number, search: string, field: string, order: string }>({
+      query: ({ id, page = 1, search, field, order }) => ({ url: `/query/bookList/${id}?page=${page}&search=${search}&field=${field}&order=${order}` })
     }),
     getBookFilters: builder.query<string, string>({
       query: (id) => ({ url: `/query/filters/${id}`, method: 'get' })

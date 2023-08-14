@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import { IBook, SortKeys, SortOrder } from '../../../app/types';
 import UpdateBtn from '../../buttons/update_btn/UpdateBtn';
-import TableTitle from './TableHeaderCell';
+import TableHeaderCell from './TableHeaderCell';
 
 interface Props {
 	changeSort: (key: SortKeys) => void;
@@ -14,8 +14,8 @@ interface Props {
 
 export default function TableHead({
 	changeSort,
-	sortOrder,
-	sortKey,
+	order,
+	field,
 	updateFields,
 	setUpdateFields,
 	books
@@ -38,11 +38,11 @@ export default function TableHead({
 				</th>
 				{headers.map((row, index) => {
 					return (
-						<TableTitle
+						<TableHeaderCell
 							row={row}
 							changeSort={changeSort}
-							sortOrder={sortOrder}
-							sortKey={sortKey}
+							order={order}
+							field={field}
 							key={index}
 						/>
 					);
