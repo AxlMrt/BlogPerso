@@ -4,6 +4,6 @@ import _ from "../controllers/userQuery.controller";
 
 const router = express.Router();
 router.get('/bookList/:id', authMiddleware, _.getUserBooks);
-router.get('/filters', authMiddleware, _.getUserBooks);
+router.get('/filters/:id', authMiddleware, _.getBookTypes);
 
 export default router;

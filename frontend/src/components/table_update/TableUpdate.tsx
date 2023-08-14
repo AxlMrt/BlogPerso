@@ -5,17 +5,21 @@ import { IBook } from '../../app/types';
 import ValidBtn from '../buttons/valid_button/ValidBtn';
 import { BsThreeDots } from 'react-icons/bs';
 import FilterBooks from './FilterBooks';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
+import Pagination from '../pagination/Pagination';
 
 interface Props {
 	bookToUpdate: IBook[];
 	updateFields: boolean;
-	books: IBook[];
+	page: number;
+	setPage: Dispatch<SetStateAction<number>>;
 }
 
 export default function TableUpdate({
 	bookToUpdate,
 	updateFields,
+	page,
+	setPage,
 }: Props) {
 	const [filtersVisible, setFiltersVisible] = useState<boolean>(false);
 	const [deleteBook] = useDeleteBookMutation();
@@ -32,22 +36,28 @@ export default function TableUpdate({
 	};
 
 	return (
-		<div className='flex p-4'>
-			<div className='relative'>
-				<BsThreeDots
-					className={'dark:text-white cursor-pointer'}
-					onClick={() => setFiltersVisible(!filtersVisible)}
-				/>
-				<FilterBooks filtersVisible={filtersVisible} />
+		<div className='flex p-4 justify-between'>
+			<div>
+				<div className='relative'>
+					<BsThreeDots
+						className={'dark:text-white cursor-pointer'}
+						onClick={() => setFiltersVisible(!filtersVisible)}
+					/>
+					<FilterBooks filtersVisible={filtersVisible} />
+				</div>
+				<div
+					className={`${
+						!updateFields && 'hidden'
+					} flex items-center gap-4 px-10 dark:text-white`}
+				>
+					<ValidBtn />
+					<DeleteBtn handleDelete={handleDelete} />
+				</div>
 			</div>
-			<div
-				className={`${
-					!updateFields && 'hidden'
-				} flex items-center gap-4 px-10 dark:text-white`}
-			>
-				<ValidBtn />
-				<DeleteBtn handleDelete={handleDelete} />
-			</div>
+			<Pagination
+				page={page}
+				setPage={setPage}
+			/>
 		</div>
 	);
 }

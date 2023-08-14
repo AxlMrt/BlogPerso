@@ -11,7 +11,7 @@ interface Props {
 export default function FilterBooks({ filtersVisible }: Props) {
 	const { user } = useAppSelector((state) => state.auth);
 	const { data: types = [], isLoading } = useGetBookFiltersQuery<BaseQueryArg<BaseQueryFn>>(user.id);
-	console.log(types)
+
   return (
 		<div
 			className={`${

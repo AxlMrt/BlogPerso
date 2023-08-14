@@ -6,11 +6,16 @@ import { IBook } from '../app/types';
 import { useAppSelector } from '../app/store/configureStore';
 import { useGetUserBookQuery } from '../app/store/api/userQueryApi';
 import Spinner from '../components/spinner/Spinner';
-import { BaseQueryArg, BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
+import {
+	BaseQueryArg,
+	BaseQueryFn,
+} from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 
 export default function HomePage() {
+	const [page, setPage] = useState<number>(1);
+
 	const { user } = useAppSelector((state) => state.auth);
-	const { data: books = [], isLoading } = useGetUserBookQuery<BaseQueryArg<BaseQueryFn>>(user.id);
+	const { data, isLoading} = useGetUserBookQuery<BaseQueryArg<BaseQueryFn>>({ id: user.id, page});
 
 	const [searchField, setSearchField] = useState<string>('');
 	const [bookToUpdate, setBookToUpdate] = useState<IBook[]>([]);
@@ -18,7 +23,10 @@ export default function HomePage() {
 
 	const handleCheckBox = (e: ChangeEvent<HTMLInputElement>, value: IBook) => {
 		setBookToUpdate([...bookToUpdate, value]);
-		!e.target.checked && setBookToUpdate(bookToUpdate.filter((book: IBook) => book.id !== value.id));
+		!e.target.checked &&
+			setBookToUpdate(
+				bookToUpdate.filter((book: IBook) => book.id !== value.id)
+			);
 	};
 
 	return (
@@ -31,14 +39,15 @@ export default function HomePage() {
 					<TableUpdate
 						bookToUpdate={bookToUpdate}
 						updateFields={updateFields}
-						books={books}
+						page={page}
+						setPage={setPage}
 					/>
 					<Table
 						searchField={searchField}
 						handleCheckBox={handleCheckBox}
 						setUpdateFields={setUpdateFields}
 						updateFields={updateFields}
-						books={books}
+						books={data.books}
 					/>
 				</div>
 			)}
