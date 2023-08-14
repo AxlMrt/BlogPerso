@@ -1,15 +1,14 @@
 import TableBody from './TableBody';
-import { IBook, SortKeys, SortOrder } from '../../app/types';
+import { IBook } from '../../app/types';
 import {
 	ChangeEvent,
 	Dispatch,
 	FormEvent,
+	MouseEvent,
 	SetStateAction,
-	useCallback,
 	useEffect,
 	useState,
 } from 'react';
-import { sortData } from './HandleSortTable';
 import TableHead from './table_head/TableHead';
 import { useUpdateBookMutation } from '../../app/store/api/booksApi';
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +17,10 @@ interface Props {
 	updateFields: boolean;
 	setUpdateFields: Dispatch<SetStateAction<boolean>>;
 	books: IBook[];
+	field: string;
+	setField: Dispatch<SetStateAction<string>>;
+	order: string;
+	setOrder: Dispatch<SetStateAction<string>>;
 }
 
 export default function Table({
@@ -34,7 +37,7 @@ export default function Table({
 	const [updateBook] = useUpdateBookMutation();
 	const navigate = useNavigate();
 
-	function changeSort(e, key): void {
+	function changeSort(e: MouseEvent, key: string): void {
 		e.preventDefault();
 		setOrder(order === 'asc' ? 'desc' : 'asc');
 		setField(key);
