@@ -1,4 +1,3 @@
-import React from 'react'
 import ProfileCard from '../components/profile_card/ProfileCard'
 import Spinner from '../components/spinner/Spinner';
 import { useGetUserQuery } from '../app/store/api/usersApi';
@@ -11,7 +10,7 @@ export default function Home() {
   return isLoading ? <Spinner /> : (
     <main className="grid grid-cols-1 lg:grid-cols-2 gap-6 my-12 w-2xl container px-2 mx-auto">
       <aside className="">
-        <ProfileCard currentUser={currentUser} />
+        <ProfileCard currentUser={currentUser!} />
         <ReadingProgress books={currentUser!.books} />
 
         <div className="flex bg-white shadow mt-6  rounded-lg p-2">
