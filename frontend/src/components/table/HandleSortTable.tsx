@@ -21,6 +21,7 @@ export function sortData({
 		}
 	);
 
+	console.log(sortedData)
 	if (reverse) {
 		return sortedData.reverse();
 	}

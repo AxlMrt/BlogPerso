@@ -18,6 +18,7 @@ interface Props {
 export default function TableUpdate({
 	bookToUpdate,
 	updateFields,
+	data,
 	page,
 	setPage,
 }: Props) {
@@ -55,6 +56,7 @@ export default function TableUpdate({
 				</div>
 			</div>
 			<Pagination
+				data={data}
 				page={page}
 				setPage={setPage}
 			/>

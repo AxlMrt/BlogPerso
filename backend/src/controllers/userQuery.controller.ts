@@ -6,11 +6,22 @@ const PER_PAGE = 8;
 const getUserBooks: RequestHandler<{ id: string }> = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   const page = req.query.page;
-    
+  const search = req.query.search;
+
+
   const currentPage = Math.max((Number(page) || 1), 1)
   const options = {
     take: PER_PAGE,
     skip: (currentPage - 1) * PER_PAGE,
+    where: {}
+  }
+
+  if (search?.length)
+    options.where = {
+      title: {
+        contains: search,
+        mode: 'insensitive'
+    }
   }
 
   try {
@@ -21,7 +32,7 @@ const getUserBooks: RequestHandler<{ id: string }> = async (req: Request, res: R
           select: { books: true }
         },
         books: options,
-      }
+      },
     });
     const total = data?._count.books;
     res.json({ books: data?.books, total, page, total_pages: (Math.ceil( total! / PER_PAGE)) });

@@ -13,11 +13,14 @@ import {
 
 export default function HomePage() {
 	const [page, setPage] = useState<number>(1);
-
+	const [search, setSearchField] = useState<string>('');
 	const { user } = useAppSelector((state) => state.auth);
-	const { data, isLoading} = useGetUserBookQuery<BaseQueryArg<BaseQueryFn>>({ id: user.id, page});
+	const { data, isLoading } = useGetUserBookQuery<BaseQueryArg<BaseQueryFn>>({
+		id: user.id,
+		page,
+		search,
+	});
 
-	const [searchField, setSearchField] = useState<string>('');
 	const [bookToUpdate, setBookToUpdate] = useState<IBook[]>([]);
 	const [updateFields, setUpdateFields] = useState<boolean>(false);
 
@@ -29,28 +32,26 @@ export default function HomePage() {
 			);
 	};
 
-	return (
+	return isLoading ? (
+		<Spinner />
+	) : (
 		<section className='bg-gray-50 dark:bg-gray-900'>
-			{isLoading ? (
-				<Spinner />
-			) : (
-				<div className=' w-5/6 m-auto mt-32'>
-					<Search setSearchField={setSearchField} />
-					<TableUpdate
-						bookToUpdate={bookToUpdate}
-						updateFields={updateFields}
-						page={page}
-						setPage={setPage}
-					/>
-					<Table
-						searchField={searchField}
-						handleCheckBox={handleCheckBox}
-						setUpdateFields={setUpdateFields}
-						updateFields={updateFields}
-						books={data.books}
-					/>
-				</div>
-			)}
+			<div className=' w-5/6 m-auto mt-32'>
+				<Search setSearchField={setSearchField} />
+				<TableUpdate
+					bookToUpdate={bookToUpdate}
+					updateFields={updateFields}
+					data={data}
+					page={page}
+					setPage={setPage}
+				/>
+				<Table
+					handleCheckBox={handleCheckBox}
+					setUpdateFields={setUpdateFields}
+					updateFields={updateFields}
+					books={data.books}
+				/>
+			</div>
 		</section>
 	);
 }

@@ -22,7 +22,6 @@ interface Props {
 }
 
 export default function Table({
-	searchField,
 	handleCheckBox,
 	updateFields,
 	setUpdateFields,
@@ -33,18 +32,15 @@ export default function Table({
 	const [sortOrder, setSortOrder] = useState<SortOrder>('ascn');
 	const [updateBook] = useUpdateBookMutation();
 	const navigate = useNavigate();
-	const userBooks: IBook[] = books.filter((book: IBook) =>
-		book.title.toLowerCase().includes(searchField.toLowerCase())
-	);
 
 	const sortedData = useCallback(
 		() =>
 			sortData({
-				tableData: userBooks,
+				tableData: books,
 				sortKey,
 				reverse: sortOrder === 'desc',
 			}),
-		[userBooks, sortKey, sortOrder]
+		[books, sortKey, sortOrder]
 	);
 
 	function changeSort(key: SortKeys): void {
@@ -79,6 +75,7 @@ export default function Table({
 		setEdit(books);
 	}, [books]);
 
+	console.log(books)
 	return (
 		<div className='overflow-x-auto shadow-md sm:rounded-lg'>
 			<form action='' id='table_form' onSubmit={handleUpdate}>
@@ -89,11 +86,11 @@ export default function Table({
 						sortKey={sortKey}
 						updateFields={updateFields}
 						setUpdateFields={setUpdateFields}
-						books={userBooks}
+						books={books}
 					/>
-					{userBooks && (
+					{books && (
 						<TableBody
-							books={sortedData()}
+							books={books}
 							onChangeInput={onChangeInput}
 							handleCheckBox={handleCheckBox}
 							updateFields={updateFields}
@@ -102,7 +99,7 @@ export default function Table({
 				</table>
 			</form>
 
-			{!userBooks.length && (
+			{!books.length && (
 				<div className='text-center my-5 dark:text-white'>
 					<h3>Liste vide !</h3>
 					Commencez votre collection littéraire: Ajoutez des livres à votre
