@@ -5,7 +5,7 @@ import { IBook } from '../../app/types';
 import ValidBtn from '../buttons/valid_button/ValidBtn';
 import { BsThreeDots } from 'react-icons/bs';
 import FilterBooks from './FilterBooks';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import Pagination from '../pagination/Pagination';
 
 interface Props {
@@ -14,6 +14,9 @@ interface Props {
 	data: { books: IBook; total: number; page: string; total_pages: number };
 	page: number;
 	setPage: Dispatch<SetStateAction<number>>;
+	setType: Dispatch<SetStateAction<string>>;
+	filtersVisible: boolean;
+	setFiltersVisible: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function TableUpdate({
@@ -21,9 +24,11 @@ export default function TableUpdate({
 	updateFields,
 	data,
 	page,
-	setPage
+	setPage,
+	setType,
+	filtersVisible,
+	setFiltersVisible
 }: Props) {
-	const [filtersVisible, setFiltersVisible] = useState<boolean>(false);
 	const [deleteBook] = useDeleteBookMutation();
 	const navigate = useNavigate();
 
@@ -36,16 +41,21 @@ export default function TableUpdate({
 			}
 		});
 	};
+	
+	const openFilters = (e: Event) => {
+		e.stopPropagation();
+		setFiltersVisible(true)
+	}
 
 	return (
 		<div className='flex p-4 justify-between'>
-			<div>
+			<div className='flex items-center'>
 				<div className='relative'>
 					<BsThreeDots
 						className={'dark:text-white cursor-pointer'}
-						onClick={() => setFiltersVisible(!filtersVisible)}
+						onClick={openFilters}
 					/>
-					<FilterBooks filtersVisible={filtersVisible} />
+					<FilterBooks filtersVisible={filtersVisible} setType={setType} />
 				</div>
 				<div
 					className={`${
@@ -56,11 +66,7 @@ export default function TableUpdate({
 					<DeleteBtn handleDelete={handleDelete} />
 				</div>
 			</div>
-			<Pagination
-				data={data}
-				page={page}
-				setPage={setPage}
-			/>
+			<Pagination data={data} page={page} setPage={setPage} />
 		</div>
 	);
 }

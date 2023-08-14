@@ -9,6 +9,7 @@ const getUserBooks: RequestHandler<{ id: string }> = async (req: Request, res: R
   const search = req.query.search;
   const field: string = req.query.field as string;
   const order = req.query.order;
+  const type = req.query.type;
 
   const currentPage = Math.max((Number(page) || 1), 1)
   const options = {
@@ -26,7 +27,12 @@ const getUserBooks: RequestHandler<{ id: string }> = async (req: Request, res: R
         contains: search,
         mode: 'insensitive'
     }
-  }
+    }
+  
+  if (type?.length)
+    options.where = {
+      type
+    }
 
   try {
     const data = await prisma.user.findUnique({

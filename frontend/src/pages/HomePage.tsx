@@ -16,6 +16,7 @@ export default function HomePage() {
 	const [search, setSearchField] = useState<string>('');
 	const [order, setOrder] = useState<string>('desc');
 	const [field, setField] = useState<string>('createdAt');
+	const [type, setType] = useState<string>('');
 
 	const { user } = useAppSelector((state) => state.auth);
 	const { data, isLoading } = useGetUserBookQuery<BaseQueryArg<BaseQueryFn>>({
@@ -24,10 +25,12 @@ export default function HomePage() {
 		search,
 		field,
 		order,
+		type
 	});
 
 	const [bookToUpdate, setBookToUpdate] = useState<IBook[]>([]);
 	const [updateFields, setUpdateFields] = useState<boolean>(false);
+	const [filtersVisible, setFiltersVisible] = useState<boolean>(false);
 
 	const handleCheckBox = (e: ChangeEvent<HTMLInputElement>, value: IBook) => {
 		setBookToUpdate([...bookToUpdate, value]);
@@ -40,7 +43,7 @@ export default function HomePage() {
 	return isLoading ? (
 		<Spinner />
 	) : (
-		<section className='bg-gray-50 dark:bg-gray-900'>
+		<section className='bg-gray-50 dark:bg-gray-900 h-screen' onClick={() => setFiltersVisible(false)}>
 			<div className=' w-5/6 m-auto mt-32'>
 				<Search setSearchField={setSearchField} />
 				<TableUpdate
@@ -49,6 +52,9 @@ export default function HomePage() {
 					data={data}
 					page={page}
 					setPage={setPage}
+					setType={setType}
+					filtersVisible={filtersVisible}
+					setFiltersVisible={setFiltersVisible}
 				/>
 				<Table
 					handleCheckBox={handleCheckBox}

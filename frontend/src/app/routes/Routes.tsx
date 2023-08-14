@@ -13,6 +13,7 @@ import ServerError from '../errors/ServerError';
 import ErrorHandling from '../errors/ErrorHandling';
 import ProtectedRoute from './ProtectedRoute';
 import Landing from '../../pages/Landing';
+import Home from '../../pages/Home';
 
 export const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -20,6 +21,7 @@ export const router = createBrowserRouter(
 			<Route path='landing' element={<Landing />} />
 			<Route path='login' element={<LoginPage />} />
 			<Route path='register' element={<RegisterPage />} />
+			<Route path='home' element={<Home />} />
 			<Route element={<ProtectedRoute />}>
 				<Route path='' element={<HomePage />} />
 				<Route path='account' element={<AccountPage />} />
