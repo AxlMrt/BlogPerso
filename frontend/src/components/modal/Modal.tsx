@@ -2,8 +2,10 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAddNewBookMutation } from '../../app/store/api/booksApi';
 import { useAppSelector } from '../../app/store/configureStore';
-import { IBookRegister } from '../../app/types';
+import {  IBookRegister } from '../../app/types';
 import Svg from '../svg/Svg';
+import FormInput from '../form_input/FormInput';
+import { trimUserObject } from '../../app/utils';
 
 export default function Modal() {
 	const { user } = useAppSelector((state) => state.auth);
@@ -23,6 +25,7 @@ export default function Modal() {
 	};
 
 	const submitForm = async (data: IBookRegister) => {
+		data = trimUserObject(data);
 		if (user) data.userMail = user.email;
 
 		try {
@@ -60,89 +63,41 @@ export default function Modal() {
 							Ajouter un livre
 						</h3>
 						<form className='space-y-6' onSubmit={handleSubmit(submitForm)}>
-							<div>
-								<label
-									htmlFor='title'
-									className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
-								>
-									Titre
-								</label>
-								<input
-									type='text'
-									id='title'
-									className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
-									placeholder='ex: Harry Potter'
-									{...register('title')}
-									required
-								/>
-							</div>
-							<div>
-								<label
-									htmlFor='author'
-									className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
-								>
-									Auteur
-								</label>
-								<input
-									type='text'
-									id='author'
-									placeholder='ex: J. K. Rowling'
-									className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
-									{...register('author')}
-									required
-								/>
-							</div>
-							<div>
-								<label
-									htmlFor='type'
-									className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
-								>
-									Type
-								</label>
-								<input
-									type='text'
-									id='type'
-									placeholder='ex: Roman, Fantaisie'
-									className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
-									{...register('type', {
-										setValueAs: (x) => (x === '' ? null : x),
-									})}
-								/>
-							</div>
-							<div>
-								<label
-									htmlFor='year'
-									className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
-								>
-									Année de parution
-								</label>
-								<input
-									type='number'
-									id='year'
-									placeholder='ex: 1997'
-									className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
-									{...register('year', {
-										setValueAs: (x) => (x === '' ? null : parseInt(x)),
-									})}
-								/>
-							</div>
-							<div>
-								<label
-									htmlFor='publisher'
-									className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
-								>
-									Éditeur
-								</label>
-								<input
-									type='text'
-									id='publisher'
-									placeholder='ex: Bloomsbury Publishing'
-									className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'
-									{...register('publisher', {
-										setValueAs: (x) => (x === '' ? null : x),
-									})}
-								/>
-							</div>
+							<FormInput
+								type={'text'}
+								text={'Titre'}
+								holder={'ex: Harry Potter'}
+								register={register}
+								registerName={'title'}
+							/>
+							<FormInput
+								type={'text'}
+								text={'Auteur'}
+								holder={'ex: J.K. Rowling'}
+								register={register}
+								registerName={'author'}
+							/>
+							<FormInput
+								type={'text'}
+								text={'Genre'}
+								holder={'ex: Roman, Fantaisie'}
+								register={register}
+								registerName={'type'}
+							/>
+							<FormInput
+								type={'text'}
+								text={'Année de parution'}
+								holder={'ex: 1997'}
+								register={register}
+								registerName={'year'}
+							/>
+							<FormInput
+								type={'text'}
+								text={'Éditeur'}
+								holder={'ex: Bloomsbury Publishing'}
+								register={register}
+								registerName={'publisher'}
+							/>
 
 							<button
 								type='submit'
