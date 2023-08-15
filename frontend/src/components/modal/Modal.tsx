@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useAddNewBookMutation } from '../../app/store/api/booksApi';
@@ -20,11 +21,11 @@ export default function Modal() {
 	};
 
 	const closeModal = () => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 		(window as any).add_book.close();
 	};
 
-	const submitForm = async (data: IBookRegister) => {
+	const submitForm = async (data: any) => {
 		data = trimUserObject(data);
 		if (user) data.userMail = user.email;
 

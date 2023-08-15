@@ -1,3 +1,4 @@
+import { IoMdAddCircleOutline } from "react-icons/io";
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -19,13 +20,13 @@ export default function NavItems({ navigation }: Props) {
 							to={nav.dest}
 							className={
 								nav.class
-									? 'bg-gray-300 text-black  rounded-md px-3 py-2 text-sm font-medium dark:bg-gray-900 dark:text-gray-300 dark:hover:text-white'
+									? 'flex items-center justify-center bg-gray-300 text-black  rounded-md px-3 py-2 text-sm font-medium dark:bg-gray-900 dark:text-gray-300 dark:hover:text-white'
 									: 'hover:bg-gray-200 hover:text-black rounded-md px-3 py-2 text-sm font-medium dark:hover:text-white dark:hover:bg-gray-700'
 							}
 							onClick={nav.click}
 							key={index}
 						>
-							{nav.text}
+							{nav.class ? <IoMdAddCircleOutline size={20} /> : nav.text}
 						</Link>
 					);
 				})}

@@ -2,11 +2,12 @@
 export const loggedNavigation: { dest: string; text: string; class?: boolean, click?: () => void }[] = [
 		{
 			dest: '#',
-			text: 'Ajouter',
+			text: 'Ajout rapide',
 			class: true,
 			click: () => (window as any).add_book.showModal(),
 		},
 		{ dest: '/', text: 'Accueil' },
+		{ dest: '/table', text: 'Vos livres' },
 		{ dest: '#', text: 'Bibliothèque' },
 	];
 

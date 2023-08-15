@@ -1,72 +1,29 @@
-import { ChangeEvent, useState } from 'react';
-import Search from '../components/table/Search';
-import Table from '../components/table/Table';
-import TableUpdate from '../components/table_update/TableUpdate';
-import { IBook } from '../app/types';
-import { useAppSelector } from '../app/store/configureStore';
-import { useGetUserBookQuery } from '../app/store/api/userQueryApi';
+import ProfileCard from '../components/profile_card/ProfileCard'
 import Spinner from '../components/spinner/Spinner';
-import {
-	BaseQueryArg,
-	BaseQueryFn,
-} from '@reduxjs/toolkit/dist/query/baseQueryTypes';
+import { useGetUserQuery } from '../app/store/api/usersApi';
+import { useAppSelector } from '../app/store/configureStore';
+import ReadingProgress from '../components/reading_progress/ReadingProgress';
+import LikedBook from '../components/liked_book/LikedBook';
+import CallToAction from '../components/call_to_action/CallToAction';
 
 export default function HomePage() {
-	const [page, setPage] = useState<number>(1);
-	const [search, setSearchField] = useState<string>('');
-	const [order, setOrder] = useState<string>('desc');
-	const [field, setField] = useState<string>('createdAt');
-	const [type, setType] = useState<string>('');
-
-	const { user } = useAppSelector((state) => state.auth);
-	const { data, isLoading } = useGetUserBookQuery<BaseQueryArg<BaseQueryFn>>({
-		id: user.id,
-		page,
-		search,
-		field,
-		order,
-		type
-	});
-
-	const [bookToUpdate, setBookToUpdate] = useState<IBook[]>([]);
-	const [updateFields, setUpdateFields] = useState<boolean>(false);
-	const [filtersVisible, setFiltersVisible] = useState<boolean>(false);
-
-	const handleCheckBox = (e: ChangeEvent<HTMLInputElement>, value: IBook) => {
-		setBookToUpdate([...bookToUpdate, value]);
-		!e.target.checked &&
-			setBookToUpdate(
-				bookToUpdate.filter((book: IBook) => book.id !== value.id)
-			);
-	};
-
-	return isLoading ? (
+  const { user } = useAppSelector((state) => state.auth);
+	const { data: currentUser, isLoading } = useGetUserQuery(user.id);
+  return isLoading ? (
 		<Spinner />
 	) : (
-		<section className='bg-gray-50 dark:bg-gray-900 h-screen' onClick={() => setFiltersVisible(false)}>
-			<div className=' w-5/6 m-auto mt-32'>
-				<Search setSearchField={setSearchField} />
-				<TableUpdate
-					bookToUpdate={bookToUpdate}
-					updateFields={updateFields}
-					data={data}
-					page={page}
-					setPage={setPage}
-					setType={setType}
-					filtersVisible={filtersVisible}
-					setFiltersVisible={setFiltersVisible}
-				/>
-				<Table
-					handleCheckBox={handleCheckBox}
-					setUpdateFields={setUpdateFields}
-					updateFields={updateFields}
-					books={data.books}
-					field={field}
-					setField={setField}
-					order={order}
-					setOrder={setOrder}
-				/>
-			</div>
-		</section>
+		<main className='grid grid-cols-1 lg:grid-cols-2 gap-6 my-12 w-2xl container px-2 mx-auto bg-gray-50 dark:bg-gray-900'>
+			<aside className=''>
+				<ProfileCard currentUser={currentUser!} />
+				<ReadingProgress books={currentUser!.books} />
+				<LikedBook books={currentUser!.books} />
+			</aside>
+
+			<article className=''>
+				<CallToAction />
+
+				
+			</article>
+		</main>
 	);
 }
