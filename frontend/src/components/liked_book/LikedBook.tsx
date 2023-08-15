@@ -6,7 +6,6 @@ interface Props {
 
 export default function LikedBook({ books }: Props) {
 	const bookInProgress: IBook[] = books.filter((book) => book.feedBack > 4);
-
 	return (
 		<div className='bg-white dark:bg-gray-800 shadow mt-6  rounded-lg p-6'>
 			<h3 className='text-gray-600 dark:text-white text-sm font-semibold mb-4'>

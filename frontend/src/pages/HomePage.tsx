@@ -10,9 +10,9 @@ export default function HomePage() {
   return  (
 		<main className='grid grid-cols-1 lg:grid-cols-2 gap-6 my-12 w-2xl container px-2 mx-auto bg-gray-50 dark:bg-gray-900'>
 			<aside className=''>
-				<ProfileCard currentUser={user} />
-				<ReadingProgress books={user.books} />
-				<LikedBook books={user.books} />
+				<ProfileCard currentUser={user!} />
+				<ReadingProgress books={user!['books']} />
+				<LikedBook books={user!['books']} />
 			</aside>
 
 			<article className=''>

@@ -27,7 +27,8 @@ export default function Modal() {
 
 	const submitForm = async (data: any) => {
 		data = trimUserObject(data);
-		if (user) data.userMail = user.email;
+		if (user) data.userMail = user['email'];
+		if (data.year) data.year = parseInt(data.year);
 
 		try {
 			await addNewBook(data).then(() => navigate(0));

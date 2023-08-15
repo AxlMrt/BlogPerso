@@ -23,6 +23,7 @@ export default function AccountPage() {
 
 	const submitForm = async (data: any) => {
 		data = trimUserObject(data);
+		data.id = user!['id'];
 		if (data.password !== data.confirmPassword) alert('Password mismatch');
 		delete data.confirmPassword;
 
@@ -33,16 +34,16 @@ export default function AccountPage() {
 			formData.append('user', JSON.stringify(data));
 
 			try {
-				await updateUser({ id: user.id, formData })
+				await updateUser({ id: user!['id'], formData })
 					.then((res: any) => dispatch(setUser(res.data)))
 					.finally(() => navigate(0));
 			} catch (error) {
 				console.error('Failed to update the user: ', error);
 			}
 		} else {
-			data.photo = user.photo;
+			data.photo = user!['photo'];
 			try {
-				await updateUser({ id: user.id, formData: data })
+				await updateUser({ id: user!['id'], formData: data })
 					.then((res: any) => dispatch(setUser(res.data)))
 					.finally(() => navigate(0));
 			} catch (error) {
@@ -62,21 +63,21 @@ export default function AccountPage() {
 						<FormInput
 							type={'text'}
 							text={'Prénom'}
-							holder={user.firstName}
+							holder={user!['firstName']}
 							register={register}
 							registerName={'firstName'}
 						/>
 						<FormInput
 							type={'text'}
 							text={'Nom'}
-							holder={user.lastName}
+							holder={user!['lastName']}
 							register={register}
 							registerName={'lastName'}
 						/>
 						<FormInput
 							type={'email'}
 							text={'E-mail'}
-							holder={user.email}
+							holder={user!['email']}
 							register={register}
 							registerName={'email'}
 						/>
@@ -94,15 +95,7 @@ export default function AccountPage() {
 							register={register}
 							registerName={'confirmPassword'}
 						/>
-						<div className='hidden'>
-							<input
-								type='text'
-								{...register('id', {
-									setValueAs: (x: string) => (x ? user.id : user.id),
-								})}
-							/>
-						</div>
-						<DragAndDrop photo={user.photo} file={file} setFile={setFile} register={register} />
+						<DragAndDrop photo={user!['photo']} file={file} setFile={setFile} register={register} />
 					</div>
 
 					<div className='flex flex-col-reverse gap-6 mt-6 md:flex-row md:justify-between'>

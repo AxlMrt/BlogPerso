@@ -6,7 +6,7 @@ import { IBook } from '../../app/types';
 import { useAppSelector } from '../../app/store/configureStore';
 
 export default function DeleteModal() {
-	const { user } = useAppSelector((state) => state.auth);
+	const { user } = useAppSelector((state: { auth: any; }) => state.auth);
   const [deleteUser] = useDeleteUserMutation();
   const [deleteBook] = useDeleteBookMutation();
 
@@ -23,7 +23,7 @@ export default function DeleteModal() {
 	const handleDelete = async () => {
 		try {
 			await user.books.map((book: IBook) => deleteBook(book.id));
-			await deleteUser(user.id).then(() => localStorage.clear());
+			await deleteUser(user.id!).then(() => localStorage.clear());
     } catch (error) {
       console.log("Couldn't delete this user:", error)
     }
