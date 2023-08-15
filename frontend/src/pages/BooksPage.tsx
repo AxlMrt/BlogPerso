@@ -19,7 +19,7 @@ export default function BooksPage() {
 	const [type, setType] = useState<string>('');
 
 	const { user } = useAppSelector((state) => state.auth);
-	const { data, isLoading, isFetching } = useGetUserBookQuery<BaseQueryArg<BaseQueryFn>>({
+	const { data, isLoading } = useGetUserBookQuery<BaseQueryArg<BaseQueryFn>>({
 		id: user!["id"],
 		page,
 		search,
@@ -40,10 +40,14 @@ export default function BooksPage() {
 			);
 	};
 
-	return isLoading || isFetching ? (
+
+	return isLoading ? (
 		<Spinner />
 	) : (
-		<section className='bg-gray-50 dark:bg-gray-900 h-screen' onClick={() => setFiltersVisible(false)}>
+		<section
+			className='bg-gray-50 dark:bg-gray-900 h-screen'
+			onClick={() => setFiltersVisible(false)}
+		>
 			<div className=' w-5/6 m-auto mt-32'>
 				<Search setSearchField={setSearchField} />
 				<TableUpdate
