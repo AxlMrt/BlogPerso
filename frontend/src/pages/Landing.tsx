@@ -1,8 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import heroImg from '../assets/hero.png'
+import { useAppSelector } from '../app/store/configureStore';
 
 export default function Landing() {
-	localStorage.removeItem('user');
+	const { user } = useAppSelector((state) => state.auth);
+	if (user) return <Navigate to="/" />
+	
   return (
 		<section className='bg-gray-100 dark:bg-gray-900'>
 			<div className='h-screen flex flex-col lg:flex-row items-center justify-center px-6'>
@@ -15,7 +18,6 @@ export default function Landing() {
 							Découvrez notre application de gestion de livres, une solution
 							intuitive pour organiser et digitaliser votre bibliothèque personnelle.
 						</p>
-
 						<div className='flex flex-col items-center justify-center space-y-3 sm:space-x-4 sm:space-y-0 sm:flex-row lg:justify-start'>
 							<Link
 								to='/register'

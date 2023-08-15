@@ -5,17 +5,24 @@ import { useAppDispatch, useAppSelector } from './app/store/configureStore';
 import { useEffect, useState } from 'react';
 import { toggleTheme } from './app/store/slices/themeSlice';
 import { getTheme } from './app/utils';
+import { useGetUserDetailsQuery } from './app/store/api/authApi';
+import { setUser } from './app/store/slices/authSlice';
 
 function App() {
-	const dispatch = useAppDispatch();
+	const { token } = useAppSelector((state) => state.auth);
 	const darkMode = useAppSelector((state) => state.theme.darkMode);
+	const dispatch = useAppDispatch();
 	const [navBar, setNavbar] = useState<boolean>(false);
 	const [profileBar, setProfilebar] = useState<boolean>(false);
+	const { data } = useGetUserDetailsQuery('userDetails', {
+		pollingInterval: 900000, // 15mins
+	});
 
 	useEffect(() => {
+		if (data) dispatch(setUser(data));
 		dispatch(toggleTheme(darkMode));
 		document.documentElement.classList.add(getTheme(darkMode));
-	}, [darkMode, dispatch]);
+	}, [darkMode, data, dispatch, token]);
 
 	const handleClick = () => {
 		setProfilebar(false);

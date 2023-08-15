@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction, RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 import secrets from "../config/secrets";
-import prisma from "../../prisma/lib/prisma";
-import { IDataStoredInToken  } from "../config/types";
 import WrongAuthenticationTokenException from "../config/exceptions/WrongAuthToken";
 import MissingAuthenticationTokenException from "../config/exceptions/MissingAuthToken";
 

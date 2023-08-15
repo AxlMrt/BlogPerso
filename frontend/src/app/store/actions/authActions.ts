@@ -9,8 +9,6 @@ export const userLogin = createAsyncThunk(
     try {
       const data = await agent.Auth.auth(email, password);
       localStorage.setItem('token', data.tokenData.token);
-      localStorage.setItem('user', JSON.stringify(data.others));
-
       dispatch(setUser(data.others));
 
       return data;
@@ -30,6 +28,22 @@ export const userLogout = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       return agent.Auth.logout();
+    } catch (error: any) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
+
+export const getUserDetails = createAsyncThunk(
+  'auth/getUserDetails',
+  async (_, { rejectWithValue }) => {
+    try {
+      return agent.Auth.getUserDetails();
     } catch (error: any) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);

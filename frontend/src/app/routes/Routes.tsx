@@ -5,7 +5,6 @@ import {
 	createRoutesFromElements,
 } from 'react-router-dom';
 import App from '../../App';
-import HomePage from '../../pages/BooksPage';
 import LoginPage from '../../pages/LoginPage';
 import RegisterPage from '../../pages/RegisterPage';
 import AccountPage from '../../pages/AccountPage';
@@ -13,7 +12,8 @@ import ServerError from '../errors/ServerError';
 import ErrorHandling from '../errors/ErrorHandling';
 import ProtectedRoute from './ProtectedRoute';
 import Landing from '../../pages/Landing';
-import Home from '../../pages/HomePage';
+import BooksPage from '../../pages/BooksPage';
+import HomePage from '../../pages/HomePage';
 
 export const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -22,8 +22,8 @@ export const router = createBrowserRouter(
 			<Route path='login' element={<LoginPage />} />
 			<Route path='register' element={<RegisterPage />} />
 			<Route element={<ProtectedRoute />}>
-				<Route path='' element={<Home />} />
-				<Route path='table' element={<HomePage />} />
+				<Route path='' element={<HomePage />} />
+				<Route path='table' element={<BooksPage />} />
 				<Route path='account' element={<AccountPage />} />
 			</Route>
 			<Route

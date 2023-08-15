@@ -5,7 +5,7 @@ import createToken from "../utils/tokens";
 import createCookie from "../utils/cookies";
 import WrongCredentials from "../config/exceptions/WrongCred";
 import HttpException from "../config/exceptions/HttpException";
-import { IUserLogin } from "../config/types";
+import { IUser, IUserLogin } from "../config/types";
 
 const login: RequestHandler<{ email: string, password: string }> = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -39,9 +39,26 @@ const logout: RequestHandler = async (req: Request, res: Response) => {
   res.status(200).json();
 }
 
+const getUserProfile = async (req: Request, res: Response, next: NextFunction) => {
+  const { _id } = req.body.user;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: _id },
+      include: { books: true }
+    })
+  
+    const { password, role, createdAt, updatedAt, ...others } = user as IUser;
+    res.json(others)
+  } catch (error) {
+     next(new HttpException(500, "Something went wrong"));
+  }
+}
+
 const _ = {
   login,
-  logout
+  logout,
+  getUserProfile
 }
 
 export default _;

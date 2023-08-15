@@ -4,7 +4,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 export default function ProtectedRoute() {
 	const { user } = useAppSelector((state) => state.auth);
-	if (!user) return <Navigate to='/landing' replace />;
+	if (!user) return <Navigate to='/landing' />;
 
 		// returns child route elements
 	return <Outlet />;

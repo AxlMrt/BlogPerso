@@ -12,8 +12,12 @@ export default function LoginPage() {
 	
 	const { register, handleSubmit } = useForm<IUserLogin>();
 
-	const submitForm = (data: IUserLogin) => {
-		dispatch(userLogin(data)).then(() => navigate('/'));
+	const submitForm = async (data: IUserLogin) => {
+		try {
+			await dispatch(userLogin(data)).then(() => navigate('/'));
+		} catch (error) {
+			console.log('Failed to login: ', error)
+		}
 	};
 
 	return (

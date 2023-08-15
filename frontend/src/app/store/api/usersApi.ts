@@ -8,22 +8,22 @@ export const userApi = createApi({
   baseQuery,
   endpoints: (builder) => ({
     getUsers: builder.query<IUser, void>({
-      query: () => ({ url: '/users', method: 'get' })
+      query: () => ({ url: '/users', method: 'GET' })
     }),
     getUser: builder.query<IUser, string>({
-      query: (id) => ({ url: `/users/${id}`, method: 'get' })
+      query: (id) => ({ url: `/users/${id}`, method: 'GET' })
     }),
     addNewUser: builder.mutation<IUser, IUser>({
       query: (user) => ({
         url: '/users',
-        method: 'post',
+        method: 'POST',
         body: user
       }),
     }),
     updateUser: builder.mutation<any, any>({
       query: (data) => ({
         url: `/users/${data.id}`,
-        method: 'put',
+        method: 'PUT',
         body: data.formData
       }),
     }),

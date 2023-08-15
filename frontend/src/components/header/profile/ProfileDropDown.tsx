@@ -3,13 +3,15 @@ import { useAppDispatch } from "../../../app/store/configureStore";
 import { logout } from "../../../app/store/slices/authSlice";
 import { Dispatch, SetStateAction } from "react";
 
+interface Props {
+	profileBar: boolean;
+	setProfilebar: Dispatch<SetStateAction<boolean>>;
+}
+
 export default function ProfileDropDown({
 	profileBar,
 	setProfilebar,
-}: {
-	profileBar: boolean;
-	setProfilebar: Dispatch<SetStateAction<boolean>>;
-}) {
+}: Props) {
 	const dispatch = useAppDispatch();
 	const disconnect = () => {
 		setProfilebar(false);

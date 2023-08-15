@@ -1,37 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import { userLogin, userLogout } from '../actions/authActions';
-import { IUser } from '../../types';
-import { RootState } from '../configureStore';
+import { createSlice } from '@reduxjs/toolkit';
+import { getUserDetails, userLogin, userLogout } from '../actions/authActions';
 
 const token = localStorage.getItem('token')
 ? localStorage.getItem('token')
 : null;
 
-const user = localStorage.getItem('user')
-? JSON.parse(localStorage.getItem('user')!)
-: null;
-
-const usersAdapter = createEntityAdapter<IUser>();
-interface UserState {
-  loading: boolean,
-  user: any,
-  token: string | null,
+const initialState = {
+  token,
+  user: null,
+  loading: false,
   error: null,
 }
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState: usersAdapter.getInitialState<UserState>({
-  loading: false,
-  user,
-  token,
-  error: null,
-}),
+  initialState,
 reducers: {
     logout: (state) => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    window.location.replace('/')
       state.loading = false;
       state.user = null;
       state.token = null;
@@ -39,7 +27,6 @@ reducers: {
     },
     setUser: (state, action) => {
       state.user = action.payload;
-      localStorage.setItem('user', JSON.stringify(action.payload));
     }
   },
   extraReducers: (builder) => {
@@ -71,10 +58,22 @@ reducers: {
       state.loading = false;
       (state.error as any) = payload;
     });
+    //user details
+    builder.addCase(getUserDetails.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(getUserDetails.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.user = payload;
+      state.token = token;
+    });
+    builder.addCase(getUserDetails.rejected, (state, { payload }) => {
+      state.loading = false;
+      (state.error as any) = payload;
+    });
   },
 });
 
-export const usersSelectors = usersAdapter.getSelectors((state: RootState) => state.auth);
 export const { logout, setUser } = authSlice.actions;
-
 export default authSlice;
