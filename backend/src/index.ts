@@ -8,6 +8,7 @@ import UserRoute from "./routes/user";
 import AuthRoute from "./routes/auth";
 import BookRoute from "./routes/book";
 import QueryRoute from './routes/userQuery';
+import RefreshRoute from './routes/refreshToken'
 
 const PORT = secrets.port || 8000;
 const app: Application = express();
@@ -30,6 +31,7 @@ app.use(`${baseURL}/users`, UserRoute);
 app.use(`${baseURL}/login`, AuthRoute);
 app.use(`${baseURL}/books`, BookRoute);
 app.use(`${baseURL}/query`, QueryRoute);
+app.use(`${baseURL}/refresh`, RefreshRoute);
 
 app.use(express.static(path.join(__dirname, '../public')));
 

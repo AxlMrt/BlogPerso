@@ -9,6 +9,7 @@ export const userLogin = createAsyncThunk(
     try {
       const data = await agent.Auth.auth(email, password);
       localStorage.setItem('token', data.tokenData.token);
+      localStorage.setItem('refresh', data.refreshTokenData.token);
       dispatch(setUser(data.others));
 
       return data;

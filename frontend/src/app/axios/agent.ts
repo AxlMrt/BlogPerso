@@ -10,6 +10,31 @@ axios.interceptors.request.use((config) => {
   return config;
 });
 
+axios.interceptors.response.use((response) => {
+  return response;
+}, async function (error) {
+  const originalRequest = error.config;
+  let refreshToken = localStorage.getItem('refresh');
+
+  if (error.config.url != "/refresh" && error.response.status === 401 && !originalRequest._retry) {
+    originalRequest._retry = true;
+    if (refreshToken && refreshToken != "") {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${refreshToken}`;
+      console.log('refreshToken');
+      await axios.post('/refresh').then((response) => {
+        localStorage.setItem('token', response.data.accessToken)
+        originalRequest.headers['Authorization'] = `Bearer ${response.data.accessToken}`;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.accessToken}`;
+      }).catch((err) => {
+        console.log(err.response.status);
+        refreshToken = null;
+      });
+      return axios(originalRequest);
+    }
+  }
+  return Promise.reject(error);
+});
+
 const responseBody = (response: AxiosResponse) => response.data;
 
 const requests = {

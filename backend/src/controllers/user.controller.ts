@@ -1,7 +1,7 @@
 import { RequestHandler, Request, Response, NextFunction } from "express"
 import bcrypt from "bcrypt";
 import prisma from "../../prisma/lib/prisma";
-import createToken from "../utils/tokens";
+import tokensFn from "../utils/tokens";
 import createCookie from "../utils/cookies";
 import HttpException from "../config/exceptions/HttpException";
 
@@ -34,6 +34,14 @@ const createUser: RequestHandler = async (req: Request, res: Response, next: Nex
   const cryptedPassword = await bcrypt.hash(req.body.password, salt);
 
   try {
+    const user = await prisma.user.findUnique({
+      where: { email: req.body.email },
+    });
+
+    if (user)
+      next(new HttpException(409, "Already exist"));
+
+
     const newUser = await prisma.user.create({
       data: { 
         ...req.body,
@@ -42,11 +50,12 @@ const createUser: RequestHandler = async (req: Request, res: Response, next: Nex
       },
     });
 
-    const tokenData = createToken(newUser);
+    const tokenData = tokensFn.createToken(newUser);
+    const refreshTokenData = tokensFn.createRefreshToken(newUser);
     const { password, role, createdAt, updatedAt, ...others } = newUser;
 
     res.setHeader('Set-Cookie', [createCookie(tokenData)]);
-    res.status(201).json({ others, tokenData });
+    res.status(201).json({ others, tokenData, refreshTokenData });
   } catch (error) {
     next(new HttpException(500, "Something went wrong"));
   }
