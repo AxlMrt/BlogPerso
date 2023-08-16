@@ -1,12 +1,12 @@
 import { Outlet } from 'react-router-dom';
 import Header from './components/header/Header';
-import Modal from './components/modal/Modal';
 import { useAppDispatch, useAppSelector } from './app/store/configureStore';
 import { useEffect, useState } from 'react';
 import { toggleTheme } from './app/store/slices/themeSlice';
 import { getTheme } from './app/utils';
 import { useGetUserDetailsQuery } from './app/store/api/authApi';
 import { setUser } from './app/store/slices/authSlice';
+import AddBookModal from './components/modal/AddBookModal';
 
 function App() {
 	const { token } = useAppSelector((state) => state.auth);
@@ -41,7 +41,7 @@ function App() {
 				setNavBar={setNavbar}
 			/>
 			<Outlet />
-			<Modal />
+			<AddBookModal />
 		</main>
 	);
 }

@@ -1,9 +1,16 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { IRegister } from '../app/types';
 import { useAddNewUserMutation } from '../app/store/api/usersApi';
-import FormInput from '../components/form_input/FormInput';
+import { signupFields } from '../app/formFields';
+import Form from '../components/form/Form';
+import FormSubmitButton from '../components/buttons/form_submit/FormSubmitButton';
+import LogsFooter from '../components/logs_footer/LogsFooter';
+import LogsTitle from '../components/logs_header/LogsTitle';
+import LogsHeader from '../components/logs_header/LogsHeader';
+
+const FORM_ID = 'registerPage';
 
 export default function RegisterPage() {
 	const [addUser, { isLoading, isError, isSuccess }] = useAddNewUserMutation();
@@ -12,7 +19,7 @@ export default function RegisterPage() {
 
 	useEffect(() => {
 		if (isSuccess) navigate('/login');
-		if (isError) navigate('/');
+		if (isError) navigate('/register');
 	}, [navigate, isSuccess, isError]);
 
 	const submitForm = async (data: IRegister) => {
@@ -21,7 +28,6 @@ export default function RegisterPage() {
 		
 		data.email = data.email.toLowerCase();
 		delete data.confirmPassword;
-
 		try {
 			await addUser(data).unwrap();
 		} catch (error) {
@@ -32,73 +38,28 @@ export default function RegisterPage() {
 	return (
 		<section className='bg-gray-50 dark:bg-gray-900'>
 			<div className='flex flex-col items-center justify-center px-6 h-screen'>
-				<Link
-					to='/'
-					className='flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white'
-				>
-					M-A Bibliotheque
-				</Link>
-				<div className='w-full bg-white rounded-lg shadow dark:border sm:max-w-md dark:bg-gray-800 dark:border-gray-700'>
+				<LogsHeader />
+				<div className='w-full bg-white rounded-lg shadow dark:border sm:max-w-xl dark:bg-gray-800 dark:border-gray-700'>
 					<div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
-						<h1 className='text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white'>
-							S'inscrire
-						</h1>
-						<form
-							className='space-y-4 md:space-y-6'
-							onSubmit={handleSubmit(submitForm)}
-						>
-							<FormInput
-								type={'email'}
-								text={'Votre email'}
-								holder={'john.doe@gmail.com'}
-								register={register}
-								registerName={'email'}
-							/>
-							<FormInput
-								type={'text'}
-								text={'Prénom'}
-								holder={'John'}
-								register={register}
-								registerName={'firstName'}
-							/>
-							<FormInput
-								type={'text'}
-								text={'Nom'}
-								holder={'Doe'}
-								register={register}
-								registerName={'lastName'}
-							/>
-							<FormInput
-								type={'password'}
-								text={'Mot de passe'}
-								holder={'••••••••'}
-								register={register}
-								registerName={'password'}
-							/>
-							<FormInput
-								type={'password'}
-								text={'Confirmer mot de passe'}
-								holder={'••••••••'}
-								register={register}
-								registerName={'confirmPassword'}
-							/>
-							<button
-								type='submit'
-								className='w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'
-								disabled={isLoading}
-							>
-								{isLoading ? 'Chargement..' : 'Créer'}
-							</button>
-							<p className='text-sm font-light text-gray-500 dark:text-gray-400'>
-								Déjà un compte?{' '}
-								<Link
-									to='/login'
-									className='font-medium text-primary-600 hover:underline dark:text-primary-500'
-								>
-									Se connecter
-								</Link>
-							</p>
-						</form>
+						<LogsTitle title={"S'inscrire"} />
+						<Form
+							id={FORM_ID}
+							formClass={'space-y-4 md:space-y-6'}
+							handleSubmit={handleSubmit}
+							submitForm={submitForm}
+							fields={signupFields}
+							register={register}
+						/>
+						<FormSubmitButton
+							label={'Créer'}
+							isLoading={isLoading}
+							formId={FORM_ID}
+						/>
+						<LogsFooter
+							label={'Déjà un compte'}
+							dest={'/login'}
+							buttonLabel={'Se connecter'}
+						/>
 					</div>
 				</div>
 			</div>

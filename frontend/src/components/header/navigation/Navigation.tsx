@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useAppSelector } from '../../../app/store/configureStore';
 import NavLogo from '../logo/NavLogo';
-import { loggedNavigation, notLoggedNavigation } from '../navigation';
+import { loggedNavigation, notLoggedNavigation } from '../../../app/navigation';
 import NavItems from './NavItems';
 
 export default function Navigation() {
