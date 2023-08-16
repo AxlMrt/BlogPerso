@@ -4,8 +4,8 @@ import { useAppSelector } from '../app/store/configureStore';
 
 export default function Landing() {
 	const { user } = useAppSelector((state) => state.auth);
-	if (user) return <Navigate to="/" />
-	
+	if (user) return <Navigate to="/" replace={true} />
+
   return (
 		<section className='bg-gray-100 dark:bg-gray-900'>
 			<div className='h-screen flex flex-col lg:flex-row items-center justify-center px-6'>

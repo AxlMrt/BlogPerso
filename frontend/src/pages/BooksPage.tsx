@@ -45,7 +45,7 @@ export default function BooksPage() {
 		<Spinner />
 	) : (
 		<section
-			className='bg-gray-50 dark:bg-gray-900 h-screen'
+			className='bg-gray-100 dark:bg-gray-900 h-screen'
 			onClick={() => setFiltersVisible(false)}
 		>
 			<div className=' w-5/6 m-auto mt-32'>

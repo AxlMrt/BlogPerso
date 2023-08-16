@@ -25,8 +25,13 @@ export default function NavItems({ navigation }: Props) {
 							}
 							onClick={nav.click}
 							key={index}
+							reloadDocument={nav.dest === '/'}
 						>
-							{nav.text === 'Ajout rapide' ? <IoMdAddCircleOutline size={20} /> : nav.text}
+							{nav.text === 'Ajout rapide' ? (
+								<IoMdAddCircleOutline size={20} />
+							) : (
+								nav.text
+							)}
 						</Link>
 					);
 				})}

@@ -9,27 +9,46 @@ import FormSubmitButton from '../components/buttons/form_submit/FormSubmitButton
 import LogsFooter from '../components/logs_footer/LogsFooter';
 import LogsTitle from '../components/logs_header/LogsTitle';
 import LogsHeader from '../components/logs_header/LogsHeader';
+import { isEmail, validPassword } from '../app/utils';
+import { toast } from 'react-toastify';
+import { BaseQueryArg, BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 
 const FORM_ID = 'registerPage';
 
 export default function RegisterPage() {
-	const [addUser, { isLoading, isError, isSuccess }] = useAddNewUserMutation();
+	const [addUser, { isLoading, isError, isSuccess, error }] = useAddNewUserMutation<BaseQueryArg<BaseQueryFn>>();
 	const { register, handleSubmit } = useForm<IRegister>();
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (isSuccess) navigate('/login');
 		if (isError) navigate('/register');
-	}, [navigate, isSuccess, isError]);
+		if (error && error.originalStatus === 409) toast.error('Cet email est déjà utilisé')
+	}, [navigate, isSuccess, isError, error]);
 
 	const submitForm = async (data: IRegister) => {
-		if (data.password !== data.confirmPassword)
-			alert('Password mismatch');
+
+		if (!isEmail(data.email)) {
+			toast.error('Entrez un email valide.')
+			return;
+		}
+
+		if (!validPassword(data.password)) {
+			toast.error(
+				'Votre mot de passe doit comporter entre 6 et 20 caractères et contenir une majuscule, un chiffre et un caractère spécial.'
+			);
+			return;
+		}
+
+		if (data.password !== data.confirmPassword) {
+			toast.error('Les mots de passe ne correspondent pas.');
+			return;
+		}
 		
 		data.email = data.email.toLowerCase();
 		delete data.confirmPassword;
 		try {
-			await addUser(data).unwrap();
+			await addUser(data);
 		} catch (error) {
 			console.error('Failed to create user: ', error);
 		}

@@ -9,19 +9,33 @@ import FormSubmitButton from "../components/buttons/form_submit/FormSubmitButton
 import LogsFooter from "../components/logs_footer/LogsFooter";
 import LogsTitle from "../components/logs_header/LogsTitle";
 import LogsHeader from "../components/logs_header/LogsHeader";
+import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 const FORM_ID = 'loginPage';
 
 export default function LoginPage() {
-	const { loading } = useAppSelector((state) => state.auth);
+	const { loading, success, error } = useAppSelector((state) => state.auth);
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 	
 	const { register, handleSubmit } = useForm<IUserLogin>();
 
+	useEffect(() => {
+		if (error) {
+			navigate('/login');
+			toast.error('Vos identifiants sont incorrectes.');
+		}
+
+		if (success === 'true') {
+			navigate('/');
+			toast.success('Connexion réussie!');
+		}
+	}, [navigate, error, success]);
+
 	const submitForm = async (data: IUserLogin) => {
 		try {
-			await dispatch(userLogin(data)).then(() => navigate('/'));
+			await dispatch(userLogin(data));
 		} catch (error) {
 			console.log('Failed to login: ', error)
 		}

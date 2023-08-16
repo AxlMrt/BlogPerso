@@ -10,7 +10,7 @@ export default function Search({ setSearchField }: Props) {
 		setSearchField(e.target.value);
 	};
 	return (
-		<div className='flex flex-col items-left justify-between pb-4 bg-gray-100 dark:bg-gray-900 md:flex-row md:items-center'>
+		<div className='flex flex-col items-left justify-between pb-4 md:flex-row md:items-center'>
 			<label htmlFor='table-search' className='sr-only'>
 				Search
 			</label>

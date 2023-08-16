@@ -6,7 +6,7 @@ import CallToAction from '../components/call_to_action/CallToAction';
 
 export default function HomePage() {
 	const { user } = useAppSelector((state) => state.auth);
-
+	
   return  (
 		<main className='grid grid-cols-1 lg:grid-cols-2 gap-6 my-12 w-2xl container px-2 mx-auto bg-gray-50 dark:bg-gray-900'>
 			<aside className=''>

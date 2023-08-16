@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import Header from './components/header/Header';
 import { useAppDispatch, useAppSelector } from './app/store/configureStore';
 import { useEffect, useState } from 'react';
@@ -7,11 +7,14 @@ import { getTheme } from './app/utils';
 import { useGetUserDetailsQuery } from './app/store/api/authApi';
 import { setUser } from './app/store/slices/authSlice';
 import AddBookModal from './components/modal/AddBookModal';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 	const { token } = useAppSelector((state) => state.auth);
 	const darkMode = useAppSelector((state) => state.theme.darkMode);
 	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 	const [navBar, setNavbar] = useState<boolean>(false);
 	const [profileBar, setProfilebar] = useState<boolean>(false);
 	const { data } = useGetUserDetailsQuery('userDetails', {
@@ -20,9 +23,10 @@ function App() {
 
 	useEffect(() => {
 		if (data) dispatch(setUser(data));
+	
 		dispatch(toggleTheme(darkMode));
 		document.documentElement.classList.add(getTheme(darkMode));
-	}, [darkMode, data, dispatch, token]);
+	}, [darkMode, data, dispatch, navigate, token]);
 
 	const handleClick = () => {
 		setProfilebar(false);
@@ -40,8 +44,9 @@ function App() {
 				navBar={navBar}
 				setNavBar={setNavbar}
 			/>
-			<Outlet />
 			<AddBookModal />
+			<Outlet />
+			<ToastContainer position='bottom-right' hideProgressBar theme='colored' />
 		</main>
 	);
 }
