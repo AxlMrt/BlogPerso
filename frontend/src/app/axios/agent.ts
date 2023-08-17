@@ -22,7 +22,8 @@ axios.interceptors.response.use((response) => {
       axios.defaults.headers.common['Authorization'] = `Bearer ${refreshToken}`;
       console.log('refreshToken');
       await axios.post('/refresh').then((response) => {
-        localStorage.setItem('token', response.data.accessToken)
+        localStorage.setItem('token', response.data.tokenData.token);
+        localStorage.setItem('refresh', response.data.refreshTokenData.token);
         originalRequest.headers['Authorization'] = `Bearer ${response.data.accessToken}`;
         axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.accessToken}`;
       }).catch((err) => {

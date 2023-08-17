@@ -23,6 +23,7 @@ export default function HamburgerNavItems({ navigation }: Props) {
 						}
 						onClick={nav.click}
 						key={index}
+						reloadDocument={nav.dest === '/'}
 					>
 						{nav.text}
 					</Link>

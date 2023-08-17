@@ -27,7 +27,7 @@ CREATE TABLE "Book" (
     "type" TEXT,
     "year" INTEGER,
     "publisher" TEXT,
-    "feedBack" INTEGER NOT NULL DEFAULT 0,
+    "feedBack" INTEGER NOT NULL DEFAULT 0 CHECK (feedBack < 5),
     "isRead" "Read" NOT NULL DEFAULT 'NOT_READ',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,

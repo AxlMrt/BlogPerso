@@ -20,6 +20,7 @@ const createRefreshToken = (user: any): ITokenData => {
   const dataStoredInToken: IDataStoredInToken = {
     _id: user.id
   };
+
   const token = jwt.sign(dataStoredInToken, secrets.jwtRefresh, { expiresIn });
 
   return {
