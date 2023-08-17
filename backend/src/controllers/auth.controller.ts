@@ -58,10 +58,50 @@ const getUserProfile = async (req: Request, res: Response, next: NextFunction) =
   }
 }
 
+const forgetPassword = async (req: Request, res: Response, next: NextFunction) => {
+  const { email } = req.body;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email }
+    })
+
+    if (!user)
+      next(new HttpException(404, 'User not found'));
+  
+    const { password, role, createdAt, updatedAt, ...others } = user as IUser;
+    res.json(others)
+  } catch (error) {
+     next(new HttpException(500, "Something went wrong"));
+  }
+}
+
+const resetPassword = async (email: string) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email }
+    });
+
+     if (!user)
+       throw new HttpException(404, 'User not found');
+    
+    const otpDetails = {
+      email,
+      subject: "Password reset",
+      message: "Enter the code below to reset your password.",
+      duration: 2,
+    }
+  } catch (error) {
+    
+  }
+}
+
 const _ = {
   login,
   logout,
-  getUserProfile
+  getUserProfile,
+  forgetPassword,
+  resetPassword
 }
 
 export default _;
