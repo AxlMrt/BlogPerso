@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice } from '@reduxjs/toolkit';
 import { getUserDetails, userLogin, userLogout } from '../actions/authActions';
+import { userApi } from '../api/usersApi';
 
 const token = localStorage.getItem('token')
 ? localStorage.getItem('token')
@@ -28,7 +29,7 @@ const authSlice = createSlice({
     logout: (state) => {
       localStorage.removeItem('token');
       localStorage.removeItem('refresh');
-      window.location.replace('/login')
+      sessionStorage.clear();
       state.loading = false;
       state.user = null;
       state.token = null;
@@ -90,6 +91,13 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = true;
     });
+    builder.addMatcher(userApi.endpoints.addNewUser.matchFulfilled, (state, action) => {
+      state.user = action.payload.others;
+      state.token = action.payload.tokenData.token;
+      state.refreshToken = action.payload.refreshTokenData.token;
+      sessionStorage.setItem('token', action.payload.tokenData.token);
+      window.location.replace('/')
+    })
   },
 });
 

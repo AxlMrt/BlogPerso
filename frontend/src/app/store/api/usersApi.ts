@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { IUser } from "../../types";
+import { IRegister, IUser } from "../../types";
 import baseQuery from "./baseQuery";
 
 export const userApi = createApi({
@@ -13,14 +13,14 @@ export const userApi = createApi({
     getUser: builder.query<IUser, string>({
       query: (id) => ({ url: `/users/${id}`, method: 'GET' })
     }),
-    addNewUser: builder.mutation<IUser, IUser>({
+    addNewUser: builder.mutation<IRegister, IRegister>({
       query: (user) => ({
         url: '/users',
         method: 'POST',
         body: user
       }),
     }),
-    updateUser: builder.mutation<any, any>({
+    updateUser: builder.mutation<IUser, any>({
       query: (data) => ({
         url: `/users/${data.id}`,
         method: 'PUT',

@@ -21,13 +21,11 @@ export default function RegisterPage() {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (isSuccess) navigate('/login');
 		if (isError) navigate('/register');
 		if (error && error.originalStatus === 409) toast.error('Cet email est déjà utilisé')
 	}, [navigate, isSuccess, isError, error]);
 
 	const submitForm = async (data: IRegister) => {
-
 		if (!isEmail(data.email)) {
 			toast.error('Entrez un email valide.')
 			return;

@@ -19,6 +19,9 @@ export interface IUserLogin {
 
 export interface IRegister extends IUser {
   confirmPassword?: string;
+  others: null;
+  tokenData: { expiresIn: string, token: string };
+  refreshTokenData: { expiresIn: string, token: string };
 }
 
 export interface IBook {
