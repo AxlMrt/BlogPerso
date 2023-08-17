@@ -4,10 +4,8 @@ import prisma from "../../prisma/lib/prisma";
 import createCookie from "../utils/cookies";
 import WrongCredentials from "../config/exceptions/WrongCred";
 import HttpException from "../config/exceptions/HttpException";
-import { IDataStoredInToken, IUser, IUserLogin } from "../config/types";
+import { IUser, IUserLogin } from "../config/types";
 import tokensFn from "../utils/tokens";
-import secrets from "../config/secrets";
-import jwt from 'jsonwebtoken';
 
 const login: RequestHandler<{ email: string, password: string }> = async (req: Request, res: Response, next: NextFunction) => {
   try {

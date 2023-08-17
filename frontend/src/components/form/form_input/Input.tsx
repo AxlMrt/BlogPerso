@@ -25,7 +25,6 @@ export default function Input({
 }: Props) {
 	const [passwordType, setPasswordType] = useState(type);
 
-
 	const togglePassword = () => {
 		if (passwordType === 'password') {
 			setPasswordType('text');

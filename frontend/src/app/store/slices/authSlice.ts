@@ -5,10 +5,15 @@ import { getUserDetails, userLogin, userLogout } from '../actions/authActions';
 
 const token = localStorage.getItem('token')
 ? localStorage.getItem('token')
+  : null;
+
+  const refreshToken = localStorage.getItem('refresh')
+? localStorage.getItem('token')
 : null;
 
 const initialState = {
   token,
+  refreshToken,
   user: null,
   loading: false,
   error: false,
@@ -19,7 +24,7 @@ const initialState = {
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-reducers: {
+  reducers: {
     logout: (state) => {
       localStorage.removeItem('token');
       localStorage.removeItem('refresh');
@@ -27,6 +32,7 @@ reducers: {
       state.loading = false;
       state.user = null;
       state.token = null;
+      state.refreshToken = null;
       state.error = false;
     },
     setUser: (state, action) => {
@@ -46,6 +52,7 @@ reducers: {
       state.success = 'true';
       state.user = payload.others;
       state.token = payload.token;
+      state.refreshToken = payload.refresh;
     });
     builder.addCase(userLogin.rejected, (state, _action) => {
       state.loading = false;
@@ -62,6 +69,7 @@ reducers: {
       state.loading = false;
       state.user = payload;
       state.token = payload.token;
+      state.refreshToken = payload.refresh;
     });
     builder.addCase(userLogout.rejected, (state, _action) => {
       state.loading = false;

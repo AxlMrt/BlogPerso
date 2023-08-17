@@ -7,6 +7,7 @@ import createCookie from "../utils/cookies";
 
 const refreshedToken = (req: Request, res: Response) => {
   const authorization = req.headers.authorization;
+
   if (authorization) {
     const token = authorization.split(' ')[1];
 
@@ -28,7 +29,9 @@ const refreshedToken = (req: Request, res: Response) => {
       
         res.cookie('token', [createCookie(tokenData)]);
         res.cookie('refresh', [createCookie(refreshTokenData)]);
-        res.json({ tokenData, refreshTokenData });
+        const { password, role, createdAt, updatedAt, ...others } = isUser;
+        console.log(others)
+        res.json({ others, tokenData, refreshTokenData });
         
       } else {
         res.sendStatus(404)

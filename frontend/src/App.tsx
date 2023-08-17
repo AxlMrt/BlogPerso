@@ -4,11 +4,11 @@ import { useAppDispatch, useAppSelector } from './app/store/configureStore';
 import { useEffect, useState } from 'react';
 import { toggleTheme } from './app/store/slices/themeSlice';
 import { getTheme } from './app/utils';
-import { useGetUserDetailsQuery } from './app/store/api/authApi';
 import { setUser } from './app/store/slices/authSlice';
 import AddBookModal from './components/modal/AddBookModal';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import agent from './app/axios/agent';
 
 function App() {
 	const { token } = useAppSelector((state) => state.auth);
@@ -17,16 +17,13 @@ function App() {
 	const navigate = useNavigate();
 	const [navBar, setNavbar] = useState<boolean>(false);
 	const [profileBar, setProfilebar] = useState<boolean>(false);
-	const { data } = useGetUserDetailsQuery('userDetails', {
-		pollingInterval: 900000, // 15mins
-	});
 
 	useEffect(() => {
-		if (data) dispatch(setUser(data));
+		agent.Auth.getUserDetails().then((res) => dispatch(setUser(res)));
 	
 		dispatch(toggleTheme(darkMode));
 		document.documentElement.classList.add(getTheme(darkMode));
-	}, [darkMode, data, dispatch, navigate, token]);
+	}, [darkMode, dispatch, navigate, token]);
 
 	const handleClick = () => {
 		setProfilebar(false);
