@@ -5,11 +5,17 @@ import { setUser } from '../slices/authSlice';
 
 export const userLogin = createAsyncThunk(
   'auth/login',
-  async ({ email, password }: { email: string, password: string }, { rejectWithValue, dispatch }) => {
+  async ({ email, password, remember }: { email: string, password: string, remember: boolean }, { rejectWithValue, dispatch }) => {
     try {
       const data = await agent.Auth.auth(email, password);
-      localStorage.setItem('token', data.tokenData.token);
-      localStorage.setItem('refresh', data.refreshTokenData.token);
+    
+      if (remember) {
+        localStorage.setItem('token', data.tokenData.token);
+        localStorage.setItem('refresh', data.refreshTokenData.token);
+      } else {
+        sessionStorage.setItem('token', data.tokenData.token);
+      }
+  
       dispatch(setUser(data.others));
 
       return data;

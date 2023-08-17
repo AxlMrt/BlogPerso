@@ -5,7 +5,7 @@ import { getUserDetails, userLogin, userLogout } from '../actions/authActions';
 
 const token = localStorage.getItem('token')
 ? localStorage.getItem('token')
-  : null;
+  : sessionStorage.getItem('token') ? sessionStorage.getItem('token') : null;
 
   const refreshToken = localStorage.getItem('refresh')
 ? localStorage.getItem('token')

@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import agent from './app/axios/agent';
 
 function App() {
-	const { token } = useAppSelector((state) => state.auth);
+	const { token, refreshToken } = useAppSelector((state) => state.auth);
 	const darkMode = useAppSelector((state) => state.theme.darkMode);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
@@ -19,11 +19,12 @@ function App() {
 	const [profileBar, setProfilebar] = useState<boolean>(false);
 
 	useEffect(() => {
-		agent.Auth.getUserDetails().then((res) => dispatch(setUser(res)));
+		if (token || refreshToken)
+			agent.Auth.getUserDetails().then((res) => dispatch(setUser(res)));
 	
 		dispatch(toggleTheme(darkMode));
 		document.documentElement.classList.add(getTheme(darkMode));
-	}, [darkMode, dispatch, navigate, token]);
+	}, [darkMode, dispatch, navigate, refreshToken, token]);
 
 	const handleClick = () => {
 		setProfilebar(false);

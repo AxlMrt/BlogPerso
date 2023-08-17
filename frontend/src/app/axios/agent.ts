@@ -16,7 +16,7 @@ axios.interceptors.response.use((response) => {
   const originalRequest = error.config;
   let refreshToken = localStorage.getItem('refresh');
 
-  if (error.config.url != "/refresh" && (error.response.status === 401 ||  error.response.status === 403 ||  error.response.status === 498) && !originalRequest._retry) {
+  if (error.config.url != "/refresh" && (error.response.status === 403 ||  error.response.status === 498) && !originalRequest._retry) {
     originalRequest._retry = true;
     if (refreshToken && refreshToken != "") {
       axios.defaults.headers.common['Authorization'] = `Bearer ${refreshToken}`;

@@ -14,6 +14,7 @@ export interface IUser {
 export interface IUserLogin {
   email: string;
   password: string;
+  remember: boolean;
 }
 
 export interface IRegister extends IUser {

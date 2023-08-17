@@ -10,16 +10,22 @@ import LogsFooter from "../components/logs_footer/LogsFooter";
 import LogsTitle from "../components/logs_header/LogsTitle";
 import LogsHeader from "../components/logs_header/LogsHeader";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import RememberMe from "../components/logs_footer/RememberMe";
 
 const FORM_ID = 'loginPage';
 
 export default function LoginPage() {
 	const { loading, success, error } = useAppSelector((state) => state.auth);
+	const [check, setCheck] = useState<boolean>(false);
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 	
 	const { register, handleSubmit } = useForm<IUserLogin>();
+
+	const handleUpdate = () => {
+		setCheck(!check)
+	}
 
 	useEffect(() => {
 		if (error) {
@@ -34,6 +40,8 @@ export default function LoginPage() {
 	}, [navigate, error, success]);
 
 	const submitForm = async (data: IUserLogin) => {
+		data.remember = check;
+	
 		try {
 			await dispatch(userLogin(data));
 		} catch (error) {
@@ -61,7 +69,7 @@ export default function LoginPage() {
 							isLoading={loading}
 							formId={FORM_ID}
 						/>
-						{/* <RememberMe /> */}
+						<RememberMe isCheck={handleUpdate} />
 						<LogsFooter
 							label={'Pas encore de compte'}
 							dest={'/register'}
