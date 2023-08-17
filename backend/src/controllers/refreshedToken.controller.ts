@@ -8,9 +8,8 @@ import createCookie from "../utils/cookies";
 const refreshedToken = (req: Request, res: Response) => {
   const authorization = req.headers.authorization;
   if (authorization) {
-    const token = authorization
+    const token = authorization.split(' ')[1];
 
-  
     jwt.verify(token, secrets.jwtRefresh, async (err: any, user: any) => {
       if (err) return res.sendStatus(401);
 
@@ -18,8 +17,7 @@ const refreshedToken = (req: Request, res: Response) => {
   
       const isUser = await prisma?.user.findUnique({
         where: { id: _id }
-      })
-      
+      });
 
       if (isUser) {
         delete user.iat;
@@ -27,8 +25,7 @@ const refreshedToken = (req: Request, res: Response) => {
     
         const tokenData = tokensFn.createToken(isUser);
         const refreshTokenData = tokensFn.createRefreshToken(isUser);
-        const { password, role, createdAt, updatedAt, ...others } = user;
-
+      
         res.cookie('token', [createCookie(tokenData)]);
         res.cookie('refresh', [createCookie(refreshTokenData)]);
         res.json({ tokenData, refreshTokenData });
@@ -37,6 +34,8 @@ const refreshedToken = (req: Request, res: Response) => {
         res.sendStatus(404)
       }
     });
+  } else {
+    res.sendStatus(401);
   }
 }
 
