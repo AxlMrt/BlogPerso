@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RequestPassword } from '../app/types';
+import { toast } from 'react-toastify';
 
 const FORM_ID = 'requestResetPage';
 
@@ -17,7 +18,10 @@ export default function SendPasswordRequestPage() {
 		useRequestNewPasswordMutation();
 
 	useEffect(() => {
-		if (isSuccess) navigate('/reset-password');
+		if (isSuccess) {
+			toast.success('Un code vous a été envoyé par email!')
+			navigate('/reset-password');
+		}
 	});
 
 	const submitForm = async (data: { email: string }) => {
@@ -35,6 +39,7 @@ export default function SendPasswordRequestPage() {
 				<div className='w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700'>
 					<div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
 						<LogsTitle title={'Récupération de mot de passe'} />
+						<h3 className='text-sm dark:text-gray-300'>Pas d'inquiétudes ! Nous allons vous aider.</h3>
 						<form id={FORM_ID} onSubmit={handleSubmit(submitForm)}>
 							<Input
 								type={'email'}

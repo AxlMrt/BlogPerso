@@ -7,7 +7,7 @@ import FormSubmitButton from '../components/buttons/form_submit/FormSubmitButton
 import LogsHeader from '../components/logs_header/LogsHeader';
 import LogsTitle from '../components/logs_header/LogsTitle';
 import { toast } from 'react-toastify';
-import { isEmail, validPassword } from '../app/utils';
+import { validPassword } from '../app/utils';
 import { BaseQueryFn } from '@reduxjs/toolkit/dist/query';
 import { BaseQueryArg } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 import { IResetPassword } from '../app/types';
@@ -22,7 +22,10 @@ export default function ResetPasswordPage() {
 		useResetPasswordMutation<BaseQueryArg<BaseQueryFn>>();
 
 	useEffect(() => {
-		if (isSuccess) navigate('/login');
+		if (isSuccess) {
+			toast.success('Changement réussi! Vous pouvez vous connecter.')
+			navigate('/login');
+		}
 	});
 
 	const submitForm = async (data: IResetPassword) => {
@@ -44,7 +47,7 @@ export default function ResetPasswordPage() {
 		try {
 			await resetPassword(data);
 		} catch (error) {
-			console.error('Failed to reset password: ', error);
+			toast.error("Votre mot de passe n'a pas pu être modifié");
 		}
   };
 

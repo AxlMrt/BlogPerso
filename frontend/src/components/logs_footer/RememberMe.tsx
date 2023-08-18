@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 interface Props {
 	isCheck: () => void
 }
@@ -24,12 +26,12 @@ export default function RememberMe({ isCheck }: Props) {
 					</label>
 				</div>
 			</div>
-			<a
-				href='#'
+			<Link
+				to='/reset-password-request'
 				className='text-xs font-medium text-primary-600 hover:underline dark:text-primary-500'
 			>
 				Mot de passe oublié?
-			</a>
+			</Link>
 		</div>
 	);
 }
