@@ -4,7 +4,8 @@ import HttpException from '../config/exceptions/HttpException';
 import { Options } from 'nodemailer/lib/mailer';
 
 let transporter = nodemailer.createTransport({
-  host: "smtp-mail.outlook.com",
+  host: "smtp.office365.com",
+  port: 587,
   auth: {
     user: secrets.authSecret,
     pass: secrets.passSecret
