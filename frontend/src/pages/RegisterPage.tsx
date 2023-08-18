@@ -31,15 +31,15 @@ export default function RegisterPage() {
 			return;
 		}
 
+		if (data.password !== data.confirmPassword) {
+			toast.error('Les mots de passe ne correspondent pas.');
+			return;
+		}
+
 		if (!validPassword(data.password)) {
 			toast.error(
 				'Votre mot de passe doit comporter entre 6 et 20 caractères et contenir une majuscule, un chiffre et un caractère spécial.'
 			);
-			return;
-		}
-
-		if (data.password !== data.confirmPassword) {
-			toast.error('Les mots de passe ne correspondent pas.');
 			return;
 		}
 		
