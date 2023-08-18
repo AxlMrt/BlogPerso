@@ -51,6 +51,9 @@ const getUserProfile = async (req: Request, res: Response, next: NextFunction) =
       where: { id: _id },
       include: { books: true }
     })
+
+    if (!user)
+      next(new HttpException(404, 'User not found.'))
   
     const { password, role, createdAt, updatedAt, ...others } = user as IUser;
     res.json(others)
@@ -63,7 +66,9 @@ const passwordRequestReset = async (req: Request, res: Response, next: NextFunct
   const { email } = req.body;
 
   try {
-    if (!email) next(new HttpException(500, 'An email is required.'));
+    if (!email)
+      next(new HttpException(500, 'An email is required.'));
+  
     const createdPasswordResetOTP = await sendPasswordResetOTP(email);
 
     res.json(createdPasswordResetOTP);

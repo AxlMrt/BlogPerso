@@ -74,6 +74,49 @@ export const signupFields = [
     }
 ]
 
+export const resetFields = [
+    {
+        labelText:"Email",
+        labelFor:"email",
+        id:"email",
+        name:"email",
+        type:"email",
+        autoComplete:"email",
+        isRequired:true,
+        placeholder:"john.doe@gmail.com"   
+    },
+    {
+        labelText:"Code",
+        labelFor:"otp",
+        id:"otp",
+        name:"otp",
+        type:"text",
+        autoComplete:"otp",
+        isRequired:true,
+        placeholder:"1234"   
+    },
+    {
+        labelText:"Nouveau mot de passe",
+        labelFor:"newPassword",
+        id:"newPassword",
+        name:"newPassword",
+        type:"password",
+        autoComplete:"newPassword",
+        isRequired:true,
+        placeholder:"••••••••"   
+    },
+    {
+        labelText:"Confirmer mot de passe",
+        labelFor:"confirmPassword",
+        id:"confirm-password",
+        name:"confirmPassword",
+        type:"password",
+        autoComplete:"confirm-password",
+        isRequired:true,
+        placeholder:"••••••••"   
+    }
+]
+
 export const bookFields = [
     {
         labelText:"Titre",

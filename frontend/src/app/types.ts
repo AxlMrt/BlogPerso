@@ -74,3 +74,6 @@ export enum Read {
   IN_PROGRESS,
   NOT_READ
 }
+
+export interface IResetPassword { otp: string; newPassword: string; confirmPassword?: string; email: string; }
+export interface RequestPassword { email: string; }

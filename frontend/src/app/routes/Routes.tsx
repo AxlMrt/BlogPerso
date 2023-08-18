@@ -14,6 +14,8 @@ import ProtectedRoute from './ProtectedRoute';
 import Landing from '../../pages/Landing';
 import BooksPage from '../../pages/BooksPage';
 import HomePage from '../../pages/HomePage';
+import SendPasswordRequestPage from '../../pages/SendPasswordRequestPage';
+import ResetPasswordPage from '../../pages/ResetPasswordPage';
 
 export const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -21,6 +23,14 @@ export const router = createBrowserRouter(
 			<Route path='landing' element={<Landing />} />
 			<Route path='login' element={<LoginPage />} />
 			<Route path='register' element={<RegisterPage />} />
+			<Route
+				path='reset-password-request'
+				element={<SendPasswordRequestPage />}
+			/>
+			<Route
+				path='reset-password'
+				element={<ResetPasswordPage />}
+			/>
 			<Route element={<ProtectedRoute />}>
 				<Route path='' element={<HomePage />} />
 				<Route path='table' element={<BooksPage />} />

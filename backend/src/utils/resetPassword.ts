@@ -2,7 +2,6 @@ import prisma from "../../prisma/lib/prisma";
 import HttpException from "../config/exceptions/HttpException";
 import { hashData } from "./hashData";
 import { checkOTP, deleteOTP } from "./otp";
-import sendEmail from "./sendEmail";
 import { sendOTP } from "./sendOTP";
 
 export const sendPasswordResetOTP = async (email: string) => {
@@ -11,8 +10,8 @@ export const sendPasswordResetOTP = async (email: string) => {
       where: { email }
     });
 
-     if (!user)
-       throw new HttpException(404, 'User not found');
+    if (!user)
+      throw new HttpException(404, 'User not found');
     
     const otpDetails = {
       email,
@@ -32,10 +31,10 @@ export const resetUserPassword = async ({ email, otp, newPassword }: { email: st
   try {
     const validOTP = await checkOTP({ email, otp });
     if (!validOTP)
-      throw new HttpException(500, 'Invalid code passed. Check your inbox');
+      throw new HttpException(400, 'Invalid code passed. Check your inbox');
 
     if (newPassword.length < 6 || newPassword.length > 20)
-      throw new HttpException(500, 'Password is too short.');
+      throw new HttpException(400, 'Password is too short.');
 
     const hashedPassword = await hashData(newPassword);
     await prisma.user.update({
