@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import secrets from '../config/secrets';
 import HttpException from '../config/exceptions/HttpException';
+import { Options } from 'nodemailer/lib/mailer';
 
 let transporter = nodemailer.createTransport({
   host: "smtp-mail.outlook.com",
@@ -18,7 +19,7 @@ transporter.verify((error, success) => {
   }
 });
 
-const sendEmail = async (mailOptions) => {
+const sendEmail = async (mailOptions: Options) => {
   try {
     await transporter.sendMail(mailOptions);
     return;
