@@ -11,6 +11,7 @@ import DeleteModal from '../components/modal/DeleteModal';
 import DragAndDrop from '../components/drag_and_drop/DragAndDrop';
 import Input from '../components/form/form_input/Input';
 import { signupFields } from '../app/formFields';
+import { toast } from 'react-toastify';
 
 export default function AccountPage() {
 	const dispatch = useAppDispatch();
@@ -23,7 +24,8 @@ export default function AccountPage() {
 	const submitForm = async (data: any) => {
 		data = trimUserObject(data);
 		data.id = user!['id'];
-		if (data.password !== data.confirmPassword) alert('Password mismatch');
+	
+		if (data.password !== data.confirmPassword) toast.error('Les mots de passe ne correspondent pas.');
 		delete data.confirmPassword;
 
 		if (file) {
@@ -68,8 +70,14 @@ export default function AccountPage() {
 								id={field.id}
 								name={field.name}
 								type={field.type}
-								holder={field.placeholder}
-								isRequired={field.isRequired}
+								holder={
+									field.placeholder === 'John'
+										? user!['firstName']
+										: field.placeholder === 'Doe'
+										? user!['lastName']
+										: field.placeholder === 'john.doe@gmail.com' ? user!['email'] : field.placeholder
+								}
+								isRequired={false}
 							/>
 						))}
 						<DragAndDrop
