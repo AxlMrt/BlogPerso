@@ -6,6 +6,7 @@ import WrongCredentials from "../config/exceptions/WrongCred";
 import HttpException from "../config/exceptions/HttpException";
 import { IUser, IUserLogin } from "../config/types";
 import tokensFn from "../utils/tokens";
+import { resetUserPassword, sendPasswordResetOTP } from "../utils/resetPassword";
 
 const login: RequestHandler<{ email: string, password: string }> = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -33,7 +34,7 @@ const login: RequestHandler<{ email: string, password: string }> = async (req: R
       next(new WrongCredentials());
     }
   } catch (error) {
-    next(new HttpException(500, "Something went wrong"));
+    next(new HttpException(500, "Failed to login."));
   }
 }
 
@@ -54,45 +55,34 @@ const getUserProfile = async (req: Request, res: Response, next: NextFunction) =
     const { password, role, createdAt, updatedAt, ...others } = user as IUser;
     res.json(others)
   } catch (error) {
-     next(new HttpException(500, "Something went wrong"));
+     next(new HttpException(500, "Failed to get user profile."));
   }
 }
 
-const forgetPassword = async (req: Request, res: Response, next: NextFunction) => {
+const passwordRequestReset = async (req: Request, res: Response, next: NextFunction) => {
   const { email } = req.body;
 
   try {
-    const user = await prisma.user.findUnique({
-      where: { email }
-    })
+    if (!email) next(new HttpException(500, 'An email is required.'));
+    const createdPasswordResetOTP = await sendPasswordResetOTP(email);
 
-    if (!user)
-      next(new HttpException(404, 'User not found'));
-  
-    const { password, role, createdAt, updatedAt, ...others } = user as IUser;
-    res.json(others)
+    res.json(createdPasswordResetOTP);
   } catch (error) {
-     next(new HttpException(500, "Something went wrong"));
+     next(new HttpException(400, "Failed to send a reset request: " + error));
   }
 }
 
-const resetPassword = async (email: string) => {
+const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await prisma.user.findUnique({
-      where: { email }
-    });
+    const { email, otp, newPassword } = req.body;
 
-     if (!user)
-       throw new HttpException(404, 'User not found');
-    
-    const otpDetails = {
-      email,
-      subject: "Password reset",
-      message: "Enter the code below to reset your password.",
-      duration: 2,
-    }
-  } catch (error) {
-    
+    if (!(email && otp && newPassword))
+      next(new HttpException(500, 'Empty crendentials are not allowed.'));
+
+    await resetUserPassword({ email, otp, newPassword });
+    res.json({ email, passwordreset: true });
+  } catch (error: any) {
+    next(new HttpException(400, 'Failed to reset password: ' + error.message))
   }
 }
 
@@ -100,7 +90,7 @@ const _ = {
   login,
   logout,
   getUserProfile,
-  forgetPassword,
+  passwordRequestReset,
   resetPassword
 }
 
