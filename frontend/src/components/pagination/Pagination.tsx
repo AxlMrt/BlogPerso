@@ -21,10 +21,15 @@ export default function Pagination({
 				Page {page} of {data.total_pages === 0 ? 1 : data.total_pages}
 			</span>
 			<div className='flex space-x-3'>
-				<button onClick={() => setPage(page - 1)} disabled={page === 1}>
+				<button
+					type='button'
+					onClick={() => setPage(page - 1)}
+					disabled={page === 1}
+				>
 					<BsArrowLeft />
 				</button>
 				<button
+					type='button'
 					onClick={() => setPage(page + 1)}
 					disabled={page >= data.total_pages}
 				>

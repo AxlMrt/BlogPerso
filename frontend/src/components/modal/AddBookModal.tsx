@@ -48,7 +48,7 @@ export default function AddBookModal() {
 				<div className='relative bg-white rounded-lg shadow dark:bg-gray-700'>
 					<CloseModalButton close={closeModal} />
 					<div className='px-6 py-6 lg:px-8'>
-						<LogsTitle title={'Ajouter un livre'} />
+						<LogsTitle title={'Ajout rapide'} />
 						<Form
 							id={FORM_ID}
 							formClass={'space-y-6 py-6'}
