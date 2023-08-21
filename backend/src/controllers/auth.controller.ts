@@ -82,12 +82,12 @@ const resetPassword = async (req: Request, res: Response, next: NextFunction) =>
     const { email, otp, newPassword } = req.body;
 
     if (!(email && otp && newPassword))
-      next(new HttpException(500, 'Empty crendentials are not allowed.'));
+      next(new HttpException(400, 'Empty crendentials are not allowed.'));
 
     await resetUserPassword({ email, otp, newPassword });
     res.json({ email, passwordreset: true });
   } catch (error: any) {
-    next(new HttpException(400, 'Failed to reset password: ' + error.message))
+    next(new HttpException(500, 'Failed to reset password: ' + error.message))
   }
 }
 
