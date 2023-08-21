@@ -17,7 +17,16 @@ const transporter = nodemailer.createTransport({
 
 const sendEmail = async (mailOptions: Options) => {
   try {
-    await transporter.sendMail(mailOptions);
+    await new Promise((resolve, reject) => {
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          resolve(info);
+        }
+      });
+    });
     return;
   } catch (error) {
     throw new HttpException(500, 'Something went wrong');
