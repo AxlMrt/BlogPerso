@@ -67,13 +67,13 @@ const passwordRequestReset = async (req: Request, res: Response, next: NextFunct
 
   try {
     if (!email)
-      next(new HttpException(500, 'An email is required.'));
+      next(new HttpException(400, 'An email is required.'));
   
     const createdPasswordResetOTP = await sendPasswordResetOTP(email);
 
     res.json(createdPasswordResetOTP);
-  } catch (error) {
-     next(new HttpException(400, "Failed to send a reset request: " + error));
+  } catch (error: any) {
+     next(new HttpException(500, "Failed to send a reset request: " + error.message));
   }
 }
 
