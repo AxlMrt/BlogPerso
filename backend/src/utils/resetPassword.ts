@@ -23,7 +23,7 @@ export const sendPasswordResetOTP = async (email: string) => {
     const createdOTP = await sendOTP(otpDetails);
     return createdOTP;
   } catch (error) {
-    throw new HttpException(500, 'Failed to send email to reset password');
+    throw new HttpException(500, 'Failed to send email to reset password: ' + error);
   }
 }
 
