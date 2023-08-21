@@ -3,6 +3,7 @@ import HttpException from "../config/exceptions/HttpException";
 import secrets from "../config/secrets";
 import { hashData } from "./hashData";
 import { generateOTP } from "./otp";
+import nodemailer from 'nodemailer'
 import sendEmail from "./sendEmail";
 
 export const sendOTP = async ({ email, subject, message, duration = 1}: {email: string, subject: string, message: string, duration: number}) => {
@@ -73,8 +74,30 @@ export const sendOTP = async ({ email, subject, message, duration = 1}: {email: 
       }],
     }
 
-    await sendEmail(mailOptions);
+    const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      type: "OAuth2",
+      user: secrets.authSecret,
+      clientId: secrets.clientId,
+      clientSecret: secrets.clientSecret,
+      accessToken: secrets.accessToken,
+      refreshToken: secrets.refreshToken,
+    }
+    } );
+
+    await new Promise((resolve, reject) => {
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+        resolve(info);
+        }
+      });
+    });
   
+    console.log("ici")
     const hashedOTP = await hashData(generatedOTP);
     const createdAt = new Date(Date.now());
     const expiresAt = new Date(Date.now() + 3600000 * +duration);
