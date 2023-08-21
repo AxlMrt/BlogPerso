@@ -10,15 +10,10 @@ const transporter = nodemailer.createTransport({
       secure: true,
       auth: {
         type: "OAuth2",
-        user: secrets.authSecret,
         clientId: secrets.clientId,
         clientSecret: secrets.clientSecret,
-        accessToken: secrets.accessToken,
-        refreshToken: secrets.refreshToken,
   }
 } as SMTPTransport.Options);
-
-
 
 const sendEmail = async (mailOptions: Options) => {
   try {
@@ -33,7 +28,7 @@ const sendEmail = async (mailOptions: Options) => {
       });
     });
   } catch (error) {
-    throw new HttpException(500, 'Something went wrong');
+    throw new HttpException(500, 'Something went wrong: ' + error);
   }
 }
 

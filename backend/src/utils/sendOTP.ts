@@ -71,6 +71,12 @@ export const sendOTP = async ({ email, subject, message, duration = 1}: {email: 
           path: `${uploads}/logo.png`,
           cid: 'unique@logo'
       }],
+      auth: {
+        user: secrets.authSecret,
+        refreshToken: secrets.refreshToken,
+        accessToken: secrets.accessToken,
+        expires: 1484314697598,
+      }
     }
 
     await sendEmail(mailOptions);
@@ -91,6 +97,6 @@ export const sendOTP = async ({ email, subject, message, duration = 1}: {email: 
 
     return newOTP;
   } catch (error) {
-    throw new HttpException(500, "Failed to send OTP");
+    throw new HttpException(500, "Failed to send OTP: " + error);
   }
 }
