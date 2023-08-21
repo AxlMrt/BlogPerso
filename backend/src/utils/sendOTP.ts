@@ -75,15 +75,17 @@ export const sendOTP = async ({ email, subject, message, duration = 1}: {email: 
     }
 
     const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      type: "OAuth2",
-      user: secrets.authSecret,
-      clientId: secrets.clientId,
-      clientSecret: secrets.clientSecret,
-      accessToken: secrets.accessToken,
-      refreshToken: secrets.refreshToken,
-    }
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        type: "OAuth2",
+        user: secrets.authSecret,
+        clientId: secrets.clientId,
+        clientSecret: secrets.clientSecret,
+        accessToken: secrets.accessToken,
+        refreshToken: secrets.refreshToken,
+      }
     } );
 
     await new Promise((resolve, reject) => {
