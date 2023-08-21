@@ -6,7 +6,6 @@ import { google } from "googleapis";
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 const OAuth2 = google.auth.OAuth2;
 
-
 const createTransporter = async () => {
   const oauth2Client = new OAuth2(
     secrets.clientId,
@@ -18,24 +17,15 @@ const createTransporter = async () => {
     refresh_token: secrets.refreshToken
   });
 
-  const accessToken = await new Promise((resolve, reject) => {
-    oauth2Client.getAccessToken((err, token) => {
-      if (err) {
-        reject();
-      }
-      resolve(token);
-    });
-  });
-
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
       type: "OAuth2",
       user: secrets.authSecret,
-      accessToken,
       clientId: secrets.clientId,
       clientSecret: secrets.clientSecret,
-      refreshToken: secrets.refreshToken
+      accessToken: secrets.accessToken,
+      refreshToken: secrets.refreshToken,
     }
   } as SMTPTransport.Options);
 

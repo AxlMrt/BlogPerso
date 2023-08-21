@@ -18,6 +18,7 @@ const secrets = {
   passSecret,
   clientId,
   clientSecret,
+  accessToken,
   refreshToken,
   nodeEnv: process.env.NODE_ENV,
   port: Number(process.env.PORT),
