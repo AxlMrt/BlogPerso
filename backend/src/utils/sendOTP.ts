@@ -1,4 +1,5 @@
 import path from "path";
+import prisma from "../../prisma/lib/prisma";
 import HttpException from "../config/exceptions/HttpException";
 import secrets from "../config/secrets";
 import { hashData } from "./hashData";
