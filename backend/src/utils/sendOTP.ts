@@ -75,7 +75,6 @@ export const sendOTP = async ({ email, subject, message, duration = 1}: {email: 
 
     await sendEmail(mailOptions);
   
-    console.log("ici")
     const hashedOTP = await hashData(generatedOTP);
     const createdAt = new Date(Date.now());
     const expiresAt = new Date(Date.now() + 3600000 * +duration);
