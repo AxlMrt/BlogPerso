@@ -14,11 +14,13 @@ export default function ProfileCard({ currentUser }: Props) {
   return (
 		<div className='bg-white dark:bg-gray-800 dark:text-white shadow rounded-lg p-10'>
 			<div className='flex flex-col gap-1 text-center items-center'>
-				<img
-					className='h-32 w-32 p-2 rounded-full shadow mb-4 bg-white dark:bg-gray-800'
-					src={`${PF}/${currentUser?.photo}`}
-					alt=''
-				/>
+				<div className='h-24 w-24 rounded-full overflow-hidden md:h-32 md:w-32 bg-gray-800 dark:bg-white'>
+					<img
+						className='min-h-full min-w-full w-auto h-auto'
+						src={`${PF}/${currentUser?.photo}`}
+						alt=''
+					/>
+				</div>
 				<p className='font-semibold'>{`${currentUser?.firstName} ${currentUser?.lastName}`}</p>
 				<div className='text-sm leading-normal text-gray-400 flex justify-center items-center gap-2'>
 					<GoMail />

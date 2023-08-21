@@ -22,18 +22,20 @@ export default function AccountPage() {
 	const navigate = useNavigate();
 
 	const submitForm = async (data: any) => {
+		data.photo = file;
 		data = trimUserObject(data);
 		data.id = user!['id'];
-	
-		if (data.password !== data.confirmPassword) toast.error('Les mots de passe ne correspondent pas.');
+
+		if (data.password !== data.confirmPassword)
+			toast.error('Les mots de passe ne correspondent pas.');
 		delete data.confirmPassword;
 
 		if (file) {
 			const formData = new FormData();
-			formData.append('photo', data.photo[0]);
-			data = { ...data, photo: Date.now() + data.photo[0].name };
-			formData.append('user', JSON.stringify(data));
 
+			formData.append('photo', data.photo);
+			data = { ...data, photo: Date.now() + data.photo.name };
+			formData.append('user', JSON.stringify(data));
 			try {
 				await updateUser({ id: user!['id'], formData })
 					.then((res: any) => dispatch(setUser(res.data)))
@@ -75,7 +77,9 @@ export default function AccountPage() {
 										? user!['firstName']
 										: field.placeholder === 'Doe'
 										? user!['lastName']
-										: field.placeholder === 'john.doe@gmail.com' ? user!['email'] : field.placeholder
+										: field.placeholder === 'john.doe@gmail.com'
+										? user!['email']
+										: field.placeholder
 								}
 								isRequired={false}
 							/>
