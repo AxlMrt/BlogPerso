@@ -10,7 +10,6 @@ let clientSecret: string = process.env.OAUTH_CLIENT_SECRET as string;
 let refreshToken: string = process.env.OAUTH_REFRESH_TOKEN as string;
 let accessToken: string = process.env.OAUTH_ACCESS_TOKEN as string;
 
-
 const secrets = {
   jwtSecret,
   jwtRefresh,

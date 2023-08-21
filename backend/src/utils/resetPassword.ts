@@ -1,7 +1,9 @@
+import path from "path";
 import prisma from "../../prisma/lib/prisma";
 import HttpException from "../config/exceptions/HttpException";
+import { passwordMailConfig } from "../config/mail_config/passwordMailConfig";
 import { hashData } from "./hashData";
-import { checkOTP, deleteOTP } from "./otp";
+import { checkOTP, deleteOTP, generateOTP } from "./otp";
 import { sendOTP } from "./sendOTP";
 
 export const sendPasswordResetOTP = async (email: string) => {

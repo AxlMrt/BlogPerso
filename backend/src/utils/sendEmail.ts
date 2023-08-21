@@ -23,7 +23,7 @@ const sendEmail = async (mailOptions: Options) => {
           console.error(err);
           reject(err);
         } else {
-        resolve(info);
+          resolve(info);
         }
       });
     });
