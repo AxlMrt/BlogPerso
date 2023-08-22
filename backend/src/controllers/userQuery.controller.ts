@@ -9,7 +9,7 @@ const getUserBooks: RequestHandler<{ id: string }> = async (req: Request, res: R
   const search = req.query.search;
   const field: string = req.query.field as string;
   const order = req.query.order;
-  const type = req.query.type;
+  const type: string = req.query.type as string;
 
   const currentPage = Math.max((Number(page) || 1), 1)
   const options = {
@@ -23,17 +23,12 @@ const getUserBooks: RequestHandler<{ id: string }> = async (req: Request, res: R
 
   if (search?.length)
     options.where = {
-      title: {
+      [type]: {
         contains: search,
         mode: 'insensitive'
     }
-    }
+  }
   
-  if (type?.length)
-    options.where = {
-      type
-    }
-
   try {
     const data = await prisma.user.findUnique({
       where: { id },
@@ -51,30 +46,8 @@ const getUserBooks: RequestHandler<{ id: string }> = async (req: Request, res: R
   }
 }
 
-const getBookTypes: RequestHandler<{ id: string }> = async (req: Request, res: Response, next: NextFunction) => {
-  const { id } = req.params;
-
-  try {
-    const books = await prisma.user.findUnique({
-      where: { id },
-      select: {
-        books: {
-          select: {
-            type: true
-          }
-        },
-      }
-    });
-
-    res.json(books!.books);
-  } catch (error) {
-    next(new HttpException(500, "Something went wrong"));
-  }
-}
-
 const _ = {
   getUserBooks,
-  getBookTypes
 }
 
 export default _;

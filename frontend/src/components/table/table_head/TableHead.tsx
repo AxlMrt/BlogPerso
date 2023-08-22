@@ -4,22 +4,32 @@ import UpdateBtn from '../../buttons/update_btn/UpdateBtn';
 import TableHeaderCell from './TableHeaderCell';
 
 interface Props {
-	changeSort: (e: MouseEvent<HTMLButtonElement>, key: string) => void;
+	books: IBook[];
 	field: string;
 	order: string;
+	type: string;
+	tableHeadFilterVisible: boolean;
 	updateFields: boolean;
+	setSearchField: Dispatch<SetStateAction<string>>;
+	setType: Dispatch<SetStateAction<string>>;
+	setTableHeadFilterVisible: Dispatch<SetStateAction<boolean>>;
 	setUpdateFields: Dispatch<SetStateAction<boolean>>;
-	books: IBook[];
+	changeSort: (e: MouseEvent<HTMLDivElement>, key: string) => void;
 }
 
 export default function TableHead({
-	changeSort,
-	order,
+	books,
 	field,
+	order,
+	type,
 	updateFields,
+	setType,
+	setSearchField,
 	setUpdateFields,
-	books
-}: Props ) {
+	changeSort,
+	tableHeadFilterVisible,
+	setTableHeadFilterVisible,
+}: Props) {
 	const headers: { key: string; label: string }[] = [
 		{ key: 'year', label: 'Année' },
 		{ key: 'title', label: 'Titre' },
@@ -44,6 +54,11 @@ export default function TableHead({
 							order={order}
 							field={field}
 							key={index}
+							setSearchField={setSearchField}
+							type={type}
+							setType={setType}
+							tableHeadFilterVisible={tableHeadFilterVisible}
+							setTableHeadFilterVisible={setTableHeadFilterVisible}
 						/>
 					);
 				})}

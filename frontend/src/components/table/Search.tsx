@@ -3,15 +3,17 @@ import { PiMagnifyingGlassBold } from 'react-icons/pi';
 
 interface Props {
 	setSearchField: Dispatch<SetStateAction<string>>;
+	placeholder: string;
 }
 
-export default function Search({ setSearchField }: Props) {
+export default function Search({ setSearchField, placeholder }: Props) {
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setSearchField(e.target.value);
 	};
+
 	return (
-		<div className='flex flex-col items-left justify-between pb-4 md:flex-row md:items-center'>
-			<label htmlFor='table-search' className='sr-only'>
+		<div className='flex flex-col items-left justify-between pb-1 md:flex-row md:items-center' onClick={(e) => e.stopPropagation()}>
+			<label className='sr-only'>
 				Search
 			</label>
 			<div className='relative'>
@@ -20,9 +22,8 @@ export default function Search({ setSearchField }: Props) {
 				</div>
 				<input
 					type='text'
-					id='table-search-users'
 					className='block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-76 focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-100 dark:focus:border-gray-100 outline-none'
-					placeholder='Rechercher un livre'
+					placeholder={placeholder}
 					onChange={handleChange}
 				/>
 			</div>

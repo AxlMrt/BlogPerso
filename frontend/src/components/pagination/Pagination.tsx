@@ -14,7 +14,6 @@ export default function Pagination({
   setPage,
 }: Props) {
 
-	console.log(data)
 	return (
 		<div className='items-center space-y-2 text-xs sm:space-y-0 sm:space-x-3 sm:flex dark:text-white'>
 			<span className='block'>

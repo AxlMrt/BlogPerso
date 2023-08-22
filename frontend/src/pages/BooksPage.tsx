@@ -18,6 +18,9 @@ export default function BooksPage() {
 	const [field, setField] = useState<string>('createdAt');
 	const [type, setType] = useState<string>('');
 
+	const [tableHeadFilterVisible, setTableHeadFilterVisible] =
+		useState<boolean>(false);
+
 	const { user } = useAppSelector((state) => state.auth);
 	const { data, isLoading } = useGetUserBookQuery<BaseQueryArg<BaseQueryFn>>({
 		id: user!["id"],
@@ -30,7 +33,6 @@ export default function BooksPage() {
 
 	const [bookToUpdate, setBookToUpdate] = useState<IBook[]>([]);
 	const [updateFields, setUpdateFields] = useState<boolean>(false);
-	const [filtersVisible, setFiltersVisible] = useState<boolean>(false);
 
 	const handleCheckBox = (e: ChangeEvent<HTMLInputElement>, value: IBook) => {
 		setBookToUpdate([...bookToUpdate, value]);
@@ -40,25 +42,24 @@ export default function BooksPage() {
 			);
 	};
 
-
 	return isLoading ? (
 		<Spinner />
 	) : (
 		<section
 			className='bg-gray-100 dark:bg-gray-900 h-screen'
-			onClick={() => setFiltersVisible(false)}
+			onClick={() => setTableHeadFilterVisible(false)}
 		>
 			<div className=' w-5/6 m-auto mt-32'>
-				<Search setSearchField={setSearchField} />
+				<Search
+					setSearchField={setSearchField}
+					placeholder={'Rechercher un livre'}
+				/>
 				<TableUpdate
 					bookToUpdate={bookToUpdate}
 					updateFields={updateFields}
 					data={data}
 					page={page}
 					setPage={setPage}
-					setType={setType}
-					filtersVisible={filtersVisible}
-					setFiltersVisible={setFiltersVisible}
 				/>
 				<Table
 					handleCheckBox={handleCheckBox}
@@ -69,6 +70,11 @@ export default function BooksPage() {
 					setField={setField}
 					order={order}
 					setOrder={setOrder}
+					setSearchField={setSearchField}
+					type={type}
+					setType={setType}
+					tableHeadFilterVisible={tableHeadFilterVisible}
+					setTableHeadFilterVisible={setTableHeadFilterVisible}
 				/>
 			</div>
 		</section>

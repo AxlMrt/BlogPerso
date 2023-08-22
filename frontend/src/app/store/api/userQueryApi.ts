@@ -16,10 +16,7 @@ export const userQueryApi = createApi({
     getUserBook: builder.query<ListResponse<IBook>, { id: string, page: number, search: string, field: string, order: string, type: string }>({
       query: ({ id, page = 1, search, field, order, type }) => ({ url: `/query/bookList/${id}?page=${page}&search=${search}&field=${field}&order=${order}&type=${type}` })
     }),
-    getBookFilters: builder.query<string, string>({
-      query: (id) => ({ url: `/query/filters/${id}`, method: 'get' })
-    }),
   }),
 });
 
-export const { useGetUserBookQuery, useGetBookFiltersQuery } = userQueryApi;
+export const { useGetUserBookQuery } = userQueryApi;

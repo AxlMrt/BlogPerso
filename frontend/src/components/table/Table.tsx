@@ -13,25 +13,35 @@ import TableHead from './table_head/TableHead';
 import { useUpdateBookMutation } from '../../app/store/api/booksApi';
 import { useNavigate } from 'react-router-dom';
 interface Props {
-	handleCheckBox: (e: ChangeEvent<HTMLInputElement>, value: IBook) => void;
-	updateFields: boolean;
-	setUpdateFields: Dispatch<SetStateAction<boolean>>;
 	books: IBook[];
+	updateFields: boolean;
 	field: string;
-	setField: Dispatch<SetStateAction<string>>;
 	order: string;
+	type: string;
+	tableHeadFilterVisible: boolean;
+	setType: Dispatch<SetStateAction<string>>;
+	setField: Dispatch<SetStateAction<string>>;
 	setOrder: Dispatch<SetStateAction<string>>;
+	setSearchField: Dispatch<SetStateAction<string>>;
+	setTableHeadFilterVisible: Dispatch<SetStateAction<boolean>>;
+	setUpdateFields: Dispatch<SetStateAction<boolean>>;
+	handleCheckBox: (e: ChangeEvent<HTMLInputElement>, value: IBook) => void;
 }
 
 export default function Table({
-	handleCheckBox,
-	updateFields,
-	setUpdateFields,
 	books,
+	updateFields,
 	field,
-	setField,
 	order,
-	setOrder
+	type,
+	setType,
+	setField,
+	setOrder,
+	setSearchField,
+	setUpdateFields,
+	handleCheckBox,
+	tableHeadFilterVisible,
+	setTableHeadFilterVisible,
 }: Props) {
 	const [edit, setEdit] = useState<IBook[] | null>(null);
 	const [updateBook] = useUpdateBookMutation();
@@ -81,6 +91,11 @@ export default function Table({
 						updateFields={updateFields}
 						setUpdateFields={setUpdateFields}
 						books={books}
+						setSearchField={setSearchField}
+						type={type}
+						setType={setType}
+						tableHeadFilterVisible={tableHeadFilterVisible}
+						setTableHeadFilterVisible={setTableHeadFilterVisible}
 					/>
 					{books && (
 						<TableBody

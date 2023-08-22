@@ -35,6 +35,7 @@ const authSlice = createSlice({
       state.token = null;
       state.refreshToken = null;
       state.error = false;
+      state.success = 'idle';
     },
     setUser: (state, action) => {
       state.user = action.payload;

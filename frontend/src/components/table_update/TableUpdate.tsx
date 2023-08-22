@@ -4,7 +4,6 @@ import { useDeleteBookMutation } from '../../app/store/api/booksApi';
 import { IBook } from '../../app/types';
 import ValidBtn from '../buttons/valid_button/ValidBtn';
 import { BsThreeDots } from 'react-icons/bs';
-import FilterBooks from './FilterBooks';
 import { Dispatch, SetStateAction } from 'react';
 import Pagination from '../pagination/Pagination';
 
@@ -14,9 +13,6 @@ interface Props {
 	data: { books: IBook; total: number; page: string; total_pages: number };
 	page: number;
 	setPage: Dispatch<SetStateAction<number>>;
-	setType: Dispatch<SetStateAction<string>>;
-	filtersVisible: boolean;
-	setFiltersVisible: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function TableUpdate({
@@ -25,9 +21,6 @@ export default function TableUpdate({
 	data,
 	page,
 	setPage,
-	setType,
-	filtersVisible,
-	setFiltersVisible
 }: Props) {
 	const [deleteBook] = useDeleteBookMutation();
 	const navigate = useNavigate();
@@ -41,11 +34,6 @@ export default function TableUpdate({
 			}
 		});
 	};
-	
-	const openFilters = (e: Event) => {
-		e.stopPropagation();
-		setFiltersVisible(true)
-	}
 
 	return (
 		<div className='flex p-4 justify-between'>
@@ -53,9 +41,7 @@ export default function TableUpdate({
 				<div className='relative'>
 					<BsThreeDots
 						className={'dark:text-white cursor-pointer'}
-						onClick={openFilters}
 					/>
-					<FilterBooks filtersVisible={filtersVisible} setType={setType} />
 				</div>
 				<div
 					className={`${
