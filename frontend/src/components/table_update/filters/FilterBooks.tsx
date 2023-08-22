@@ -23,7 +23,7 @@ export default function FilterBooks({
 		<div
 			className={`${
 				filtersVisible ? 'block' : 'hidden'
-			} absolute top-5 left-0 z-10 origin-top-right rounded-md bg-gray-100 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
+			} absolute top-5 left-0 z-50 origin-top-right rounded-md bg-gray-100 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
 		>
 			<div className='bg-gray-900 text-white hover:bg-gray-800 hover:text-gray-200 px-3 py-2 text-sm font-medium cursor-pointer'>
 				Filtres:
@@ -45,24 +45,9 @@ export default function FilterBooks({
 						changeSort={changeSort}
 					/>
 
-					<Search setSearchField={setSearchField} placeholder={'Rechercher'} />
+					<Search placeholder={'Rechercher'} setSearchField={setSearchField} />
 				</div>
 			</div>
 		</div>
 	);
 }
-
-/* {
-	types.map(({ type }: { type: string }, index: number) => {
-		if (type)
-			return (
-				<div
-					className='text-gray-600 bg-white hover:bg-gray-200 hover:text-gray-800 block rounded-md px-2 py-1 text-sm font-medium cursor-pointer'
-					key={index}
-					onClick={() => setType(type)}
-				>
-					{type}
-				</div>
-			);
-	});
-} */

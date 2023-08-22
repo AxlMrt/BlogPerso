@@ -15,11 +15,10 @@ export default function Pagination({
 }: Props) {
 
 	return (
-		<div className='items-center space-y-2 text-xs sm:space-y-0 sm:space-x-3 sm:flex dark:text-white'>
-			<span className='block'>
-				Page {page} of {data.total_pages === 0 ? 1 : data.total_pages}
-			</span>
-			<div className='flex space-x-3'>
+			<div className='flex items-center justify-center text-xs space-x-3 dark:text-white'>
+				<span>
+					Page {page} of {data.total_pages === 0 ? 1 : data.total_pages}
+				</span>
 				<button
 					type='button'
 					onClick={() => setPage(page - 1)}
@@ -35,6 +34,6 @@ export default function Pagination({
 					<BsArrowRight />
 				</button>
 			</div>
-		</div>
+
 	);
 }

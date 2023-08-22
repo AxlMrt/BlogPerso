@@ -18,10 +18,10 @@ export default function TableHeaderCell({
 	field,
 	order,
 	type,
-	row,
-	setType,
-	setSearchField,
 	tableHeadFilterVisible,
+	row,
+	setSearchField,
+	setType,
 	setTableHeadFilterVisible,
 	changeSort,
 }: Props) {

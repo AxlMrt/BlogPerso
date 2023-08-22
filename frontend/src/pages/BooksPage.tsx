@@ -17,7 +17,6 @@ export default function BooksPage() {
 	const [order, setOrder] = useState<string>('desc');
 	const [field, setField] = useState<string>('createdAt');
 	const [type, setType] = useState<string>('');
-
 	const [tableHeadFilterVisible, setTableHeadFilterVisible] =
 		useState<boolean>(false);
 

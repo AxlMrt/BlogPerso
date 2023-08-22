@@ -3,7 +3,6 @@ import DeleteBtn from '../buttons/delete_btn/DeleteBtn';
 import { useDeleteBookMutation } from '../../app/store/api/booksApi';
 import { IBook } from '../../app/types';
 import ValidBtn from '../buttons/valid_button/ValidBtn';
-import { BsThreeDots } from 'react-icons/bs';
 import { Dispatch, SetStateAction } from 'react';
 import Pagination from '../pagination/Pagination';
 
@@ -38,11 +37,6 @@ export default function TableUpdate({
 	return (
 		<div className='flex p-4 justify-between'>
 			<div className='flex items-center'>
-				<div className='relative'>
-					<BsThreeDots
-						className={'dark:text-white cursor-pointer'}
-					/>
-				</div>
 				<div
 					className={`${
 						!updateFields && 'hidden'

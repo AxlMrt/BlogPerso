@@ -22,13 +22,13 @@ export default function TableHead({
 	field,
 	order,
 	type,
+	tableHeadFilterVisible,
 	updateFields,
-	setType,
 	setSearchField,
+	setType,
+	setTableHeadFilterVisible,
 	setUpdateFields,
 	changeSort,
-	tableHeadFilterVisible,
-	setTableHeadFilterVisible,
 }: Props) {
 	const headers: { key: string; label: string }[] = [
 		{ key: 'year', label: 'Année' },

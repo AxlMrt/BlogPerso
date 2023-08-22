@@ -2,11 +2,11 @@ import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { PiMagnifyingGlassBold } from 'react-icons/pi';
 
 interface Props {
-	setSearchField: Dispatch<SetStateAction<string>>;
 	placeholder: string;
+	setSearchField: Dispatch<SetStateAction<string>>;
 }
 
-export default function Search({ setSearchField, placeholder }: Props) {
+export default function Search({ placeholder, setSearchField }: Props) {
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setSearchField(e.target.value);
 	};

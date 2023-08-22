@@ -34,17 +34,17 @@ export default function Table({
 	field,
 	order,
 	type,
+	tableHeadFilterVisible,
 	setType,
 	setField,
 	setOrder,
 	setSearchField,
 	setUpdateFields,
-	handleCheckBox,
-	tableHeadFilterVisible,
 	setTableHeadFilterVisible,
+	handleCheckBox,
 }: Props) {
 	const [edit, setEdit] = useState<IBook[] | null>(null);
-	const [updateBook] = useUpdateBookMutation();
+	const [updateBook, { isSuccess }] = useUpdateBookMutation();
 	const navigate = useNavigate();
 
 	function changeSort(e: MouseEvent, key: string): void {
@@ -57,7 +57,7 @@ export default function Table({
 		e.preventDefault();
 		edit!.forEach((book) => {
 			try {
-				updateBook(book).then(() => navigate(0));
+				updateBook(book);
 			} catch (error) {
 				console.error('Failed to update the book: ', error);
 			}
@@ -78,7 +78,9 @@ export default function Table({
 
 	useEffect(() => {
 		setEdit(books);
-	}, [books]);
+		if (isSuccess)
+			navigate(0);
+	}, [books, isSuccess, navigate]);
 
 	return (
 		<div className='overflow-x-auto shadow-md rounded-sm sm:rounded-lg'>

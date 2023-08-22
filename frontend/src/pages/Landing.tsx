@@ -4,7 +4,7 @@ import { useAppSelector } from '../app/store/configureStore';
 
 export default function Landing() {
 	const { user } = useAppSelector((state) => state.auth);
-	if (user) return <Navigate to="/" replace={true} />
+	if (user) return <Navigate to="/" />
 
   return (
 		<section className='bg-gray-100 dark:bg-gray-900'>
@@ -21,14 +21,12 @@ export default function Landing() {
 						<div className='flex flex-col items-center justify-center space-y-3 sm:space-x-4 sm:space-y-0 sm:flex-row lg:justify-start'>
 							<Link
 								to='/register'
-								rel='noopener'
 								className='px-8 py-4 text-lg font-medium text-center text-white bg-primary-600 hover:bg-primary-800 rounded-md '
 							>
 								S'inscrire
 							</Link>
 							<Link
 								to='/login'
-								rel='noopener'
 								className='flex items-center space-x-2 text-gray-500 dark:text-gray-400'
 							>
 								<svg
@@ -55,7 +53,7 @@ export default function Landing() {
 					<div className='flex items-center justify-center'>
 						<img
 							src={heroImg}
-							className={'w-full max-w-3xl object-cover'}
+							className='w-full max-w-3xl object-cover'
 							alt='Hero Illustration'
 							loading='eager'
 							placeholder='blur'
