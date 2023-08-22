@@ -9,7 +9,7 @@ const token = localStorage.getItem('token')
   : sessionStorage.getItem('token') ? sessionStorage.getItem('token') : null;
 
   const refreshToken = localStorage.getItem('refresh')
-? localStorage.getItem('token')
+? localStorage.getItem('refresh')
 : null;
 
 const initialState = {
