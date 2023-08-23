@@ -6,13 +6,13 @@ import { useAddNewBookMutation } from '../../app/store/api/booksApi';
 import { useAppSelector } from '../../app/store/configureStore';
 import { IBookRegister } from '../../app/types';
 import { useState } from 'react';
-import { trimUserObject } from '../../app/utils';
+import { trimUserObject } from '../../app/utils/validation';
 import Form from '../form/Form';
 import { bookFullFields } from '../../app/formFields';
 
 const FORM_ID = 'callToAction';
 
-export default function CallToAction() {
+export default function CreateBookCallToAction() {
 	const { user } = useAppSelector((state) => state.auth);
 	const [addNewBook, { isLoading }] = useAddNewBookMutation();
 	const { register, handleSubmit } = useForm<IBookRegister>();

@@ -83,7 +83,7 @@ export default function Table({
 	}, [books, isSuccess, navigate]);
 
 	return (
-		<div className='overflow-x-auto shadow-md rounded-sm sm:rounded-lg'>
+		<div className='min-h-[50%] overflow-x-auto shadow-md rounded-sm sm:rounded-lg'>
 			<form action='' id='table_form' onSubmit={handleUpdate}>
 				<table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
 					<TableHead

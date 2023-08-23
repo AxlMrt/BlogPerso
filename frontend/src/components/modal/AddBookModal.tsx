@@ -4,14 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { useAddNewBookMutation } from '../../app/store/api/booksApi';
 import { useAppSelector } from '../../app/store/configureStore';
 import { IBookRegister } from '../../app/types';
-import { trimUserObject } from '../../app/utils';
+import { trimUserObject } from '../../app/utils/validation';
 import { bookFields } from '../../app/formFields';
 import Form from '../form/Form';
 import LogsTitle from '../logs_header/LogsTitle';
 import CloseModalButton from '../buttons/close_modal/CloseModalButton';
 import FormSubmitButton from '../buttons/form_submit/FormSubmitButton';
 
-const FORM_ID = 'modal'
+const FORM_ID = 'modal';
 
 export default function AddBookModal() {
 	const { user } = useAppSelector((state) => state.auth);
@@ -57,7 +57,11 @@ export default function AddBookModal() {
 							fields={bookFields}
 							register={register}
 						/>
-						<FormSubmitButton label={'Ajouter'} isLoading={isLoading} formId={FORM_ID} />
+						<FormSubmitButton
+							label={'Ajouter'}
+							isLoading={isLoading}
+							formId={FORM_ID}
+						/>
 					</div>
 				</div>
 			</div>

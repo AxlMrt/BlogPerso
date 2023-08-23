@@ -49,16 +49,17 @@ export default function TableHead({
 				{headers.map((row, index) => {
 					return (
 						<TableHeaderCell
-							row={row}
-							changeSort={changeSort}
-							order={order}
 							field={field}
-							key={index}
-							setSearchField={setSearchField}
+							isBookInList={books.length > 0}
+							order={order}
 							type={type}
-							setType={setType}
 							tableHeadFilterVisible={tableHeadFilterVisible}
+							row={row}
+							setSearchField={setSearchField}
+							setType={setType}
 							setTableHeadFilterVisible={setTableHeadFilterVisible}
+							changeSort={changeSort}
+							key={index}
 						/>
 					);
 				})}

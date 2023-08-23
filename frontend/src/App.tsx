@@ -1,14 +1,15 @@
 import { Outlet, useNavigate } from 'react-router-dom';
 import Header from './components/header/Header';
 import { useAppDispatch, useAppSelector } from './app/store/configureStore';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toggleTheme } from './app/store/slices/themeSlice';
-import { getTheme } from './app/utils';
-import { setUser } from './app/store/slices/authSlice';
+import { getTheme } from './app/utils/darkMode';
+import { logout, setUser } from './app/store/slices/authSlice';
 import AddBookModal from './components/modal/AddBookModal';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import agent from './app/axios/agent';
+import AuthVerify from './app/utils/auth-verify';
 
 function App() {
 	const { token, refreshToken } = useAppSelector((state) => state.auth);
@@ -21,7 +22,7 @@ function App() {
 	useEffect(() => {
 		if (token || refreshToken)
 			agent.Auth.getUserDetails().then((res) => dispatch(setUser(res)));
-	
+
 		dispatch(toggleTheme(darkMode));
 		document.documentElement.classList.add(getTheme(darkMode));
 	}, [darkMode, dispatch, navigate, refreshToken, token]);
@@ -29,7 +30,11 @@ function App() {
 	const handleClick = () => {
 		setProfilebar(false);
 		setNavbar(false);
-	}
+	};
+
+	const logOut = useCallback(() => {
+		dispatch(logout());
+	}, [dispatch]);
 
 	return (
 		<main
@@ -44,6 +49,7 @@ function App() {
 			/>
 			<AddBookModal />
 			<Outlet />
+			<AuthVerify logOut={logOut} />
 			<ToastContainer position='bottom-right' hideProgressBar theme='colored' />
 		</main>
 	);

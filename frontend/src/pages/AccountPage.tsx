@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { IRegister } from '../app/types';
-import { trimUserObject } from '../app/utils';
+import { trimUserObject } from '../app/utils/validation';
 import { setUser } from '../app/store/slices/authSlice';
 import { useUpdateUserMutation } from '../app/store/api/usersApi';
 import { useAppDispatch, useAppSelector } from '../app/store/configureStore';

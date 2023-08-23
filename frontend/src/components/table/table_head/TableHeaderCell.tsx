@@ -4,6 +4,7 @@ import FilterBooks from '../../table_update/filters/FilterBooks';
 
 interface Props {
 	field: string;
+	isBookInList: boolean;
 	order: string;
 	type: string;
 	tableHeadFilterVisible: boolean;
@@ -16,6 +17,7 @@ interface Props {
 
 export default function TableHeaderCell({
 	field,
+	isBookInList,
 	order,
 	type,
 	tableHeadFilterVisible,
@@ -51,14 +53,16 @@ export default function TableHeaderCell({
 						field,
 					}}
 				/>
-				<FilterBooks
-					filtersVisible={visible}
-					changeSort={changeSort}
-					row={row}
-					order={order}
-					type={type}
-					setSearchField={setSearchField}
-				/>
+				{isBookInList && (
+					<FilterBooks
+						filtersVisible={visible}
+						changeSort={changeSort}
+						row={row}
+						order={order}
+						type={type}
+						setSearchField={setSearchField}
+					/>
+				)}
 			</div>
 		</th>
 	);

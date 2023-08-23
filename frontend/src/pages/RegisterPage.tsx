@@ -9,25 +9,30 @@ import FormSubmitButton from '../components/buttons/form_submit/FormSubmitButton
 import LogsFooter from '../components/logs_footer/LogsFooter';
 import LogsTitle from '../components/logs_header/LogsTitle';
 import LogsHeader from '../components/logs_header/LogsHeader';
-import { isEmail, validPassword } from '../app/utils';
+import { isEmail, validPassword } from '../app/utils/validation';
 import { toast } from 'react-toastify';
-import { BaseQueryArg, BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
+import {
+	BaseQueryArg,
+	BaseQueryFn,
+} from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 
 const FORM_ID = 'registerPage';
 
 export default function RegisterPage() {
-	const [addUser, { isLoading, isError, isSuccess, error }] = useAddNewUserMutation<BaseQueryArg<BaseQueryFn>>();
+	const [addUser, { isLoading, isError, isSuccess, error }] =
+		useAddNewUserMutation<BaseQueryArg<BaseQueryFn>>();
 	const { register, handleSubmit } = useForm<IRegister>();
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (isError) navigate('/register');
-		if (error && error.originalStatus === 409) toast.error('Cet email est déjà utilisé')
+		if (error && error.originalStatus === 409)
+			toast.error('Cet email est déjà utilisé');
 	}, [navigate, isSuccess, isError, error]);
 
 	const submitForm = async (data: IRegister) => {
 		if (!isEmail(data.email)) {
-			toast.error('Entrez un email valide.')
+			toast.error('Entrez un email valide.');
 			return;
 		}
 
@@ -42,7 +47,7 @@ export default function RegisterPage() {
 			);
 			return;
 		}
-		
+
 		data.email = data.email.toLowerCase();
 		delete data.confirmPassword;
 		try {

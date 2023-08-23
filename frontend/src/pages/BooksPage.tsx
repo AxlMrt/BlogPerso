@@ -47,8 +47,8 @@ export default function BooksPage() {
 		<section
 			className='bg-gray-100 dark:bg-gray-900 h-screen'
 			onClick={() => setTableHeadFilterVisible(false)}
-		>
-			<div className=' w-5/6 m-auto mt-32'>
+			>
+			<div className='h-full w-5/6 m-auto mt-32'>
 				<Search
 					setSearchField={setSearchField}
 					placeholder={'Rechercher un livre'}

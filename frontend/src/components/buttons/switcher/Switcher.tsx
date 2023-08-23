@@ -1,11 +1,10 @@
 import { RiSunFoggyLine, RiMoonClearFill } from 'react-icons/ri';
 
 import {
-	useAppDispatch, useAppSelector,
+	useAppDispatch,
+	useAppSelector,
 } from '../../../app/store/configureStore';
-import { toggleMode } from '../../../app/utils';
-
-
+import { toggleMode } from '../../../app/utils/darkMode';
 
 export default function Switcher() {
 	const dispatch = useAppDispatch();
