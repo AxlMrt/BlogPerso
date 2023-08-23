@@ -1,5 +1,11 @@
-import { AppDispatch } from "../store/configureStore";
+import { useLocation } from "react-router-dom";
+import { AppDispatch, useAppSelector } from "../store/configureStore";
 import { toggleTheme } from "../store/slices/themeSlice";
+import { useEffect } from "react";
+
+interface Props {
+	darkModeSetter: () => void;
+}
 
 export const isDark = () =>
 	(localStorage && localStorage.theme === 'dark') ||
@@ -19,3 +25,15 @@ export const toggleMode = (dispatch: AppDispatch, darkMode: boolean) => {
 	}
 	dispatch(toggleTheme(!darkMode));
 };
+
+export default function DarkModeSetter({ darkModeSetter }: Props) {
+	const location = useLocation();
+	const darkMode = useAppSelector((state) => state.theme.darkMode);
+	
+	useEffect(() => {
+		darkModeSetter();
+		document.documentElement.classList.add(getTheme(darkMode));
+	}, [location, darkMode, darkModeSetter]);
+
+	return undefined;
+}

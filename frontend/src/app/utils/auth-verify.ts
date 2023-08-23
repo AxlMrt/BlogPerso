@@ -3,7 +3,8 @@ import { useLocation } from "react-router-dom";
 import { useAppSelector } from "../store/configureStore";
 
 interface Props {
-  logOut: () => void
+  logOut: () => void;
+  logIn: () => void;
 }
 
 const parseJwt = (token: string) => {
@@ -14,19 +15,21 @@ const parseJwt = (token: string) => {
   }
 };
 
-export default function AuthVerify ({ logOut }: Props) {
+export default function AuthVerify ({ logIn, logOut }: Props) {
   const location = useLocation();
-  const { token } = useAppSelector((state) => state.auth);
+  const { token, refreshToken } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     if (token) {
       const decodedJwt = parseJwt(token);
-
-      if (decodedJwt.exp * 1000 < Date.now()) {
+      if (decodedJwt.exp * 1000 < Date.now())
         logOut();
-      }
     }
-  }, [location, logOut, token]);
+
+    if (refreshToken)
+      logIn();
+
+  }, [location, logIn, logOut, refreshToken, token]);
 
   return undefined;
 }
