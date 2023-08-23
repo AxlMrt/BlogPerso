@@ -36,7 +36,7 @@ export interface IBook {
   createdAt: Date;
   updatedAt: Date;
   userId: string;
-  user: IUser;
+  userInfo: IUser;
 }
 
 export interface IBookRegister extends IBook {

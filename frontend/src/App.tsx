@@ -5,7 +5,6 @@ import { useCallback, useState } from 'react';
 import { toggleTheme } from './app/store/slices/themeSlice';
 import DarkModeSetter from './app/utils/darkMode';
 import { logout, setUser } from './app/store/slices/authSlice';
-import AddBookModal from './components/modal/AddBookModal';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import agent from './app/axios/agent';
@@ -24,7 +23,7 @@ function App() {
 
 	const darkModeSetter = useCallback(() => {
 		dispatch(toggleTheme(darkMode));
-	}, [darkMode, dispatch])
+	}, [darkMode, dispatch]);
 
 	const logIn = useCallback(() => {
 		agent.Auth.getUserDetails().then((res) => dispatch(setUser(res)));
@@ -45,7 +44,6 @@ function App() {
 				navBar={navBar}
 				setNavBar={setNavbar}
 			/>
-			<AddBookModal />
 			<AuthVerify logIn={logIn} logOut={logOut} />
 			<DarkModeSetter darkModeSetter={darkModeSetter} />
 			<Outlet />

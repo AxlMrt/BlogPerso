@@ -10,6 +10,7 @@ import {
 	BaseQueryArg,
 	BaseQueryFn,
 } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
+import AddBookModal from '../components/modal/AddBookModal';
 
 export default function BooksPage() {
 	const [page, setPage] = useState<number>(1);
@@ -21,7 +22,7 @@ export default function BooksPage() {
 		useState<boolean>(false);
 
 	const { user } = useAppSelector((state) => state.auth);
-	const { data, isLoading } = useGetUserBookQuery<BaseQueryArg<BaseQueryFn>>({
+	const { data, isLoading, refetch } = useGetUserBookQuery<BaseQueryArg<BaseQueryFn>>({
 		id: user!["id"],
 		page,
 		search,
@@ -47,7 +48,7 @@ export default function BooksPage() {
 		<section
 			className='bg-gray-100 dark:bg-gray-900 h-screen'
 			onClick={() => setTableHeadFilterVisible(false)}
-			>
+		>
 			<div className='h-full w-5/6 m-auto mt-32'>
 				<Search
 					setSearchField={setSearchField}
@@ -59,6 +60,7 @@ export default function BooksPage() {
 					data={data}
 					page={page}
 					setPage={setPage}
+					refetch={refetch}
 				/>
 				<Table
 					handleCheckBox={handleCheckBox}
@@ -76,6 +78,7 @@ export default function BooksPage() {
 					setTableHeadFilterVisible={setTableHeadFilterVisible}
 				/>
 			</div>
+			<AddBookModal refetch={refetch} />
 		</section>
 	);
 }

@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { useAddNewBookMutation } from '../../app/store/api/booksApi';
-import { useAppSelector } from '../../app/store/configureStore';
+import { useAppDispatch, useAppSelector } from '../../app/store/configureStore';
 import { IBookRegister } from '../../app/types';
 import { trimUserObject } from '../../app/utils/validation';
 import { bookFields } from '../../app/formFields';
@@ -10,15 +9,23 @@ import Form from '../form/Form';
 import LogsTitle from '../logs_header/LogsTitle';
 import CloseModalButton from '../buttons/close_modal/CloseModalButton';
 import FormSubmitButton from '../buttons/form_submit/FormSubmitButton';
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { setUser } from '../../app/store/slices/authSlice';
+import { useLocation } from 'react-router-dom';
 
 const FORM_ID = 'modal';
 
-export default function AddBookModal() {
-	const { user } = useAppSelector((state) => state.auth);
-	const [addNewBook, { isLoading }] = useAddNewBookMutation();
-	const { register, handleSubmit } = useForm<IBookRegister>();
-	const navigate = useNavigate();
+interface Props {
+	refetch?: () => void;
+}
 
+export default function AddBookModal({ refetch }: Props) {
+	const { user } = useAppSelector((state) => state.auth);
+	const dispatch = useAppDispatch();
+	const [addNewBook, { isLoading, isSuccess, data: successData }] = useAddNewBookMutation();
+	const { register, handleSubmit, reset } = useForm<IBookRegister>();
+	const location = useLocation();
 	const closeModal = () => {
 		(window as any).add_book.close();
 	};
@@ -26,14 +33,25 @@ export default function AddBookModal() {
 	const submitForm = async (data: any) => {
 		data = trimUserObject(data);
 		if (user) data.userMail = user['email'];
-		if (data.year) data.year = parseInt(data.year);
 
 		try {
-			await addNewBook(data).then(() => navigate(0));
+			await addNewBook(data);
 		} catch (error) {
-			console.error('Failed to save the book: ', error);
+			console.error('Failed to create the book: ', error);
 		}
 	};
+
+	useEffect(() => {
+		if (isSuccess) {
+			if (location.pathname === '/table' && refetch)
+				refetch();
+			
+			closeModal();
+			reset();
+			dispatch(setUser(successData?.userInfo));
+			toast.success('Livre ajouté!');
+		}
+	}, [dispatch, isSuccess, location.pathname, refetch, reset, successData?.userInfo]);
 
 	return (
 		<dialog

@@ -1,11 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { IBook } from '../../../app/types';
 import { useUpdateBookMutation } from '../../../app/store/api/booksApi';
+import { useAppDispatch } from '../../../app/store/configureStore';
+import { setUser } from '../../../app/store/slices/authSlice';
 
 
 export default function StarRating({ book }: {book: IBook}) {
-  const { feedBack } = book;
-	const [updateFeedBack] = useUpdateBookMutation();
+	const { feedBack } = book;
+	const dispatch = useAppDispatch();
+	const [updateFeedBack, { isSuccess, data: successData }] = useUpdateBookMutation();
   const [hover, setHover] = useState(0);
   const [rating, setRating] = useState<number>(feedBack);
 
@@ -17,6 +20,11 @@ export default function StarRating({ book }: {book: IBook}) {
 			console.error('Failed to update feedback of the book: ', error);
 		}
 	};
+
+	useEffect(() => {
+		if (isSuccess)
+			dispatch(setUser(successData?.userInfo));
+	}, [dispatch, isSuccess, successData?.userInfo]);
 
 	return (
 		<div className='star-rating'>

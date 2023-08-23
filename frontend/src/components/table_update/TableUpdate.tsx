@@ -1,9 +1,8 @@
-import { useNavigate } from 'react-router-dom';
 import DeleteBtn from '../buttons/delete_btn/DeleteBtn';
 import { useDeleteBookMutation } from '../../app/store/api/booksApi';
 import { IBook } from '../../app/types';
 import ValidBtn from '../buttons/valid_button/ValidBtn';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import Pagination from '../pagination/Pagination';
 
 interface Props {
@@ -12,6 +11,7 @@ interface Props {
 	data: { books: IBook; total: number; page: string; total_pages: number };
 	page: number;
 	setPage: Dispatch<SetStateAction<number>>;
+	refetch: () => void;
 }
 
 export default function TableUpdate({
@@ -20,19 +20,23 @@ export default function TableUpdate({
 	data,
 	page,
 	setPage,
+	refetch,
 }: Props) {
-	const [deleteBook] = useDeleteBookMutation();
-	const navigate = useNavigate();
+	const [deleteBook, { isSuccess }] = useDeleteBookMutation();
 
 	const handleDelete = () => {
 		bookToUpdate.forEach(async (book: IBook) => {
 			try {
-				await deleteBook(book.id).then(() => navigate(0));
+				await deleteBook(book.id);
 			} catch (error) {
 				console.error('Failed to delete the book: ', error);
 			}
 		});
 	};
+
+	useEffect(() => {
+		if (isSuccess) refetch();
+	}, [isSuccess, refetch]);
 
 	return (
 		<div className='flex p-4 justify-between'>

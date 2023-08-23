@@ -26,7 +26,7 @@ const getBook: RequestHandler<{ id: string }> = async (req: Request, res: Respon
 }
 
 const createBook: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
-  const { title, author, type, year, publisher, userMail } = req.body;
+  const { title, author, type, year, feedBack, publisher, userMail } = req.body;
 
   try {
     const newBook = await prisma.book.create({
@@ -35,12 +35,23 @@ const createBook: RequestHandler = async (req: Request, res: Response, next: Nex
         author,
         type,
         year,
+        feedBack,
         publisher,
         user: { connect: { email: userMail } }
-       },
+      },
+      include: {
+        user: {
+          include: {
+            books: true
+          }
+        }
+      }
     });
 
-    res.status(201).json(newBook);
+    const { user, ...book } = newBook;
+    const { password, role, createdAt, updatedAt, ...userInfo } = user!;
+
+    res.status(201).json({ book, userInfo });
   } catch (error) {
     next(new HttpException(500, "Something went wrong"));
   }
@@ -61,9 +72,19 @@ const updateBook: RequestHandler = async (req: Request, res: Response, next: Nex
         feedBack,
         isRead
       },
+      include: {
+        user: {
+          include: {
+            books: true
+          }
+        }
+      }
     });
 
-    res.json(updatedBook);
+    const { user, ...book } = updatedBook;
+    const { password, role, createdAt, updatedAt, ...userInfo } = user!;
+
+    res.json({ book, userInfo });
   } catch (error) {
     next(new HttpException(500, "Something went wrong"));
   }

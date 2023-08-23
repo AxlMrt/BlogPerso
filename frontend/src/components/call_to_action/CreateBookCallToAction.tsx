@@ -1,24 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IoMdAddCircleOutline } from 'react-icons/io';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { useAddNewBookMutation } from '../../app/store/api/booksApi';
-import { useAppSelector } from '../../app/store/configureStore';
+import { useAppDispatch, useAppSelector } from '../../app/store/configureStore';
 import { IBookRegister } from '../../app/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { trimUserObject } from '../../app/utils/validation';
 import Form from '../form/Form';
 import { bookFullFields } from '../../app/formFields';
+import { setUser } from '../../app/store/slices/authSlice';
+import { toast } from 'react-toastify';
 
 const FORM_ID = 'callToAction';
 
 export default function CreateBookCallToAction() {
 	const { user } = useAppSelector((state) => state.auth);
-	const [addNewBook, { isLoading }] = useAddNewBookMutation();
-	const { register, handleSubmit } = useForm<IBookRegister>();
+	const dispatch = useAppDispatch();
+	const [addNewBook, { isLoading, isSuccess, data: successData }] = useAddNewBookMutation();
+	const { register, handleSubmit, reset } = useForm<IBookRegister>();
 	const [hover, setHover] = useState(0);
 	const [rating, setRating] = useState<number>(0);
-	const navigate = useNavigate();
 
 	const submitForm = async (data: any) => {
 		data = trimUserObject(data);
@@ -26,13 +27,20 @@ export default function CreateBookCallToAction() {
 		if (data.year) data.year = parseInt(data.year);
 
 		data.feedBack = rating;
-		console.log(data);
 		try {
-			await addNewBook(data).then(() => navigate(0));
+			await addNewBook(data);
 		} catch (error) {
 			console.error('Failed to save the book: ', error);
 		}
 	};
+
+	useEffect(() => {
+		if (isSuccess) {
+			dispatch(setUser(successData?.userInfo));
+			reset();
+			toast.success('Livre ajouté!');
+		}
+	}, [successData?.userInfo, dispatch, isSuccess, reset]);
 
 	return (
 		<div className='bg-white dark:bg-gray-800 shadow rounded-lg mb-6 py-6 px-6 dark:text-white md:px-12'>
