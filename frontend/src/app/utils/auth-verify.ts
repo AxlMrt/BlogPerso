@@ -24,6 +24,8 @@ export default function AuthVerify ({ logIn, logOut }: Props) {
       const decodedJwt = parseJwt(token);
       if (decodedJwt.exp * 1000 < Date.now())
         logOut();
+      else
+        logIn();
     }
 
     if (refreshToken)

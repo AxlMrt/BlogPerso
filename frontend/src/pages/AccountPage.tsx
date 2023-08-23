@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IRegister } from '../app/types';
-import { trimUserObject } from '../app/utils/validation';
+import { trimUserObject, validPassword } from '../app/utils/validation';
 import { setUser } from '../app/store/slices/authSlice';
 import { useUpdateUserMutation } from '../app/store/api/usersApi';
 import { useAppDispatch, useAppSelector } from '../app/store/configureStore';
@@ -16,18 +16,35 @@ import { toast } from 'react-toastify';
 export default function AccountPage() {
 	const dispatch = useAppDispatch();
 	const { user } = useAppSelector((state) => state.auth);
-	const [updateUser, { isLoading }] = useUpdateUserMutation();
-	const { register, handleSubmit } = useForm<IRegister>();
+	const [updateUser, { isLoading, isSuccess, data: successData }] = useUpdateUserMutation();
+	const { register, handleSubmit, reset } = useForm<IRegister>();
 	const [file, setFile] = useState<Blob | MediaSource | null>(null);
 	const navigate = useNavigate();
 
 	const submitForm = async (data: any) => {
-		data.photo = file;
 		data = trimUserObject(data);
 		data.id = user!['id'];
+	
+		if (file)
+			data.photo = file;
 
-		if (data.password !== data.confirmPassword)
-			toast.error('Les mots de passe ne correspondent pas.');
+		if (data.email)
+			data.email = data.email.toLowerCase();
+
+		if (data.password) {
+			if (data.password !== data.confirmPassword) {
+				toast.error('Les mots de passe ne correspondent pas.');
+				return;
+			}
+
+			if (!validPassword(data.password)) {
+				toast.error(
+					'Votre mot de passe doit comporter entre 6 et 20 caractères et contenir une majuscule, un chiffre et un caractère spécial.'
+				);
+				return;
+			}
+		}
+		
 		delete data.confirmPassword;
 
 		if (file) {
@@ -37,23 +54,27 @@ export default function AccountPage() {
 			data = { ...data, photo: Date.now() + data.photo.name };
 			formData.append('user', JSON.stringify(data));
 			try {
-				await updateUser({ id: user!['id'], formData })
-					.then((res: any) => dispatch(setUser(res.data)))
-					.finally(() => navigate(0));
+				await updateUser({ id: user!['id'], formData });
 			} catch (error) {
 				console.error('Failed to update the user: ', error);
 			}
 		} else {
 			data.photo = user!['photo'];
 			try {
-				await updateUser({ id: user!['id'], formData: data })
-					.then((res: any) => dispatch(setUser(res.data)))
-					.finally(() => navigate(0));
+				await updateUser({ id: user!['id'], formData: data });
 			} catch (error) {
 				console.error('Failed to update the user: ', error);
 			}
 		}
 	};
+
+	useEffect(() => {
+		if (isSuccess) {
+			dispatch(setUser(successData));
+			reset();
+			toast.success('Vos informations ont été mises à jour!');
+		}
+	}, [dispatch, isSuccess, navigate, reset, successData])
 
 	return (
 		<section className='px-6 py-4 bg-gray-50 dark:bg-gray-900'>
