@@ -4,6 +4,7 @@ import tokensFn from "../utils/tokens";
 import createCookie from "../utils/cookies";
 import HttpException from "../config/exceptions/HttpException";
 import { hashData } from "../utils/hashData";
+import fs from 'fs';
 
 const getAllUsers: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -63,14 +64,32 @@ const createUser: RequestHandler = async (req: Request, res: Response, next: Nex
 
 const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-
-  if (req.body.user)
-    req.body = JSON.parse(req.body.user);
-
-  if (req.body.password)
-    req.body.password = await hashData(req.body.password);
-
+  const uploadDir = __dirname + '/../../public/uploads/';
+  
   try {
+    const currentPhoto = await prisma.user.findUnique({
+      where: { id },
+      select: {
+        photo: true,
+      }
+    });
+
+    const filenamePath = uploadDir + currentPhoto?.photo;
+
+    if (req.body.user)
+      req.body = JSON.parse(req.body.user);
+  
+    if (req.body.password)
+      req.body.password = await hashData(req.body.password);
+
+    if (req.body.photo) {
+      if (currentPhoto?.photo !== 'default.png' && fs.existsSync(filenamePath)) {
+        fs.unlink(filenamePath, (err) => {
+          console.log(err);
+        });
+      }
+    }
+    
     const updatedUser = await prisma.user.update({
       where: { id },
       include: { books: true },
