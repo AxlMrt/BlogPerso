@@ -62,7 +62,6 @@ export default function DragAndDrop({ file, setFile, register }: Props) {
 			<input
 				{...register('photo', {
 					onChange: (e) => handleChange(e),
-					setValueAs: (x: string) => x,
 				})}
 				ref={inputRef}
 				type='file'

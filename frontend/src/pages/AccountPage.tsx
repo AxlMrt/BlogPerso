@@ -72,6 +72,7 @@ export default function AccountPage() {
 		if (isSuccess) {
 			dispatch(setUser(successData));
 			reset();
+			setFile(null);
 			toast.success('Vos informations ont été mises à jour!');
 		}
 	}, [dispatch, isSuccess, navigate, reset, successData])
