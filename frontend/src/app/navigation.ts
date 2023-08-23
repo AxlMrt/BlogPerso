@@ -8,7 +8,7 @@ export const loggedNavigation: { dest: string; text: string; class?: boolean, cl
 		},
 		{ dest: '/', text: 'Accueil' },
 		{ dest: '/table', text: 'Vos livres' },
-		{ dest: '#', text: 'Bibliothèque' },
+		/*{ dest: '#', text: 'Bibliothèque' },*/
 	];
 
 export const notLoggedNavigation: {
