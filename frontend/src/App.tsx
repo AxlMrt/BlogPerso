@@ -5,7 +5,7 @@ import { useCallback, useState } from 'react';
 import { toggleTheme } from './app/store/slices/themeSlice';
 import DarkModeSetter from './app/utils/darkMode';
 import { logout, setUser } from './app/store/slices/authSlice';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import agent from './app/axios/agent';
 import AuthVerify from './app/utils/auth-verify';
@@ -31,6 +31,7 @@ function App() {
 
 	const logOut = useCallback(() => {
 		dispatch(logout());
+		toast.error('Vous avez été déconnecté.')
 	}, [dispatch]);
 
 	return (

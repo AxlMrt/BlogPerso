@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import Search from '../components/table/Search';
 import Table from '../components/table/Table';
 import TableUpdate from '../components/table_update/TableUpdate';
@@ -42,6 +42,10 @@ export default function BooksPage() {
 			);
 	};
 
+	useEffect(() => {
+		refetch();
+	}, [refetch])
+
 	return isLoading ? (
 		<Spinner />
 	) : (
@@ -63,19 +67,19 @@ export default function BooksPage() {
 					refetch={refetch}
 				/>
 				<Table
-					handleCheckBox={handleCheckBox}
-					setUpdateFields={setUpdateFields}
-					updateFields={updateFields}
 					books={data.books}
 					field={field}
-					setField={setField}
+					handleCheckBox={handleCheckBox}
 					order={order}
+					type={type}
+					tableHeadFilterVisible={tableHeadFilterVisible}
+					updateFields={updateFields}
+					setField={setField}
 					setOrder={setOrder}
 					setSearchField={setSearchField}
-					type={type}
-					setType={setType}
-					tableHeadFilterVisible={tableHeadFilterVisible}
 					setTableHeadFilterVisible={setTableHeadFilterVisible}
+					setType={setType}
+					setUpdateFields={setUpdateFields}
 				/>
 			</div>
 			<AddBookModal refetch={refetch} />

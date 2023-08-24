@@ -12,6 +12,9 @@ import {
 import TableHead from './table_head/TableHead';
 import { useUpdateBookMutation } from '../../app/store/api/booksApi';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useAppDispatch } from '../../app/store/configureStore';
+import { setUser } from '../../app/store/slices/authSlice';
 interface Props {
 	books: IBook[];
 	updateFields: boolean;
@@ -30,21 +33,22 @@ interface Props {
 
 export default function Table({
 	books,
-	updateFields,
 	field,
+	handleCheckBox,
 	order,
 	type,
 	tableHeadFilterVisible,
+	updateFields,
 	setType,
 	setField,
 	setOrder,
 	setSearchField,
 	setUpdateFields,
 	setTableHeadFilterVisible,
-	handleCheckBox,
 }: Props) {
+	const [updateBook, { isSuccess, data: successData }] = useUpdateBookMutation();
+	const dispatch = useAppDispatch();
 	const [edit, setEdit] = useState<IBook[] | null>(null);
-	const [updateBook, { isSuccess }] = useUpdateBookMutation();
 	const navigate = useNavigate();
 
 	function changeSort(e: MouseEvent, key: string): void {
@@ -78,9 +82,11 @@ export default function Table({
 
 	useEffect(() => {
 		setEdit(books);
-		if (isSuccess)
-			navigate(0);
-	}, [books, isSuccess, navigate]);
+		if (isSuccess) {
+			dispatch(setUser(successData?.userInfo));
+			toast.success('Votre liste a été mise à jour!');
+		}
+	}, [books, dispatch, isSuccess, navigate, successData?.userInfo]);
 
 	return (
 		<div className='min-h-[50%] overflow-x-auto shadow-md rounded-sm sm:rounded-lg'>

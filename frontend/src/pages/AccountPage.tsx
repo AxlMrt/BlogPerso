@@ -12,6 +12,7 @@ import DragAndDrop from '../components/drag_and_drop/DragAndDrop';
 import Input from '../components/form/form_input/Input';
 import { signupFields } from '../app/formFields';
 import { toast } from 'react-toastify';
+import AddBookModal from '../components/modal/AddBookModal';
 
 export default function AccountPage() {
 	const dispatch = useAppDispatch();
@@ -131,6 +132,7 @@ export default function AccountPage() {
 					</div>
 				</form>
 			</div>
+			<AddBookModal />
 		</section>
 	);
 }
