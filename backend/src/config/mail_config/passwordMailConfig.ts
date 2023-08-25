@@ -1,4 +1,4 @@
-import secrets from "../secrets";
+import secrets from '../secrets';
 
 interface Props {
   email: string;
@@ -9,10 +9,10 @@ interface Props {
 
 export const passwordMailConfig = ({ email, subject, generatedOTP, uploads }: Props) => {
   return {
-      from: secrets.authSecret,
-      to: email,
-      subject,
-      html: `
+    from: secrets.authSecret,
+    to: email,
+    subject,
+    html: `
       <!DOCTYPE html">
         <html lang="en">
           <head>
@@ -58,16 +58,18 @@ export const passwordMailConfig = ({ email, subject, generatedOTP, uploads }: Pr
             </table>
           </body>
           </html>`,
-      attachments: [{
-          filename: 'logo.png',
-          path: `${uploads}/logo.png`,
-          cid: 'unique@logo'
-      }],
-      auth: {
-        user: secrets.authSecret,
-        refreshToken: secrets.refreshToken,
-        accessToken: secrets.accessToken,
-        expires: 1484314697598,
-      }
-    }
-}
+    attachments: [
+      {
+        filename: 'logo.png',
+        path: `${uploads}/logo.png`,
+        cid: 'unique@logo',
+      },
+    ],
+    auth: {
+      user: secrets.authSecret,
+      refreshToken: secrets.refreshToken,
+      accessToken: secrets.accessToken,
+      expires: 1484314697598,
+    },
+  };
+};

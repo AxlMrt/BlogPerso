@@ -1,5 +1,5 @@
-import express from "express";
-import _ from "../controllers/refreshedToken.controller";
+import express from 'express';
+import _ from '../controllers/refreshedToken.controller';
 
 const router = express.Router();
 

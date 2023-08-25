@@ -1,53 +1,53 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Request, Response, NextFunction, RequestHandler } from "express"
-import prisma from "../../prisma/lib/prisma";
-import HttpException from "../config/exceptions/HttpException";
-import { IBook } from "../config/types";
+import { Request, Response, NextFunction, RequestHandler } from 'express';
+import prisma from '../../prisma/lib/prisma';
+import HttpException from '../config/exceptions/HttpException';
+import { IBook } from '../config/types';
 
 const getAllBooks: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const books: IBook[] = await prisma.book.findMany();
     res.status(200).json(books);
   } catch (error) {
-    next(new HttpException(500, "Something went wrong"));
+    next(new HttpException(500, 'Something went wrong'));
   }
-}
+};
 
 const getBook: RequestHandler<{ id: string }> = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
 
   try {
     const book: IBook | null = await prisma.book.findUnique({
-      where: { id }
+      where: { id },
     });
 
-    res.json(book)
+    res.json(book);
   } catch (error) {
-    next(new HttpException(500, "Something went wrong"));
+    next(new HttpException(500, 'Something went wrong'));
   }
-}
+};
 
 const createBook: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const { title, author, type, year, feedBack, publisher, userMail } = req.body;
 
   try {
     const newBook = await prisma.book.create({
-      data: { 
+      data: {
         title,
         author,
         type,
         year,
         feedBack,
         publisher,
-        user: { connect: { email: userMail } }
+        user: { connect: { email: userMail } },
       },
       include: {
         user: {
           include: {
-            books: true
-          }
-        }
-      }
+            books: true,
+          },
+        },
+      },
     });
 
     const { user, ...book } = newBook;
@@ -55,9 +55,9 @@ const createBook: RequestHandler = async (req: Request, res: Response, next: Nex
 
     res.status(201).json({ book, userInfo });
   } catch (error) {
-    next(new HttpException(500, "Something went wrong"));
+    next(new HttpException(500, 'Something went wrong'));
   }
-}
+};
 
 const updateBook: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const { title, author, type, year, publisher, isRead, feedBack } = req.body;
@@ -72,15 +72,15 @@ const updateBook: RequestHandler = async (req: Request, res: Response, next: Nex
         year,
         publisher,
         feedBack,
-        isRead
+        isRead,
       },
       include: {
         user: {
           include: {
-            books: true
-          }
-        }
-      }
+            books: true,
+          },
+        },
+      },
     });
 
     const { user, ...book } = updatedBook;
@@ -88,9 +88,9 @@ const updateBook: RequestHandler = async (req: Request, res: Response, next: Nex
 
     res.json({ book, userInfo });
   } catch (error) {
-    next(new HttpException(500, "Something went wrong"));
+    next(new HttpException(500, 'Something went wrong'));
   }
-}
+};
 
 const deleteBook: RequestHandler<{ id: string }> = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
@@ -101,16 +101,16 @@ const deleteBook: RequestHandler<{ id: string }> = async (req: Request, res: Res
 
     res.json(deletedBook);
   } catch (error) {
-    next(new HttpException(500, "Something went wrong"));
+    next(new HttpException(500, 'Something went wrong'));
   }
-}
+};
 
 const _ = {
   getAllBooks,
   getBook,
   createBook,
   updateBook,
-  deleteBook
-}
+  deleteBook,
+};
 
 export default _;

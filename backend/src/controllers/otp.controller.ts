@@ -13,7 +13,7 @@ const createOTP = async (req: Request, res: Response, next: NextFunction) => {
   } catch (error) {
     next(new HttpException(400, 'Failed to create and send OTP'));
   }
-}
+};
 
 const verifyOTP = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -24,11 +24,11 @@ const verifyOTP = async (req: Request, res: Response, next: NextFunction) => {
   } catch (error) {
     next(new HttpException(400, (error as Error).message));
   }
-}
+};
 
 const _ = {
   createOTP,
-  verifyOTP
-}
+  verifyOTP,
+};
 
 export default _;

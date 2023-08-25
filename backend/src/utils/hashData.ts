@@ -8,7 +8,7 @@ export const hashData = async (data: string | Buffer, saltRounds = 10) => {
   } catch (error) {
     throw new HttpException(500, 'Failed to hash data.');
   }
-}
+};
 
 export const verifyHashData = async (unhashed: string | Buffer, hashed: string) => {
   try {
@@ -17,4 +17,4 @@ export const verifyHashData = async (unhashed: string | Buffer, hashed: string) 
   } catch (error) {
     throw new HttpException(500, 'Failed to compare data.');
   }
-}
+};

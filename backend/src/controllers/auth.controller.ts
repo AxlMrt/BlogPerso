@@ -1,26 +1,29 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { RequestHandler, Request, Response, NextFunction } from "express";
-import bcrypt from "bcrypt";
-import prisma from "../../prisma/lib/prisma";
-import createCookie from "../utils/cookies";
-import WrongCredentials from "../config/exceptions/WrongCred";
-import HttpException from "../config/exceptions/HttpException";
-import { ITokenData, IUser, IUserLogin } from "../config/types";
-import tokensFn from "../utils/tokens";
-import { resetUserPassword, sendPasswordResetOTP } from "../utils/resetPassword";
+import { RequestHandler, Request, Response, NextFunction } from 'express';
+import bcrypt from 'bcrypt';
+import prisma from '../../prisma/lib/prisma';
+import createCookie from '../utils/cookies';
+import WrongCredentials from '../config/exceptions/WrongCred';
+import HttpException from '../config/exceptions/HttpException';
+import { ITokenData, IUser, IUserLogin } from '../config/types';
+import tokensFn from '../utils/tokens';
+import { resetUserPassword, sendPasswordResetOTP } from '../utils/resetPassword';
 
-const login: RequestHandler<{ email: string, password: string }> = async (req: Request, res: Response, next: NextFunction) => {
+const login: RequestHandler<{ email: string; password: string }> = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { email, password }: IUserLogin = req.body;
     const user = await prisma.user.findUnique({
       where: {
-        email
+        email,
       },
-      include: { books: true }
+      include: { books: true },
     });
 
-    if (!user)
-      return next(new WrongCredentials());
+    if (!user) return next(new WrongCredentials());
 
     const isPasswordMatching = bcrypt.compareSync(password, user.password);
     if (isPasswordMatching) {
@@ -35,14 +38,14 @@ const login: RequestHandler<{ email: string, password: string }> = async (req: R
       next(new WrongCredentials());
     }
   } catch (error) {
-    next(new HttpException(500, "Failed to login."));
+    next(new HttpException(500, 'Failed to login.'));
   }
-}
+};
 
 const logout: RequestHandler = async (req: Request, res: Response) => {
-  res.setHeader("Set-Cookie", ["Authorization=;Max-age=0"]);
+  res.setHeader('Set-Cookie', ['Authorization=;Max-age=0']);
   res.status(200).json();
-}
+};
 
 const getUserProfile = async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.body.user;
@@ -50,54 +53,51 @@ const getUserProfile = async (req: Request, res: Response, next: NextFunction) =
   try {
     const user = await prisma.user.findUnique({
       where: { id: _id },
-      include: { books: true }
-    })
+      include: { books: true },
+    });
 
-    if (!user)
-      next(new HttpException(404, 'User not found.'))
-  
+    if (!user) next(new HttpException(404, 'User not found.'));
+
     const { password, role, createdAt, updatedAt, ...others } = user as IUser;
-    res.json(others)
+    res.json(others);
   } catch (error) {
-     next(new HttpException(500, "Failed to get user profile."));
+    next(new HttpException(500, 'Failed to get user profile.'));
   }
-}
+};
 
 const passwordRequestReset = async (req: Request, res: Response, next: NextFunction) => {
   const { email } = req.body;
 
   try {
-    if (!email)
-      next(new HttpException(400, 'An email is required.'));
-  
+    if (!email) next(new HttpException(400, 'An email is required.'));
+
     const createdPasswordResetOTP = await sendPasswordResetOTP(email);
 
     res.json(createdPasswordResetOTP);
   } catch (error) {
-     next(new HttpException(500, "Failed to send a reset request: " + (error as Error).message));
+    next(new HttpException(500, 'Failed to send a reset request: ' + (error as Error).message));
   }
-}
+};
 
 const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, otp, newPassword } = req.body;
 
-    if (!(email && otp && newPassword))
-      next(new HttpException(400, 'Empty crendentials are not allowed.'));
+    if (!(email && otp && newPassword)) next(new HttpException(400, 'Empty crendentials are not allowed.'));
 
     await resetUserPassword({ email, otp, newPassword });
     res.json({ email, passwordreset: true });
   } catch (error) {
-    next(new HttpException(500, 'Failed to reset password: ' + (error as Error).message))
+    next(new HttpException(500, 'Failed to reset password: ' + (error as Error).message));
   }
-}
+};
 
 const _ = {
   login,
   logout,
   getUserProfile,
   passwordRequestReset,
-  resetPassword
-}
+  resetPassword,
+};
 
 export default _;

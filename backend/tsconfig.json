@@ -1,19 +1,23 @@
 {
-	"compilerOptions": {
-		"sourceMap": true,
-		"target": "es2018",
-		"module": "commonjs",
-		"strict": true,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-		"moduleResolution": "node",
-		"resolveJsonModule": true,
-		"outDir": "dist",
-		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true
-	},
-	"include": ["src", "src/**/*.ts"],
-	"exclude": ["node_modules"],
-	"typeRoots": ["index.d.ts"]
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "es2018",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "outDir": "dist",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "types": ["vitest/globals"],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "src/**/*.ts"],
+  "exclude": ["node_modules"],
+  "typeRoots": ["index.d.ts"]
 }

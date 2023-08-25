@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction, RequestHandler } from "express";
-import jwt from "jsonwebtoken";
-import secrets from "../config/secrets";
-import WrongAuthenticationTokenException from "../config/exceptions/WrongAuthToken";
-import MissingAuthenticationTokenException from "../config/exceptions/MissingAuthToken";
+import { Request, Response, NextFunction, RequestHandler } from 'express';
+import jwt from 'jsonwebtoken';
+import secrets from '../config/secrets';
+import WrongAuthenticationTokenException from '../config/exceptions/WrongAuthToken';
+import MissingAuthenticationTokenException from '../config/exceptions/MissingAuthToken';
 
-const authMiddleware: RequestHandler = async (req: Request, res: Response, next: NextFunction ) => {
+const authMiddleware: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const authorization = req.headers.authorization;
 
   if (authorization)
@@ -21,8 +21,7 @@ const authMiddleware: RequestHandler = async (req: Request, res: Response, next:
     } catch (error) {
       next(new WrongAuthenticationTokenException());
     }
-  else
-    next(new MissingAuthenticationTokenException());
-}
+  else next(new MissingAuthenticationTokenException());
+};
 
 export default authMiddleware;

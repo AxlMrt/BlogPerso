@@ -1,6 +1,5 @@
-
 export interface IUser {
-  id: string
+  id: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -49,13 +48,13 @@ export type UploadedFile = {
   filename: string;
   path: string;
   size: number;
-}
+};
 
 export interface IOtp {
-  email: string,
-  otp: string,
-  createdAt: Date,
-  expiresAt: Date,
+  email: string;
+  otp: string;
+  createdAt: Date;
+  expiresAt: Date;
 }
 
 export interface IOtpDetails {

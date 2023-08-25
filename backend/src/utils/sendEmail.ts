@@ -5,14 +5,14 @@ import { Options } from 'nodemailer/lib/mailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
-      auth: {
-        type: "OAuth2",
-        clientId: secrets.clientId,
-        clientSecret: secrets.clientSecret,
-  }
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+    type: 'OAuth2',
+    clientId: secrets.clientId,
+    clientSecret: secrets.clientSecret,
+  },
 } as SMTPTransport.Options);
 
 const sendEmail = async (mailOptions: Options) => {
@@ -30,6 +30,6 @@ const sendEmail = async (mailOptions: Options) => {
   } catch (error) {
     throw new HttpException(500, 'Something went wrong: ' + error);
   }
-}
+};
 
 export default sendEmail;

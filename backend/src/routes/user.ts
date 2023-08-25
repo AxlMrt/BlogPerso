@@ -1,6 +1,6 @@
-import express from "express";
-import upload from "../utils/upload";
-import _ from "../controllers/user.controller";
+import express from 'express';
+import upload from '../utils/upload';
+import _ from '../controllers/user.controller';
 
 const router = express.Router();
 
