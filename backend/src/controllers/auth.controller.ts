@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { RequestHandler, Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import prisma from "../../prisma/lib/prisma";
 import createCookie from "../utils/cookies";
 import WrongCredentials from "../config/exceptions/WrongCred";
 import HttpException from "../config/exceptions/HttpException";
-import { IUser, IUserLogin } from "../config/types";
+import { ITokenData, IUser, IUserLogin } from "../config/types";
 import tokensFn from "../utils/tokens";
 import { resetUserPassword, sendPasswordResetOTP } from "../utils/resetPassword";
 
@@ -23,8 +24,8 @@ const login: RequestHandler<{ email: string, password: string }> = async (req: R
 
     const isPasswordMatching = bcrypt.compareSync(password, user.password);
     if (isPasswordMatching) {
-      const tokenData = tokensFn.createToken(user);
-      const refreshTokenData = tokensFn.createRefreshToken(user);
+      const tokenData: ITokenData = tokensFn.createToken(user);
+      const refreshTokenData: ITokenData = tokensFn.createRefreshToken(user);
       const { password, role, createdAt, updatedAt, ...others } = user;
 
       res.cookie('token', [createCookie(tokenData)]);
@@ -72,8 +73,8 @@ const passwordRequestReset = async (req: Request, res: Response, next: NextFunct
     const createdPasswordResetOTP = await sendPasswordResetOTP(email);
 
     res.json(createdPasswordResetOTP);
-  } catch (error: any) {
-     next(new HttpException(500, "Failed to send a reset request: " + error.message));
+  } catch (error) {
+     next(new HttpException(500, "Failed to send a reset request: " + (error as Error).message));
   }
 }
 
@@ -86,8 +87,8 @@ const resetPassword = async (req: Request, res: Response, next: NextFunction) =>
 
     await resetUserPassword({ email, otp, newPassword });
     res.json({ email, passwordreset: true });
-  } catch (error: any) {
-    next(new HttpException(500, 'Failed to reset password: ' + error.message))
+  } catch (error) {
+    next(new HttpException(500, 'Failed to reset password: ' + (error as Error).message))
   }
 }
 

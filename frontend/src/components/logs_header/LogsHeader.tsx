@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 export default function LogsHeader() {
-  return (
+	return (
 		<Link
 			to='/'
 			className='flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white'

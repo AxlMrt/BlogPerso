@@ -46,7 +46,8 @@ export default function Table({
 	setUpdateFields,
 	setTableHeadFilterVisible,
 }: Props) {
-	const [updateBook, { isSuccess, data: successData }] = useUpdateBookMutation();
+	const [updateBook, { isSuccess, data: successData }] =
+		useUpdateBookMutation();
 	const dispatch = useAppDispatch();
 	const [edit, setEdit] = useState<IBook[] | null>(null);
 	const navigate = useNavigate();

@@ -1,16 +1,13 @@
 import { Dispatch, SetStateAction } from 'react';
-import { ImBook } from 'react-icons/im'
-import { FaBookOpen } from 'react-icons/fa'
+import { ImBook } from 'react-icons/im';
+import { FaBookOpen } from 'react-icons/fa';
 
 interface Props {
 	navBar: boolean;
 	setNavbar: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function Hamburger({
-	navBar,
-	setNavbar,
-}: Props) {
+export default function Hamburger({ navBar, setNavbar }: Props) {
 	return (
 		<div
 			className='absolute inset-y-0 left-0 flex items-center sm:hidden'

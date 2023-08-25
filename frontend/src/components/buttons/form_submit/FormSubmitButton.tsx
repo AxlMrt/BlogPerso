@@ -5,7 +5,7 @@ interface Props {
 }
 
 export default function FormSubmitButton({ label, isLoading, formId }: Props) {
-  return (
+	return (
 		<button
 			type='submit'
 			form={formId}

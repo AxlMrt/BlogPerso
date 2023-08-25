@@ -31,7 +31,7 @@ function App() {
 
 	const logOut = useCallback(() => {
 		dispatch(logout());
-		toast.error('Vous avez été déconnecté.')
+		toast.error('Vous avez été déconnecté.');
 	}, [dispatch]);
 
 	return (

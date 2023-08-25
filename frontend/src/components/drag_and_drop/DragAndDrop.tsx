@@ -1,4 +1,12 @@
-import { SetStateAction, Dispatch, useState, useRef, MouseEvent, ChangeEvent, DragEvent } from 'react';
+import {
+	SetStateAction,
+	Dispatch,
+	useState,
+	useRef,
+	MouseEvent,
+	ChangeEvent,
+	DragEvent,
+} from 'react';
 import { UseFormRegister } from 'react-hook-form';
 import { IRegister } from '../../app/types';
 import Svg from '../svg/Svg';
@@ -30,11 +38,10 @@ export default function DragAndDrop({ file, setFile, register }: Props) {
 		}
 	};
 
-
 	const handleDrop = function (e: DragEvent<HTMLDivElement>) {
 		e.preventDefault();
 		e.stopPropagation();
-	
+
 		setDragActive(false);
 		if (e.dataTransfer!.files && e.dataTransfer!.files[0]) {
 			setFile(e.dataTransfer.files![0]);
@@ -56,7 +63,7 @@ export default function DragAndDrop({ file, setFile, register }: Props) {
 		e.preventDefault();
 		inputRef.current!.click();
 	};
-	
+
 	return (
 		<div onDragEnter={handleDrag} className='space-y-1 text-center relative'>
 			<input
@@ -73,7 +80,7 @@ export default function DragAndDrop({ file, setFile, register }: Props) {
 				}
 			>
 				{file ? (
-					<img src={URL.createObjectURL(file)} className="w-32" alt='' />
+					<img src={URL.createObjectURL(file)} className='w-32' alt='' />
 				) : (
 					<Svg
 						icon={imageIcon.icon}

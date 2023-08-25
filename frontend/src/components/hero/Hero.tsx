@@ -1,7 +1,7 @@
 import heroImg from '../../assets/hero.png';
 
 export default function Hero() {
-  return (
+	return (
 		<div className='mt-10 lg:mt-0'>
 			<div className='flex items-center justify-center'>
 				<img

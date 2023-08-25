@@ -7,16 +7,13 @@ interface Props {
 	setProfilebar: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function ProfileImage({
-	profileBar,
-	setProfilebar,
-}: Props) {
+export default function ProfileImage({ profileBar, setProfilebar }: Props) {
 	const { user } = useAppSelector((state) => state.auth);
 
 	const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
 		e.stopPropagation();
 		setProfilebar(!profileBar);
-	}
+	};
 
 	if (user) {
 		const PF = `${process.env.BASE_IMG}/uploads/`;

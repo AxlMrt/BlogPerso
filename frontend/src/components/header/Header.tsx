@@ -17,7 +17,7 @@ export default function Header({
 	profileBar,
 	setProfilebar,
 	navBar,
-	setNavBar
+	setNavBar,
 }: Props) {
 	const [scroll, setScroll] = useState<boolean>(false);
 

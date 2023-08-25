@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent } from 'react';
 
 interface Props {
 	handleUpdate: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -6,7 +6,7 @@ interface Props {
 }
 
 export default function BookCheckBox({ handleUpdate, updateFields }: Props) {
-  return (
+	return (
 		<td className='w-4 p-4'>
 			<div className='flex items-center'>
 				<input
@@ -15,9 +15,7 @@ export default function BookCheckBox({ handleUpdate, updateFields }: Props) {
 					onChange={handleUpdate}
 					disabled={!updateFields}
 				/>
-				<label className='sr-only'>
-					checkbox
-				</label>
+				<label className='sr-only'>checkbox</label>
 			</div>
 		</td>
 	);

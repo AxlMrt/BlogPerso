@@ -1,4 +1,5 @@
 import HttpException from "../config/exceptions/HttpException"
+import { IOtp } from "../config/types";
 import { verifyHashData } from "./hashData";
 
 export const checkOTP = async ({ email, otp }: { email: string, otp: string}) => {
@@ -7,7 +8,7 @@ export const checkOTP = async ({ email, otp }: { email: string, otp: string}) =>
       throw new HttpException(400, 'Please, provide value for email and otp.')
     }
 
-    const matchedOTPrecord = await prisma?.otp.findUnique({
+    const matchedOTPrecord: IOtp | null | undefined = await prisma?.otp.findUnique({
       where: { email }
     });
 
@@ -21,8 +22,8 @@ export const checkOTP = async ({ email, otp }: { email: string, otp: string}) =>
       throw new HttpException(403, 'Code has expired. Request for a new one.');
     }
 
-    const hashedOTP = matchedOTPrecord.otp;
-    const validOTP = await verifyHashData(otp, hashedOTP);
+    const hashedOTP: string = matchedOTPrecord.otp;
+    const validOTP: boolean = await verifyHashData(otp, hashedOTP);
 
     return validOTP;
   } catch (error) {
@@ -40,7 +41,7 @@ export const deleteOTP = async (email: string) => {
 
 export const generateOTP = async () => {
   try {
-    const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
+    const otp: string = `${Math.floor(1000 + Math.random() * 9000)}`;
     return otp;
   } catch (error) {
     throw new HttpException(500, 'Something went wrong');

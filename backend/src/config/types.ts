@@ -5,7 +5,7 @@ export interface IUser {
   firstName: string;
   lastName: string;
   password: string;
-  photo?: string;
+  photo?: string | null;
   role: string;
   createdAt: Date;
   updatedAt: Date;
@@ -20,16 +20,15 @@ export interface IUserLogin {
 export interface IBook {
   id: string;
   title: string;
-  author: string;
-  type: string;
-  year: number;
-  publisher: string;
+  author: string | null;
+  type: string | null;
+  year: number | null;
+  publisher: string | null;
   feedBack: number;
   isRead: string;
   createdAt: Date;
   updatedAt: Date;
-  userId: string;
-  user: IUser;
+  userId: string | null;
 }
 
 export interface ITokenData {
@@ -50,4 +49,18 @@ export type UploadedFile = {
   filename: string;
   path: string;
   size: number;
+}
+
+export interface IOtp {
+  email: string,
+  otp: string,
+  createdAt: Date,
+  expiresAt: Date,
+}
+
+export interface IOtpDetails {
+  email: string;
+  subject: string;
+  message: string;
+  duration: number;
 }

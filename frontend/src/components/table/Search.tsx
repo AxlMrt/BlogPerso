@@ -12,10 +12,11 @@ export default function Search({ placeholder, setSearchField }: Props) {
 	};
 
 	return (
-		<div className='flex flex-col items-left justify-between pb-1 md:flex-row md:items-center' onClick={(e) => e.stopPropagation()}>
-			<label className='sr-only'>
-				Search
-			</label>
+		<div
+			className='flex flex-col items-left justify-between pb-1 md:flex-row md:items-center'
+			onClick={(e) => e.stopPropagation()}
+		>
+			<label className='sr-only'>Search</label>
 			<div className='relative'>
 				<div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
 					<PiMagnifyingGlassBold className={'dark:text-white'} />

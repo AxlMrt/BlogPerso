@@ -17,7 +17,8 @@ import AddBookModal from '../components/modal/AddBookModal';
 export default function AccountPage() {
 	const dispatch = useAppDispatch();
 	const { user } = useAppSelector((state) => state.auth);
-	const [updateUser, { isLoading, isSuccess, data: successData }] = useUpdateUserMutation();
+	const [updateUser, { isLoading, isSuccess, data: successData }] =
+		useUpdateUserMutation();
 	const { register, handleSubmit, reset } = useForm<IRegister>();
 	const [file, setFile] = useState<Blob | MediaSource | null>(null);
 	const navigate = useNavigate();
@@ -25,12 +26,10 @@ export default function AccountPage() {
 	const submitForm = async (data: any) => {
 		data = trimUserObject(data);
 		data.id = user!['id'];
-	
-		if (file)
-			data.photo = file;
 
-		if (data.email)
-			data.email = data.email.toLowerCase();
+		if (file) data.photo = file;
+
+		if (data.email) data.email = data.email.toLowerCase();
 
 		if (data.password) {
 			if (data.password !== data.confirmPassword) {
@@ -45,7 +44,7 @@ export default function AccountPage() {
 				return;
 			}
 		}
-		
+
 		delete data.confirmPassword;
 
 		if (file) {
@@ -76,7 +75,7 @@ export default function AccountPage() {
 			setFile(null);
 			toast.success('Vos informations ont été mises à jour!');
 		}
-	}, [dispatch, isSuccess, navigate, reset, successData])
+	}, [dispatch, isSuccess, navigate, reset, successData]);
 
 	return (
 		<section className='px-6 py-4 bg-gray-50 dark:bg-gray-900'>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { RequestHandler, Request, Response, NextFunction } from "express"
 import prisma from "../../prisma/lib/prisma";
 import tokensFn from "../utils/tokens";
@@ -5,10 +6,11 @@ import createCookie from "../utils/cookies";
 import HttpException from "../config/exceptions/HttpException";
 import { hashData } from "../utils/hashData";
 import fs from 'fs';
+import { IBook, IUser } from "../config/types";
 
 const getAllUsers: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const users = await prisma.user.findMany();
+    const users: IUser[] = await prisma.user.findMany();
     res.json(users);
   } catch (error) {
     next(new HttpException(500, "Couldn't get all users."));
@@ -36,18 +38,17 @@ const getUser: RequestHandler<{ id: string }> = async (req: Request, res: Respon
 const createUser: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const cryptedPassword = await hashData(req.body.password);
-    const user = await prisma.user.findUnique({
+    const user: IUser | null = await prisma.user.findUnique({
       where: { email: req.body.email },
     });
 
     if (user)
       next(new HttpException(409, "User already exist"));
 
-    const newUser = await prisma.user.create({
+    const newUser: IUser = await prisma.user.create({
       data: { 
         ...req.body,
         password: cryptedPassword,
-        photo: req.file?.path
       },
     });
 
@@ -67,14 +68,14 @@ const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
   const uploadDir = __dirname + '/../../public/uploads/';
   
   try {
-    const currentPhoto = await prisma.user.findUnique({
+    const currentPhoto: { photo: string | null; } | null = await prisma.user.findUnique({
       where: { id },
       select: {
         photo: true,
       }
     });
 
-    const filenamePath = uploadDir + currentPhoto?.photo;
+    const filenamePath: string = uploadDir + currentPhoto?.photo;
 
     if (req.body.user)
       req.body = JSON.parse(req.body.user);
@@ -107,7 +108,7 @@ const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
 const deleteUser: RequestHandler<{ id: string }> = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
-    const deletedUser = await prisma.user.delete({
+    const deletedUser: IUser = await prisma.user.delete({
       where: { id: id },
     });
 

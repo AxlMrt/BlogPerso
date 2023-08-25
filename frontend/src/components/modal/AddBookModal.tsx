@@ -23,7 +23,8 @@ interface Props {
 export default function AddBookModal({ refetch }: Props) {
 	const { user } = useAppSelector((state) => state.auth);
 	const dispatch = useAppDispatch();
-	const [addNewBook, { isLoading, isSuccess, data: successData }] = useAddNewBookMutation();
+	const [addNewBook, { isLoading, isSuccess, data: successData }] =
+		useAddNewBookMutation();
 	const { register, handleSubmit, reset } = useForm<IBookRegister>();
 	const location = useLocation();
 	const closeModal = () => {
@@ -43,15 +44,21 @@ export default function AddBookModal({ refetch }: Props) {
 
 	useEffect(() => {
 		if (isSuccess) {
-			if (location.pathname === '/table' && refetch)
-				refetch();
-			
+			if (location.pathname === '/table' && refetch) refetch();
+
 			closeModal();
 			reset();
 			dispatch(setUser(successData?.userInfo));
 			toast.success('Livre ajouté!');
 		}
-	}, [dispatch, isSuccess, location.pathname, refetch, reset, successData?.userInfo]);
+	}, [
+		dispatch,
+		isSuccess,
+		location.pathname,
+		refetch,
+		reset,
+		successData?.userInfo,
+	]);
 
 	return (
 		<dialog

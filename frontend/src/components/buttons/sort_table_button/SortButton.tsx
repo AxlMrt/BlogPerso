@@ -7,9 +7,11 @@ interface Props {
 export function SortButton({ order, columnKey, field }: Props) {
 	return (
 		<button
-			type="button"
+			type='button'
 			className={`${
-				field === columnKey && order === 'desc' ? 'transform -scale-y-100' : undefined
+				field === columnKey && order === 'desc'
+					? 'transform -scale-y-100'
+					: undefined
 			}`}
 		>
 			▲

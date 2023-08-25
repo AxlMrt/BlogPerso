@@ -5,7 +5,7 @@ interface Props {
 }
 
 export default function DeleteBtn({ handleDelete }: Props) {
-  return (
+	return (
 		<button onClick={handleDelete}>
 			<RiDeleteBin6Line />
 		</button>

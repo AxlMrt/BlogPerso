@@ -7,11 +7,7 @@ interface Props {
 	onChangeInput: (e: ChangeEvent<HTMLSelectElement>, bookId: string) => void;
 }
 
-export default function ReadState({
-	book,
-	updating,
-	onChangeInput,
-}: Props) {
+export default function ReadState({ book, updating, onChangeInput }: Props) {
 	const readingState: IsBookRead = {
 		NOT_READ: {
 			color: 'bg-red-600',

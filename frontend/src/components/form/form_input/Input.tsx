@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { BsEye, BsEyeSlash } from 'react-icons/bs'
+import { useState } from 'react';
+import { BsEye, BsEyeSlash } from 'react-icons/bs';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface Props {
@@ -53,7 +53,7 @@ export default function Input({
 				{type === 'password' && (
 					<button
 						type='button'
-						className="absolute top-0 bottom-0 right-3 text-gray-400"
+						className='absolute top-0 bottom-0 right-3 text-gray-400'
 						onClick={togglePassword}
 					>
 						{passwordType === 'password' ? (

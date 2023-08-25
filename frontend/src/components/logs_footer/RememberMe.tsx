@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 interface Props {
-	isCheck: () => void
+	isCheck: () => void;
 }
 
 export default function RememberMe({ isCheck }: Props) {
-  return (
+	return (
 		<div className='flex flex-col items-left justify-between sm:flex-row sm:items-center'>
 			<div className='flex items-start'>
 				<div className='flex items-center h-5'>

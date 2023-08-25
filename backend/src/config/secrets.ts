@@ -1,14 +1,14 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 
-let jwtSecret: string = process.env.JWT_SECRET as string;
-let jwtRefresh: string = process.env.JWT_REFRESH as string;
-let authSecret: string = process.env.AUTH_EMAIL as string;
-let passSecret: string = process.env.AUTH_PASSWORD as string;
-let clientId: string = process.env.OAUTH_CLIENTID as string;
-let clientSecret: string = process.env.OAUTH_CLIENT_SECRET as string; 
-let refreshToken: string = process.env.OAUTH_REFRESH_TOKEN as string;
-let accessToken: string = process.env.OAUTH_ACCESS_TOKEN as string;
+const jwtSecret: string = process.env.JWT_SECRET as string;
+const jwtRefresh: string = process.env.JWT_REFRESH as string;
+const authSecret: string = process.env.AUTH_EMAIL as string;
+const passSecret: string = process.env.AUTH_PASSWORD as string;
+const clientId: string = process.env.OAUTH_CLIENTID as string;
+const clientSecret: string = process.env.OAUTH_CLIENT_SECRET as string; 
+const refreshToken: string = process.env.OAUTH_REFRESH_TOKEN as string;
+const accessToken: string = process.env.OAUTH_ACCESS_TOKEN as string;
 
 const secrets = {
   jwtSecret,

@@ -16,7 +16,8 @@ const FORM_ID = 'callToAction';
 export default function CreateBookCallToAction() {
 	const { user } = useAppSelector((state) => state.auth);
 	const dispatch = useAppDispatch();
-	const [addNewBook, { isLoading, isSuccess, data: successData }] = useAddNewBookMutation();
+	const [addNewBook, { isLoading, isSuccess, data: successData }] =
+		useAddNewBookMutation();
 	const { register, handleSubmit, reset } = useForm<IBookRegister>();
 	const [hover, setHover] = useState(0);
 	const [rating, setRating] = useState<number>(0);

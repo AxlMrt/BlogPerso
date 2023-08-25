@@ -1,17 +1,17 @@
-import { IoMdAddCircleOutline } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { IoMdAddCircleOutline } from 'react-icons/io';
+import { Link } from 'react-router-dom';
 
 interface Props {
 	navigation: {
 		dest: string;
 		text: string;
-    class?: boolean;
-    click?: () => void;
+		class?: boolean;
+		click?: () => void;
 	}[];
 }
 
 export default function NavItems({ navigation }: Props) {
-  return (
+	return (
 		<div className='hidden sm:ml-6 sm:block text-gray-600 '>
 			<div className='flex space-x-4'>
 				{navigation.map((nav, index) => {

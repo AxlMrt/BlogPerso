@@ -7,22 +7,22 @@ import CloseModalButton from '../buttons/close_modal/CloseModalButton';
 import { BsTrash } from 'react-icons/bs';
 
 export default function DeleteModal() {
-	const { user } = useAppSelector((state: { auth: any; }) => state.auth);
-  const [deleteUser] = useDeleteUserMutation();
-  const [deleteBook] = useDeleteBookMutation();
+	const { user } = useAppSelector((state: { auth: any }) => state.auth);
+	const [deleteUser] = useDeleteUserMutation();
+	const [deleteBook] = useDeleteBookMutation();
 
 	const closeModal = () => {
 		(window as any).deleteModal.close();
-  };
-  
+	};
+
 	const handleDelete = async () => {
 		try {
 			await user.books.map((book: IBook) => deleteBook(book.id));
 			await deleteUser(user.id!).then(() => localStorage.clear());
-    } catch (error) {
-      console.log("Couldn't delete this user:", error)
-    }
-  }
+		} catch (error) {
+			console.log("Couldn't delete this user:", error);
+		}
+	};
 
 	return (
 		<dialog
@@ -36,7 +36,12 @@ export default function DeleteModal() {
 			>
 				<div className='relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5'>
 					<CloseModalButton close={closeModal} />
-					<BsTrash size={30} className={'text-gray-400 dark:text-gray-500 w-11 h-11 mb-3.5 mx-auto'} />
+					<BsTrash
+						size={30}
+						className={
+							'text-gray-400 dark:text-gray-500 w-11 h-11 mb-3.5 mx-auto'
+						}
+					/>
 					<p className='mb-4 text-gray-500 dark:text-gray-300'>
 						Êtes-vous sur de vouloir supprimer votre compte ?
 					</p>
@@ -50,8 +55,8 @@ export default function DeleteModal() {
 						</button>
 						<button
 							type='submit'
-              className='py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900'
-              onClick={handleDelete}
+							className='py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900'
+							onClick={handleDelete}
 						>
 							Oui, supprimer
 						</button>

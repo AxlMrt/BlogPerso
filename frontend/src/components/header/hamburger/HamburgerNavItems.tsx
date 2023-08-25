@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 interface Props {
 	navigation: {
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function HamburgerNavItems({ navigation }: Props) {
-  return (
+	return (
 		<div className='space-y-1 px-2 pb-3 pt-2'>
 			{navigation.map((nav, index) => {
 				return (

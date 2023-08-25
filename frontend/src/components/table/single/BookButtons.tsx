@@ -1,5 +1,5 @@
-import { Dispatch, SetStateAction } from "react";
-import DeleteBtn from "../../buttons/delete_btn/DeleteBtn";
+import { Dispatch, SetStateAction } from 'react';
+import DeleteBtn from '../../buttons/delete_btn/DeleteBtn';
 
 export default function BookButtons({
 	updating,
@@ -7,8 +7,8 @@ export default function BookButtons({
 	handleDelete,
 }: {
 	updating: boolean;
-  setUpdating: Dispatch<SetStateAction<boolean>>;
-  handleDelete: () => void
+	setUpdating: Dispatch<SetStateAction<boolean>>;
+	handleDelete: () => void;
 }) {
 	return (
 		<td className='px-6 py-4'>
@@ -21,7 +21,7 @@ export default function BookButtons({
 				</button>
 			) : (
 				<div className='flex gap-3'>
-					<button type="submit" form="table_form">
+					<button type='submit' form='table_form'>
 						<svg
 							xmlns='http://www.w3.org/2000/svg'
 							x='0px'

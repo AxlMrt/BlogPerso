@@ -15,7 +15,12 @@ interface Props {
 	updateFields: boolean;
 }
 
-export default function SingleBook({ book, onChangeInput, handleCheckBox, updateFields }: Props) {
+export default function SingleBook({
+	book,
+	onChangeInput,
+	handleCheckBox,
+	updateFields,
+}: Props) {
 	const [updating, setUpdating] = useState<boolean>(false);
 
 	const handleUpdate = (e: ChangeEvent<HTMLInputElement>) => {

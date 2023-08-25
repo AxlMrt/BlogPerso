@@ -9,9 +9,9 @@ interface Props {
 }
 
 export default function FiltersInputs({
-  order,
+	order,
 	orderChecked,
-  row,
+	row,
 	type,
 	changeSort,
 }: Props) {
@@ -26,10 +26,8 @@ export default function FiltersInputs({
 				checked={order === orderChecked && type === row}
 				readOnly
 			/>
-			<label
-				className='ml-2 text-sm font-normal text-gray-900 dark:text-gray-900'
-			>
-				{ orderChecked === 'asc' ? 'Croissant' : 'Décroissant' }
+			<label className='ml-2 text-sm font-normal text-gray-900 dark:text-gray-900'>
+				{orderChecked === 'asc' ? 'Croissant' : 'Décroissant'}
 			</label>
 		</div>
 	);

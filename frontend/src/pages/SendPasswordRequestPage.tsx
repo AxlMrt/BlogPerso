@@ -19,7 +19,7 @@ export default function SendPasswordRequestPage() {
 
 	useEffect(() => {
 		if (isSuccess) {
-			toast.success('Un code vous a été envoyé par email!')
+			toast.success('Un code vous a été envoyé par email!');
 			navigate('/reset-password');
 		}
 	});
@@ -39,7 +39,9 @@ export default function SendPasswordRequestPage() {
 				<div className='w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700'>
 					<div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
 						<LogsTitle title={'Récupération de mot de passe'} />
-						<h3 className='text-sm dark:text-gray-300'>Pas d'inquiétudes ! Nous allons vous aider.</h3>
+						<h3 className='text-sm dark:text-gray-300'>
+							Pas d'inquiétudes ! Nous allons vous aider.
+						</h3>
 						<form id={FORM_ID} onSubmit={handleSubmit(submitForm)}>
 							<Input
 								type={'email'}

@@ -28,7 +28,9 @@ export default function LikedBook({ books }: Props) {
 							<span className='font-normal text-gray-700 dark:text-gray-400'>
 								{[...Array(5)].map((_star, index) => {
 									return (
-											<span className='text-yellow-500' key={index}>&#9733;</span>
+										<span className='text-yellow-500' key={index}>
+											&#9733;
+										</span>
 									);
 								})}
 							</span>

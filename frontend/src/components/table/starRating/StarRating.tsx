@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { IBook } from '../../../app/types';
 import { useUpdateBookMutation } from '../../../app/store/api/booksApi';
 import { useAppDispatch } from '../../../app/store/configureStore';
 import { setUser } from '../../../app/store/slices/authSlice';
 
-
-export default function StarRating({ book }: {book: IBook}) {
+export default function StarRating({ book }: { book: IBook }) {
 	const { feedBack } = book;
 	const dispatch = useAppDispatch();
-	const [updateFeedBack, { isSuccess, data: successData }] = useUpdateBookMutation();
-  const [hover, setHover] = useState(0);
-  const [rating, setRating] = useState<number>(feedBack);
+	const [updateFeedBack, { isSuccess, data: successData }] =
+		useUpdateBookMutation();
+	const [hover, setHover] = useState(0);
+	const [rating, setRating] = useState<number>(feedBack);
 
-  const rateBook = async (index: number) => {
+	const rateBook = async (index: number) => {
 		setRating(index);
 		try {
 			await updateFeedBack({ ...book, feedBack: index });
@@ -22,8 +22,7 @@ export default function StarRating({ book }: {book: IBook}) {
 	};
 
 	useEffect(() => {
-		if (isSuccess)
-			dispatch(setUser(successData?.userInfo));
+		if (isSuccess) dispatch(setUser(successData?.userInfo));
 	}, [dispatch, isSuccess, successData?.userInfo]);
 
 	return (
@@ -34,7 +33,11 @@ export default function StarRating({ book }: {book: IBook}) {
 					<button
 						type='button'
 						key={index}
-						className={index <= (hover || feedBack) ? 'text-yellow-500' : 'text-neutral-400'}
+						className={
+							index <= (hover || feedBack)
+								? 'text-yellow-500'
+								: 'text-neutral-400'
+						}
 						onClick={() => rateBook(index)}
 						onMouseEnter={() => setHover(index)}
 						onMouseLeave={() => setHover(rating)}

@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response, NextFunction, RequestHandler } from "express"
 import prisma from "../../prisma/lib/prisma";
 import HttpException from "../config/exceptions/HttpException";
+import { IBook } from "../config/types";
 
 const getAllBooks: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const books = await prisma.book.findMany();
+    const books: IBook[] = await prisma.book.findMany();
     res.status(200).json(books);
   } catch (error) {
     next(new HttpException(500, "Something went wrong"));
@@ -15,7 +17,7 @@ const getBook: RequestHandler<{ id: string }> = async (req: Request, res: Respon
   const { id } = req.params;
 
   try {
-    const book = await prisma.book.findUnique({
+    const book: IBook | null = await prisma.book.findUnique({
       where: { id }
     });
 
@@ -93,7 +95,7 @@ const updateBook: RequestHandler = async (req: Request, res: Response, next: Nex
 const deleteBook: RequestHandler<{ id: string }> = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
-    const deletedBook = await prisma.book.delete({
+    const deletedBook: IBook = await prisma.book.delete({
       where: { id: id },
     });
 

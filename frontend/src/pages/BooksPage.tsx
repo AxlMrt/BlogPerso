@@ -22,13 +22,15 @@ export default function BooksPage() {
 		useState<boolean>(false);
 
 	const { user } = useAppSelector((state) => state.auth);
-	const { data, isLoading, refetch } = useGetUserBookQuery<BaseQueryArg<BaseQueryFn>>({
-		id: user!["id"],
+	const { data, isLoading, refetch } = useGetUserBookQuery<
+		BaseQueryArg<BaseQueryFn>
+	>({
+		id: user!['id'],
 		page,
 		search,
 		field,
 		order,
-		type
+		type,
 	});
 
 	const [bookToUpdate, setBookToUpdate] = useState<IBook[]>([]);
@@ -44,7 +46,7 @@ export default function BooksPage() {
 
 	useEffect(() => {
 		refetch();
-	}, [refetch])
+	}, [refetch]);
 
 	return isLoading ? (
 		<Spinner />

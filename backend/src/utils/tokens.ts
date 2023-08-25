@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
-import { IDataStoredInToken, ITokenData } from "../config/types";
+import { IDataStoredInToken, ITokenData, IUser } from "../config/types";
 import secrets from "../config/secrets";
 
-const createToken = (user: any): ITokenData => {
+const createToken = (user: IUser): ITokenData => {
   const expiresIn = 60 * 60;
   const dataStoredInToken: IDataStoredInToken = {
     _id: user.id
@@ -15,7 +15,7 @@ const createToken = (user: any): ITokenData => {
   };
 }
 
-const createRefreshToken = (user: any): ITokenData => {
+const createRefreshToken = (user: IUser): ITokenData => {
   const expiresIn = 6000 * 6000;
   const dataStoredInToken: IDataStoredInToken = {
     _id: user.id

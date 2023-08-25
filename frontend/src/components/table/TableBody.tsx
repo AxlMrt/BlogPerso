@@ -9,7 +9,12 @@ interface Props {
 	updateFields: boolean;
 }
 
-export default function TableBody({ books, onChangeInput, handleCheckBox, updateFields }: Props) {
+export default function TableBody({
+	books,
+	onChangeInput,
+	handleCheckBox,
+	updateFields,
+}: Props) {
 	return (
 		<tbody>
 			{books.map((book: IBook, index: number) => (

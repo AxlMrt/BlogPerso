@@ -1,13 +1,15 @@
 import { IBook } from '../../app/types';
 
 interface Props {
-  books: IBook[]
+	books: IBook[];
 }
 
 export default function ReadingProgress({ books }: Props) {
-  const bookInProgress: IBook[] = books.filter((book) => book.isRead === "IN_PROGRESS");
+	const bookInProgress: IBook[] = books.filter(
+		(book) => book.isRead === 'IN_PROGRESS'
+	);
 
-  return (
+	return (
 		<div className='bg-white dark:bg-gray-800 shadow mt-6  rounded-lg p-6'>
 			<h3 className='text-gray-600 dark:text-white text-sm font-semibold mb-4'>
 				En cours de lecture

@@ -3,8 +3,8 @@ import { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form';
 import Input from './form_input/Input';
 
 interface Props {
-  id: string;
-  formClass: string;
+	id: string;
+	formClass: string;
 	handleSubmit: UseFormHandleSubmit<any>;
 	submitForm: (data: any) => Promise<void>;
 	fields: any;
@@ -12,19 +12,15 @@ interface Props {
 }
 
 export default function Form({
-  id,
-  formClass,
+	id,
+	formClass,
 	handleSubmit,
 	submitForm,
 	fields,
 	register,
 }: Props) {
 	return (
-    <form
-      id={id}
-			className={formClass}
-			onSubmit={handleSubmit(submitForm)}
-		>
+		<form id={id} className={formClass} onSubmit={handleSubmit(submitForm)}>
 			{fields.map(
 				(field: {
 					id: string;

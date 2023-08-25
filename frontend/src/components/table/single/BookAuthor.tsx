@@ -1,5 +1,5 @@
-import { IBook } from "../../../app/types";
-import { ChangeEvent } from "react";
+import { IBook } from '../../../app/types';
+import { ChangeEvent } from 'react';
 
 interface Props {
 	book: IBook;
