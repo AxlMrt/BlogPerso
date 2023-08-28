@@ -19,6 +19,7 @@ const secrets = {
   clientSecret,
   accessToken,
   refreshToken,
+  nodeEnv: process.env.NODE_ENV,
   port: Number(process.env.PORT),
   web: JSON.parse(process.env.WEBSITE_ACCESS as string),
 };

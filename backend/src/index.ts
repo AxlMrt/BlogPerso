@@ -10,6 +10,7 @@ import BookRoute from './routes/book';
 import QueryRoute from './routes/userQuery';
 import RefreshRoute from './routes/refreshToken';
 import OTProutes from './routes/otp';
+import { removeEmptyKeysFromBody } from './middleware/removeEmptyKeys.middleware';
 const PORT = secrets.port || 8000;
 const app: Application = express();
 const baseURL = '/api/v1';
@@ -26,6 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors<Request>(options));
+app.use(removeEmptyKeysFromBody);
 
 app.use(`${baseURL}/users`, UserRoute);
 app.use(`${baseURL}/login`, AuthRoute);

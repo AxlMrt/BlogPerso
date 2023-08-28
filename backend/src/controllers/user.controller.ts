@@ -6,7 +6,9 @@ import createCookie from '../utils/cookies';
 import HttpException from '../config/exceptions/HttpException';
 import { hashData } from '../utils/hashData';
 import fs from 'fs';
-import { IBook, IUser } from '../config/types';
+import { IUser } from '../config/types';
+import { transformValuesToLowercase, validEmail, validPassword } from '@/utils/validation';
+
 
 const getAllUsers: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -18,31 +20,46 @@ const getAllUsers: RequestHandler = async (req: Request, res: Response, next: Ne
 };
 
 const getUser: RequestHandler<{ id: string }> = async (req: Request, res: Response, next: NextFunction) => {
-  const { id } = req.params;
-
   try {
+    const { id } = req.params;
+
     const user = await prisma.user.findUnique({
       where: { id },
       include: { books: true },
     });
 
-    if (!user) next(new HttpException(404, 'User not found.'));
-
-    res.json(user);
+    if (!user)
+      next(new HttpException(404, 'User not found.'));
+    else
+      res.status(200).json(user);
   } catch (error) {
     next(new HttpException(500, "Couldn't get user."));
   }
 };
 
-const createUser: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
+const createUser: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {  
   try {
-    const cryptedPassword = await hashData(req.body.password);
+    const allowedFields = ['email', 'firstName', 'lastName', 'password'];
+    const receivedFields = Object.keys(req.body);
+    const invalidFields = receivedFields.filter(field => !allowedFields.includes(field));
+
+    if (invalidFields.length > 0) next(new HttpException(400, 'Additional fields not allowed.'));
+    if (!validEmail(req.body.email)) next(new HttpException(400, 'Invalid email.'));
+    if (!validPassword(req.body.password)) next(new HttpException(400, 'Invalid password.'));
+    
+    for (const key in req.body) {
+      if (req.body.hasOwnProperty(key)) {
+        req.body[key] = transformValuesToLowercase(req.body[key], key);
+      }
+    }
+
     const user: IUser | null = await prisma.user.findUnique({
       where: { email: req.body.email },
     });
-
-    if (user) next(new HttpException(409, 'User already exist'));
-
+    
+    if (user) next(new HttpException(409, 'User already exist.'));
+    
+    const cryptedPassword = await hashData(req.body.password);
     const newUser: IUser = await prisma.user.create({
       data: {
         ...req.body,
@@ -62,12 +79,34 @@ const createUser: RequestHandler = async (req: Request, res: Response, next: Nex
 };
 
 const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Response, next: NextFunction) => {
-  const { id } = req.params;
-  const uploadDir = __dirname + '/../../public/uploads/';
-
   try {
+    const allowedFields = ['id', 'email', 'firstName', 'lastName', 'password', 'photo'];
+    const uploadDir = __dirname + '/../../public/uploads/';
+    const receivedFields = Object.keys(req.body);
+    const invalidFields = receivedFields.filter(field => !allowedFields.includes(field));
+
+    if (invalidFields.length > 0) next(new HttpException(400, 'Additional fields not allowed.'));
+
+    if (req.body.email) {
+      if (!validEmail(req.body.email)) next(new HttpException(400, 'Invalid email.'));
+      const isUserWithNewEmail = await prisma.user.findUnique({ where: { email: req.body.email } });
+
+      if (isUserWithNewEmail)
+        next(new HttpException(409, 'Email already taken.'));
+    }
+
+    if (req.body.password) 
+      if (validPassword(req.body.password)) req.body.password = await hashData(req.body.password);
+      else next(new HttpException(400, 'Invalid password.'));
+
+    for (const key in req.body) {
+      if (req.body.hasOwnProperty(key)) {
+        req.body[key] = transformValuesToLowercase(req.body[key], key);
+      }
+    }
+
     const currentPhoto: { photo: string | null } | null = await prisma.user.findUnique({
-      where: { id },
+      where: { id: req.body.id },
       select: {
         photo: true,
       },
@@ -76,8 +115,6 @@ const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
     const filenamePath: string = uploadDir + currentPhoto?.photo;
 
     if (req.body.user) req.body = JSON.parse(req.body.user);
-
-    if (req.body.password) req.body.password = await hashData(req.body.password);
 
     if (req.body.photo) {
       if (currentPhoto?.photo !== 'default.png' && fs.existsSync(filenamePath)) {
@@ -88,7 +125,7 @@ const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
     }
 
     const updatedUser = await prisma.user.update({
-      where: { id },
+      where: { id: req.body.id },
       include: { books: true },
       data: { ...req.body, password: req.body.password, photo: req.file?.filename },
     });
