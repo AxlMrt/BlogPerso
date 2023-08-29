@@ -21,10 +21,10 @@ export const userApi = createApi({
       }),
     }),
     updateUser: builder.mutation<IUser, any>({
-      query: (data) => ({
-        url: `/users/${data.id}`,
+      query: ({ id, data }) => ({
+        url: `/users/${id}`,
         method: 'PUT',
-        body: data.formData
+        body: data
       }),
     }),
     deleteUser: builder.mutation<void, string>({

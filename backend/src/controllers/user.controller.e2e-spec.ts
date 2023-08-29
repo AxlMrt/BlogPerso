@@ -120,10 +120,8 @@ describe('GET /users', async () => {
     }
   });
 
-  it('return users', async () => {
-    
+  it('should create new user', async () => {
     const response = await supertest(app).get(`${baseURL}/users`).send(superUser);
-
     expect(response.status).toBe(200);
   });
 });

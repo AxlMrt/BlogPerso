@@ -4,6 +4,7 @@ import { IBook } from '../../app/types';
 import ValidBtn from '../buttons/valid_button/ValidBtn';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import Pagination from '../pagination/Pagination';
+import { useAppSelector } from '../../app/store/configureStore';
 
 interface Props {
 	bookToUpdate: IBook[];
@@ -22,12 +23,16 @@ export default function TableUpdate({
 	setPage,
 	refetch,
 }: Props) {
+	const { user } = useAppSelector((state) => state.auth);
 	const [deleteBook, { isSuccess }] = useDeleteBookMutation();
 
 	const handleDelete = () => {
 		bookToUpdate.forEach(async (book: IBook) => {
+			const data = { bookId: book.id, id: user!['id'] };
+
+			console.log(data)
 			try {
-				await deleteBook(book.id);
+				await deleteBook(data);
 			} catch (error) {
 				console.error('Failed to delete the book: ', error);
 			}

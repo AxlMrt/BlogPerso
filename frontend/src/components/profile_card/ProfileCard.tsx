@@ -25,7 +25,7 @@ export default function ProfileCard({ currentUser }: Props) {
 						alt=''
 					/>
 				</div>
-				<p className='font-semibold'>{`${currentUser?.firstName} ${currentUser?.lastName}`}</p>
+				<p className='font-semibold capitalize'>{`${currentUser?.firstName} ${currentUser?.lastName}`}</p>
 				<div className='text-sm leading-normal text-gray-400 flex justify-center items-center gap-2'>
 					<GoMail />
 					{currentUser?.email}

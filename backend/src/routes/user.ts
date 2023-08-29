@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/', requireAdmin, _.getAllUsers);
 router.get('/:id', requireAdmin, _.getUser);
 router.post('/', _.createUser);
-router.put('/:id', requireOwnershipOrAdmin, upload, _.updateUser);
+router.put('/:id', upload, requireOwnershipOrAdmin, _.updateUser);
 router.delete('/:id', requireOwnershipOrAdmin, _.deleteUser);
 
 export default router;

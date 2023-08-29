@@ -8,6 +8,7 @@ import { hashData } from '../utils/hashData';
 import fs from 'fs';
 import { IUser } from '../config/types';
 import { transformValuesToLowercase, validEmail, validPassword } from '@/utils/validation';
+import { removeEmptyKeysFromBody } from '@/middleware/removeEmptyKeys.middleware';
 
 
 const getAllUsers: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
@@ -59,6 +60,7 @@ const createUser: RequestHandler = async (req: Request, res: Response, next: Nex
     
     if (user) next(new HttpException(409, 'User already exist.'));
     
+    
     const cryptedPassword = await hashData(req.body.password);
     const newUser: IUser = await prisma.user.create({
       data: {
@@ -80,6 +82,19 @@ const createUser: RequestHandler = async (req: Request, res: Response, next: Nex
 
 const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    //In case of picture
+    if (req.body.user) {
+      req.body = JSON.parse(req.body.user);
+
+      for (const key in req.body) {
+        if (req.body.hasOwnProperty(key)) {
+          if (req.body[key] === '') {
+            delete req.body[key];
+          }
+        }
+      }
+    } 
+
     const allowedFields = ['id', 'email', 'firstName', 'lastName', 'password', 'photo'];
     const uploadDir = __dirname + '/../../public/uploads/';
     const receivedFields = Object.keys(req.body);

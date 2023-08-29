@@ -1,4 +1,5 @@
 import HttpException from '@/config/exceptions/HttpException';
+import prisma from 'prisma/lib/prisma';
 import { Request, Response, NextFunction } from 'express';
 
 const checkAdminRole = async (id: string) => {
@@ -9,7 +10,14 @@ const checkAdminRole = async (id: string) => {
 
 export const requireOwnershipOrAdmin = async (req: Request, res: Response, next: NextFunction) => {
   const userIdFromRequest = req.params.id;
-  const loggedInUserId = req.body.id;
+  let loggedInUserId = req.body.id;
+
+  console.log(req.body)
+
+  if (req.body.user) {
+    const parsed = JSON.parse(req.body.user);
+    loggedInUserId = parsed.id
+  }
 
   const isAdmin = await checkAdminRole(userIdFromRequest);
 

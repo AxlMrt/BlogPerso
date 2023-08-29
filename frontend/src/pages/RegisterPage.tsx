@@ -48,7 +48,6 @@ export default function RegisterPage() {
 			return;
 		}
 
-		data.email = data.email.toLowerCase();
 		delete data.confirmPassword;
 		try {
 			await addUser(data);

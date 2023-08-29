@@ -8,6 +8,7 @@ import HttpException from '../config/exceptions/HttpException';
 import { ITokenData, IUser, IUserLogin } from '../config/types';
 import tokensFn from '../utils/tokens';
 import { resetUserPassword, sendPasswordResetOTP } from '../utils/resetPassword';
+import { validEmail } from '@/utils/validation';
 
 const login: RequestHandler<{ email: string; password: string }> = async (
   req: Request,
@@ -15,7 +16,20 @@ const login: RequestHandler<{ email: string; password: string }> = async (
   next: NextFunction,
 ) => {
   try {
+    if (!Object.keys(req.body).length)
+      next(new HttpException(400, 'Credentials are needed.'));
+
+    if (!req.body.email)
+      next(new HttpException(400, 'Email is needed.'));
+
+    if (!req.body.password)
+      next(new HttpException(400, 'Password is needed.'))
+
+    if (!validEmail(req.body.email))
+      next(new HttpException(400, 'Email is in the wrong format.'))
+  
     const { email, password }: IUserLogin = req.body;
+
     const user = await prisma.user.findUnique({
       where: {
         email,
@@ -23,7 +37,7 @@ const login: RequestHandler<{ email: string; password: string }> = async (
       include: { books: true },
     });
 
-    if (!user) return next(new WrongCredentials());
+    if (!user) return next(new HttpException(404, "User doesn't exist"));
 
     const isPasswordMatching = bcrypt.compareSync(password, user.password);
     if (isPasswordMatching) {
@@ -44,10 +58,10 @@ const login: RequestHandler<{ email: string; password: string }> = async (
 
 const logout: RequestHandler = async (req: Request, res: Response) => {
   res.setHeader('Set-Cookie', ['Authorization=;Max-age=0']);
-  res.status(200).json();
+  res.redirect('/login')
 };
 
-const getUserProfile = async (req: Request, res: Response, next: NextFunction) => {
+const getUserProfile: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const { _id } = req.body.user;
 
   try {
@@ -79,7 +93,7 @@ const passwordRequestReset = async (req: Request, res: Response, next: NextFunct
   }
 };
 
-const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
+const resetPassword: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, otp, newPassword } = req.body;
 

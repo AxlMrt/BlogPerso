@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { IRegister } from '../app/types';
-import { trimUserObject, validPassword } from '../app/utils/validation';
+import { validPassword } from '../app/utils/validation';
 import { setUser } from '../app/store/slices/authSlice';
 import { useUpdateUserMutation } from '../app/store/api/usersApi';
 import { useAppDispatch, useAppSelector } from '../app/store/configureStore';
@@ -24,12 +24,7 @@ export default function AccountPage() {
 	const navigate = useNavigate();
 
 	const submitForm = async (data: any) => {
-		data = trimUserObject(data);
 		data.id = user!['id'];
-
-		if (file) data.photo = file;
-
-		if (data.email) data.email = data.email.toLowerCase();
 
 		if (data.password) {
 			if (data.password !== data.confirmPassword) {
@@ -49,19 +44,20 @@ export default function AccountPage() {
 
 		if (file) {
 			const formData = new FormData();
-
+			data.photo = file;
+	
 			formData.append('photo', data.photo);
 			data = { ...data, photo: Date.now() + data.photo.name };
+
 			formData.append('user', JSON.stringify(data));
 			try {
-				await updateUser({ id: user!['id'], formData });
+				await updateUser({ id: user!['id'], data: formData });
 			} catch (error) {
 				console.error('Failed to update the user: ', error);
 			}
 		} else {
-			data.photo = user!['photo'];
 			try {
-				await updateUser({ id: user!['id'], formData: data });
+				await updateUser({ id: user!['id'], data });
 			} catch (error) {
 				console.error('Failed to update the user: ', error);
 			}

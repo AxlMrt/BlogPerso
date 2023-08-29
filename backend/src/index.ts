@@ -11,7 +11,7 @@ import QueryRoute from './routes/userQuery';
 import RefreshRoute from './routes/refreshToken';
 import OTProutes from './routes/otp';
 import { removeEmptyKeysFromBody } from './middleware/removeEmptyKeys.middleware';
-const PORT = secrets.port || 8000;
+const PORT = secrets.port || 3000;
 const app: Application = express();
 const baseURL = '/api/v1';
 
