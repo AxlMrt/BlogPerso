@@ -20,8 +20,8 @@ export interface IUserLogin {
 export interface IRegister extends IUser {
   confirmPassword?: string;
   others: null;
-  tokenData: { expiresIn: string, token: string };
-  refreshTokenData: { expiresIn: string, token: string };
+  tokenData: { expiresIn: string; token: string };
+  refreshTokenData: { expiresIn: string; token: string };
 }
 
 export interface IBook {
@@ -55,25 +55,32 @@ export interface IGenericResponse {
 }
 
 export type IsBookRead = {
-		NOT_READ: {
-			color: string;
-			text: string;
-		};
-		IN_PROGRESS: {
-			color: string;
-			text: string;
-		};
-		IS_READ: {
-			color: string;
-			text: string;
-		};
-	};
+  NOT_READ: {
+    color: string;
+    text: string;
+  };
+  IN_PROGRESS: {
+    color: string;
+    text: string;
+  };
+  IS_READ: {
+    color: string;
+    text: string;
+  };
+};
 
 export enum Read {
   IS_READ,
   IN_PROGRESS,
-  NOT_READ
+  NOT_READ,
 }
 
-export interface IResetPassword { otp: string; newPassword: string; confirmPassword?: string; email: string; }
-export interface RequestPassword { email: string; }
+export interface IResetPassword {
+  otp: string;
+  newPassword: string;
+  confirmPassword?: string;
+  email: string;
+}
+export interface RequestPassword {
+  email: string;
+}

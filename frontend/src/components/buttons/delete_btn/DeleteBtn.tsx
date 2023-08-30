@@ -1,13 +1,13 @@
-import { RiDeleteBin6Line } from 'react-icons/ri';
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 interface Props {
-	handleDelete: () => void;
+  handleDelete: () => void;
 }
 
 export default function DeleteBtn({ handleDelete }: Props) {
-	return (
-		<button onClick={handleDelete}>
-			<RiDeleteBin6Line />
-		</button>
-	);
+  return (
+    <button onClick={handleDelete}>
+      <RiDeleteBin6Line />
+    </button>
+  );
 }

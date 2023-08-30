@@ -1,16 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createSlice } from '@reduxjs/toolkit';
-import { getUserDetails, userLogin, userLogout } from '../actions/authActions';
-import { userApi } from '../api/usersApi';
+import { createSlice } from "@reduxjs/toolkit";
+import { getUserDetails, userLogin, userLogout } from "../actions/authActions";
+import { userApi } from "../api/usersApi";
 
-const token = localStorage.getItem('token')
-? localStorage.getItem('token')
-  : sessionStorage.getItem('token') ? sessionStorage.getItem('token') : null;
+const token = localStorage.getItem("token")
+  ? localStorage.getItem("token")
+  : sessionStorage.getItem("token")
+  ? sessionStorage.getItem("token")
+  : null;
 
-  const refreshToken = localStorage.getItem('refresh')
-? localStorage.getItem('refresh')
-: null;
+const refreshToken = localStorage.getItem("refresh")
+  ? localStorage.getItem("refresh")
+  : null;
 
 const initialState = {
   token,
@@ -19,46 +21,46 @@ const initialState = {
   loading: false,
   error: false,
   errorDetails: null,
-  success: 'idle',
-}
+  success: "idle",
+};
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     logout: (state) => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('refresh');
+      localStorage.removeItem("token");
+      localStorage.removeItem("refresh");
       sessionStorage.clear();
       state.loading = false;
       state.user = null;
       state.token = null;
       state.refreshToken = null;
       state.error = false;
-      state.success = 'idle';
+      state.success = "idle";
     },
     setUser: (state, action) => {
       state.user = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     // login user
     builder.addCase(userLogin.pending, (state) => {
       state.loading = true;
       state.error = false;
-      state.success = 'idle';
+      state.success = "idle";
     });
     builder.addCase(userLogin.fulfilled, (state, { payload }) => {
       state.error = false;
       state.loading = false;
-      state.success = 'true';
+      state.success = "true";
       state.user = payload.others;
       state.token = payload.token;
       state.refreshToken = payload.refresh;
     });
     builder.addCase(userLogin.rejected, (state, _action) => {
       state.loading = false;
-      state.success = 'false';
+      state.success = "false";
       state.error = true;
     });
     // logout user
@@ -92,13 +94,16 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = true;
     });
-    builder.addMatcher(userApi.endpoints.addNewUser.matchFulfilled, (state, action) => {
-      state.user = action.payload.others;
-      state.token = action.payload.tokenData.token;
-      state.refreshToken = action.payload.refreshTokenData.token;
-      sessionStorage.setItem('token', action.payload.tokenData.token);
-      window.location.replace('/')
-    })
+    builder.addMatcher(
+      userApi.endpoints.addNewUser.matchFulfilled,
+      (state, action) => {
+        state.user = action.payload.others;
+        state.token = action.payload.tokenData.token;
+        state.refreshToken = action.payload.refreshTokenData.token;
+        sessionStorage.setItem("token", action.payload.tokenData.token);
+        window.location.replace("/");
+      },
+    );
   },
 });
 

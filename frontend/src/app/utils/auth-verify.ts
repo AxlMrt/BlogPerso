@@ -15,7 +15,7 @@ const parseJwt = (token: string) => {
   }
 };
 
-export default function AuthVerify ({ logIn, logOut }: Props) {
+export default function AuthVerify({ logIn, logOut }: Props) {
   const location = useLocation();
   const { user, token, refreshToken } = useAppSelector((state) => state.auth);
 
@@ -23,14 +23,10 @@ export default function AuthVerify ({ logIn, logOut }: Props) {
     if (token) {
       const decodedJwt = parseJwt(token);
       if (decodedJwt.exp * 1000 < Date.now())
-        if (refreshToken)
-          logIn();
-        else
-          logOut();
-      else
-        logIn();
+        if (refreshToken) logIn();
+        else logOut();
+      else logIn();
     }
-
   }, [location, logIn, logOut, refreshToken, token, user]);
 
   return undefined;

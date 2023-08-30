@@ -1,37 +1,43 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import agent from '../../axios/agent';
-import { setUser } from '../slices/authSlice';
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import agent from "../../axios/agent";
+import { setUser } from "../slices/authSlice";
 
 export const userLogin = createAsyncThunk(
-  'auth/login',
-  async ({ email, password, remember }: { email: string, password: string, remember: boolean }, { rejectWithValue, dispatch }) => {
+  "auth/login",
+  async (
+    {
+      email,
+      password,
+      remember,
+    }: { email: string; password: string; remember: boolean },
+    { rejectWithValue, dispatch },
+  ) => {
     try {
       const data = await agent.Auth.auth(email, password);
-    
+
       if (remember) {
-        localStorage.setItem('token', data.tokenData.token);
-        localStorage.setItem('refresh', data.refreshTokenData.token);
+        localStorage.setItem("token", data.tokenData.token);
+        localStorage.setItem("refresh", data.refreshTokenData.token);
       } else {
-        sessionStorage.setItem('token', data.tokenData.token);
+        sessionStorage.setItem("token", data.tokenData.token);
       }
-  
+
       dispatch(setUser(data.others));
 
       return data;
     } catch (error: any) {
-
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
       } else {
         return rejectWithValue(error.message);
       }
     }
-  }
+  },
 );
 
 export const userLogout = createAsyncThunk(
-  'auth/logout',
+  "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
       return agent.Auth.logout();
@@ -42,11 +48,11 @@ export const userLogout = createAsyncThunk(
         return rejectWithValue(error.message);
       }
     }
-  }
+  },
 );
 
 export const getUserDetails = createAsyncThunk(
-  'auth/getUserDetails',
+  "auth/getUserDetails",
   async (_, { rejectWithValue }) => {
     try {
       return agent.Auth.getUserDetails();
@@ -57,5 +63,5 @@ export const getUserDetails = createAsyncThunk(
         return rejectWithValue(error.message);
       }
     }
-  }
+  },
 );
