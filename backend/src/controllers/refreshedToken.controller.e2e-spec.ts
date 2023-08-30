@@ -3,7 +3,7 @@ import app from '..'
 
 const baseURL = '/api/v1';
 
-describe('Refreshed Token Controller', async () => {
+describe('POST /refresh', async () => {
   const body = {
       email: 'john2.doe@gmail.com',
       firstName: 'John',
