@@ -17,7 +17,7 @@ export default function DeleteModal() {
 
 	const handleDelete = async () => {
 		try {
-			await user.books.map((book: IBook) => deleteBook(book.id));
+			await user.books.map((book: IBook) => deleteBook({ bookId: book.id, id: user.id }));
 			await deleteUser(user.id!).then(() => localStorage.clear());
 		} catch (error) {
 			console.log("Couldn't delete this user:", error);

@@ -12,8 +12,6 @@ export const requireOwnershipOrAdmin = async (req: Request, res: Response, next:
   const userIdFromRequest = req.params.id;
   let loggedInUserId = req.body.id;
 
-  console.log(req.body);
-
   if (req.body.user) {
     const parsed = JSON.parse(req.body.user);
     loggedInUserId = parsed.id;

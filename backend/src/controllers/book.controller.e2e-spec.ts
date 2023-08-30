@@ -391,7 +391,7 @@ describe('DELETE /books/:id', async () => {
     const response = await supertest(app)
       .delete(`${baseURL}/books/${book1.body.book.id}`)
       .set('Authorization', `Bearer ${user.body.tokenData.token}`)
-      .send({ userId });
+      .send({ id: userId });
 
     expect(response.status).toBe(204);
   });
@@ -400,7 +400,7 @@ describe('DELETE /books/:id', async () => {
     const response = await supertest(app)
       .delete(`${baseURL}/books/${book2.body.book.id}`)
       .set('Authorization', `Bearer ${user.body.tokenData.token}`)
-      .send({ userId: 'invalid_id' });
+      .send({ id: 'invalid_id' });
 
     expect(response.status).toBe(403);
   });
@@ -409,7 +409,7 @@ describe('DELETE /books/:id', async () => {
     const response = await supertest(app)
       .delete(`${baseURL}/books/${book3!.id}`)
       .set('Authorization', `Bearer ${user.body.tokenData.token}`)
-      .send({ userId: userAdmin!.id });
+      .send({ id: userAdmin!.id });
 
     expect(response.status).toBe(204);
   });

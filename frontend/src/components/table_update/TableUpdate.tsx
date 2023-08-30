@@ -30,7 +30,6 @@ export default function TableUpdate({
 		bookToUpdate.forEach(async (book: IBook) => {
 			const data = { bookId: book.id, id: user!['id'] };
 
-			console.log(data)
 			try {
 				await deleteBook(data);
 			} catch (error) {
