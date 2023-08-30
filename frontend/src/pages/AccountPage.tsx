@@ -74,8 +74,8 @@ export default function AccountPage() {
   }, [dispatch, isSuccess, navigate, reset, successData]);
 
   return (
-    <section className="px-6 py-4 bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800 mt-20">
+    <section className="h-screen bg-gray-50 dark:bg-gray-900 pt-32">
+      <div className="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800">
         <h1 className="text-xl font-bold dark:text-white">
           Modifier vos informations
         </h1>

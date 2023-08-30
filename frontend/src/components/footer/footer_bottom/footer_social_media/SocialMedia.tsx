@@ -8,11 +8,12 @@ interface Props {
 export default function SocialMedia({ socialMedia }: Props) {
   return (
     <div className="flex mt-4 space-x-5 sm:justify-center sm:mt-0">
-      {socialMedia.map((social) => {
+      {socialMedia.map((social, index) => {
         return (
           <Link
             to={social.dest}
             className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+            key={index}
           >
             {social.text === "Facebook" ? (
               <FaFacebookF />
