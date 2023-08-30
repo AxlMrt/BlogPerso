@@ -2,7 +2,7 @@ import { FaFacebookF, FaDiscord, FaTwitter, FaGithub } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 interface Props {
-  socialMedia: { dest: string; text: string; logo: string }[];
+  socialMedia: { dest: string; text: string }[];
 }
 
 export default function SocialMedia({ socialMedia }: Props) {

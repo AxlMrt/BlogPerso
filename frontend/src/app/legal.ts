@@ -1,10 +1,10 @@
 export const legal_links = [
   {
-    dest: "#",
+    dest: "/privacy-policy",
     text: "Privacy Policy",
   },
   {
-    dest: "#",
+    dest: "/terms-conditions",
     text: "Terms & Conditions",
   },
 ];

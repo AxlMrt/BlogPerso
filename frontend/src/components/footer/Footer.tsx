@@ -6,7 +6,7 @@ import BottomBar from "./footer_bottom/BottomBar";
 
 export default function Footer() {
   return (
-    <footer className="bg-white dark:bg-gray-800">
+    <footer className="bg-white dark:bg-gray-800 border dark:border-none ">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div className="md:flex md:justify-between">
           <FooterTitle />

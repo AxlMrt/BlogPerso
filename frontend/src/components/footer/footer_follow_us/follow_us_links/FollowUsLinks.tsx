@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 interface Props {
-  socialMedia: { dest: string; text: string; logo: string }[];
+  socialMedia: { dest: string; text: string }[];
 }
 
 export default function FollowUsLinks({ socialMedia }: Props) {

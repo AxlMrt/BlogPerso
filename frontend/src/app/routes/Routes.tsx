@@ -16,6 +16,8 @@ import BooksPage from "../../pages/BooksPage";
 import HomePage from "../../pages/HomePage";
 import SendPasswordRequestPage from "../../pages/SendPasswordRequestPage";
 import ResetPasswordPage from "../../pages/ResetPasswordPage";
+import PrivacyPolicy from "../../pages/PrivacyPolicy";
+import TermsAndConditions from "../../pages/TermsAndConditions";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,6 +25,8 @@ export const router = createBrowserRouter(
       <Route path="landing" element={<Landing />} />
       <Route path="login" element={<LoginPage />} />
       <Route path="register" element={<RegisterPage />} />
+      <Route path="privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="terms-conditions" element={<TermsAndConditions />} />
       <Route
         path="reset-password-request"
         element={<SendPasswordRequestPage />}
