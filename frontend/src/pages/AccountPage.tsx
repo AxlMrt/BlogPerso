@@ -17,7 +17,7 @@ import AddBookModal from "../components/modal/AddBookModal";
 export default function AccountPage() {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
-  const [updateUser, { isLoading, isSuccess, data: successData }] =
+  const [updateUser, { isLoading, isSuccess, data: successData, error }] =
     useUpdateUserMutation();
   const { register, handleSubmit, reset } = useForm<IRegister>();
   const [file, setFile] = useState<Blob | MediaSource | null>(null);
@@ -71,7 +71,12 @@ export default function AccountPage() {
       setFile(null);
       toast.success("Vos informations ont été mises à jour!");
     }
-  }, [dispatch, isSuccess, navigate, reset, successData]);
+
+    if (error && 'originalStatus' in error) {
+      if (error.originalStatus === 409)
+        toast.error('Email déjà utilisé.');
+    }
+  }, [dispatch, error, isSuccess, navigate, reset, successData]);
 
   return (
     <section className="min-h-screen px-6 py-32 bg-gray-50 dark:bg-gray-900">

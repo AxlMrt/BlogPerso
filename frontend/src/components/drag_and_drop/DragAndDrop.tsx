@@ -96,12 +96,12 @@ export default function DragAndDrop({ file, setFile, register }: Props) {
           >
             Télécharger un fichier
           </button>
-          <p className="text-xs">PNG, JPG jusqu'à 10MB</p>
+          <p className="text-xs">PNG, JPG jusqu'à 20MB</p>
         </div>
       </label>
       {dragActive && (
         <div
-          className="absolute w-full h-full top-0 right-0 left-0 bottom-0 bg-black z-10"
+          className="absolute w-full h-full top-0 right-0 left-0 bottom-0 z-10"
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
           onDragOver={handleDrag}
