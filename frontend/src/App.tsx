@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import agent from "./app/axios/agent";
 import AuthVerify from "./app/utils/auth-verify";
+import Footer from "./components/footer/Footer";
 
 function App() {
   const darkMode = useAppSelector((state) => state.theme.darkMode);
@@ -49,6 +50,7 @@ function App() {
       <DarkModeSetter darkModeSetter={darkModeSetter} />
       <Outlet />
       <ToastContainer position="bottom-right" hideProgressBar theme="colored" />
+      <Footer />
     </main>
   );
 }
