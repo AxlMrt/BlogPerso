@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import HttpException from '../config/exceptions/HttpException';
-import { checkOTP } from '../utils/otp';
-import { sendOTP } from '../utils/sendOTP';
-import { IOtp } from '../config/types';
+import { IOtp } from '@/config/types';
+import { checkOTP } from '@/utils/otp';
+import { sendOTP } from '@/utils/sendOTP';
+import HttpException from '@/config/exceptions/HttpException';
 
 const createOTP = async (req: Request, res: Response, next: NextFunction) => {
   try {

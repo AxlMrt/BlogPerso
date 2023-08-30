@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
-import secrets from '../config/secrets';
-import HttpException from '../config/exceptions/HttpException';
+import secrets from '@/config/secrets';
+import HttpException from '@/config/exceptions/HttpException';
 import { Options } from 'nodemailer/lib/mailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 

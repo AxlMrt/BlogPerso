@@ -1,5 +1,5 @@
 import { ErrorRequestHandler, Request, Response } from 'express';
-import HttpException from '../config/exceptions/HttpException';
+import HttpException from '@/config/exceptions/HttpException';
 
 const errorMiddleWare: ErrorRequestHandler = (error: HttpException, req: Request, res: Response) => {
   const status = error.status || 500;

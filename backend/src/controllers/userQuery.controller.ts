@@ -1,6 +1,6 @@
 import { RequestHandler, Request, Response, NextFunction } from 'express';
-import prisma from '../../prisma/lib/prisma';
-import HttpException from '../config/exceptions/HttpException';
+import prisma from '@/prisma/lib/prisma';
+import HttpException from '@/config/exceptions/HttpException';
 const PER_PAGE = 8;
 
 const getUserBooks: RequestHandler<{ id: string }> = async (req: Request, res: Response, next: NextFunction) => {

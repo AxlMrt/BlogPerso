@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { RequestHandler, Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcrypt';
-import prisma from '../../prisma/lib/prisma';
-import createCookie from '../utils/cookies';
-import WrongCredentials from '../config/exceptions/WrongCred';
-import HttpException from '../config/exceptions/HttpException';
-import { ITokenData, IUser, IUserLogin } from '../config/types';
-import tokensFn from '../utils/tokens';
-import { resetUserPassword, sendPasswordResetOTP } from '../utils/resetPassword';
+import prisma from '@/prisma/lib/prisma';
+import { ITokenData, IUser, IUserLogin } from '@/config/types';
+import HttpException from '@/config/exceptions/HttpException';
+import WrongCredentials from '@/config/exceptions/WrongCred';
+import tokensFn from '@/utils/tokens';
+import createCookie from '@/utils/cookies';
 import { validEmail } from '@/utils/validation';
+import { resetUserPassword, sendPasswordResetOTP } from '@/utils/resetPassword';
 
 const login: RequestHandler<{ email: string; password: string }> = async (
   req: Request,
@@ -16,18 +16,14 @@ const login: RequestHandler<{ email: string; password: string }> = async (
   next: NextFunction,
 ) => {
   try {
-    if (!Object.keys(req.body).length)
-      next(new HttpException(400, 'Credentials are needed.'));
+    if (!Object.keys(req.body).length) next(new HttpException(400, 'Credentials are needed.'));
 
-    if (!req.body.email)
-      next(new HttpException(400, 'Email is needed.'));
+    if (!req.body.email) next(new HttpException(400, 'Email is needed.'));
 
-    if (!req.body.password)
-      next(new HttpException(400, 'Password is needed.'))
+    if (!req.body.password) next(new HttpException(400, 'Password is needed.'));
 
-    if (!validEmail(req.body.email))
-      next(new HttpException(400, 'Email is in the wrong format.'))
-  
+    if (!validEmail(req.body.email)) next(new HttpException(400, 'Email is in the wrong format.'));
+
     const { email, password }: IUserLogin = req.body;
 
     const user = await prisma.user.findUnique({
@@ -58,7 +54,7 @@ const login: RequestHandler<{ email: string; password: string }> = async (
 
 const logout: RequestHandler = async (req: Request, res: Response) => {
   res.setHeader('Set-Cookie', ['Authorization=;Max-age=0']);
-  res.redirect('/login')
+  res.redirect('/login');
 };
 
 const getUserProfile: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {

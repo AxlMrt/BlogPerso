@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import { IDataStoredInToken, ITokenData, IUser } from '../config/types';
-import secrets from '../config/secrets';
+import { IDataStoredInToken, ITokenData, IUser } from '@/config/types';
+import secrets from '@/config/secrets';
 
 const createToken = (user: IUser): ITokenData => {
   const expiresIn = 60 * 60;

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import prisma from '../../prisma/lib/prisma';
+import prisma from '@/prisma/lib/prisma';
 import supertest from 'supertest';
 import app from '..';
 
@@ -117,7 +117,7 @@ describe('GET /users', async () => {
       lastName: 'Admin',
       password: 'azerty',
       role: 'ADMIN',
-    }
+    },
   });
 
   it('should create new user', async () => {
@@ -134,14 +134,14 @@ describe('GET /users/:id', async () => {
       lastName: 'Admin',
       password: 'azerty',
       role: 'ADMIN',
-    }
+    },
   });
 
   const createdBody = {
-      email: 'test.Get@gmail.com',
-      firstName: 'Get',
-      lastName: 'Get',
-      password: 'A7erT!Gh',
+    email: 'test.Get@gmail.com',
+    firstName: 'Get',
+    lastName: 'Get',
+    password: 'A7erT!Gh',
   };
 
   const response = await supertest(app).post(`${baseURL}/users`).send(createdBody);
@@ -167,7 +167,7 @@ describe('GET /users/:id', async () => {
     const response = await supertest(app).get(`${baseURL}/users/${invalidUserId}`).send(superUser);
 
     expect(response.status).toBe(404);
-  })
+  });
 });
 
 describe('PUT /users/:id', async () => {
@@ -178,14 +178,14 @@ describe('PUT /users/:id', async () => {
       lastName: 'Admin',
       password: 'azerty',
       role: 'ADMIN',
-    }
+    },
   });
 
   const createdBody = {
-      email: 'test@gmail.com',
-      firstName: 'Put',
-      lastName: 'Put',
-      password: 'A7erT!Gh',
+    email: 'test@gmail.com',
+    firstName: 'Put',
+    lastName: 'Put',
+    password: 'A7erT!Gh',
   };
 
   const response = await supertest(app).post(`${baseURL}/users`).send(createdBody);
@@ -198,7 +198,9 @@ describe('PUT /users/:id', async () => {
       lastName: 'Doe',
     };
 
-    const response = await supertest(app).put(`${baseURL}/users/${createdUser.id}`).send({ ...body, id: createdUser.id });
+    const response = await supertest(app)
+      .put(`${baseURL}/users/${createdUser.id}`)
+      .send({ ...body, id: createdUser.id });
     expect(response.status).toEqual(200);
   });
 
@@ -209,7 +211,9 @@ describe('PUT /users/:id', async () => {
       lastName: 'Doe',
     };
 
-    const response = await supertest(app).put(`${baseURL}/users/${superUser.id}`).send({ ...body, id: createdUser.id });
+    const response = await supertest(app)
+      .put(`${baseURL}/users/${superUser.id}`)
+      .send({ ...body, id: createdUser.id });
 
     expect(response.status).toEqual(200);
   });
@@ -223,13 +227,15 @@ describe('PUT /users/:id', async () => {
 
     expect(createdUser.email).toBe(createdBody.email);
 
-    const response = await supertest(app).put(`${baseURL}/users/${createdUser.id}`).send({...body, id: createdUser.id});
+    const response = await supertest(app)
+      .put(`${baseURL}/users/${createdUser.id}`)
+      .send({ ...body, id: createdUser.id });
     const updatedUser = response.body;
     expect(response.status).toEqual(200);
     expect(updatedUser.email).toBe(body.email.toLowerCase());
     expect(updatedUser.firstName).toBeDefined();
   });
-  
+
   it('should update user case insensitive', async () => {
     const body = {
       email: 'joHn.UpDated@gMail.com',
@@ -237,7 +243,9 @@ describe('PUT /users/:id', async () => {
       lastName: 'Doe',
     };
 
-    const response = await supertest(app).put(`${baseURL}/users/${createdUser.id}`).send({...body, id: createdUser.id});
+    const response = await supertest(app)
+      .put(`${baseURL}/users/${createdUser.id}`)
+      .send({ ...body, id: createdUser.id });
     const updatedUser = response.body;
     const { email, firstName, lastName } = updatedUser;
 
@@ -246,7 +254,7 @@ describe('PUT /users/:id', async () => {
     expect(firstName).toBe(body.firstName.toLowerCase());
     expect(lastName).toBe(body.lastName.toLowerCase());
   });
- 
+
   it('should return an error if there is more data', async () => {
     const body = {
       email: 'john.doe@gmail.com',
@@ -256,7 +264,9 @@ describe('PUT /users/:id', async () => {
       role: 'ADMIN',
     };
 
-    const response = await supertest(app).put(`${baseURL}/users/${createdUser.id}`).send({...body, id: createdUser.id});
+    const response = await supertest(app)
+      .put(`${baseURL}/users/${createdUser.id}`)
+      .send({ ...body, id: createdUser.id });
     expect(response.status).toBe(400);
   });
 
@@ -265,7 +275,9 @@ describe('PUT /users/:id', async () => {
       email: 'nouvel_utilisateur',
     };
 
-    const response = await supertest(app).put(`${baseURL}/users/${createdUser.id}`).send({...body, id: createdUser.id});
+    const response = await supertest(app)
+      .put(`${baseURL}/users/${createdUser.id}`)
+      .send({ ...body, id: createdUser.id });
     expect(response.status).toBe(400);
   });
 
@@ -275,7 +287,9 @@ describe('PUT /users/:id', async () => {
       firstName: 'Jane',
     };
 
-    const response = await supertest(app).put(`${baseURL}/users/${createdUser.id}`).send({...body, id: createdUser.id});
+    const response = await supertest(app)
+      .put(`${baseURL}/users/${createdUser.id}`)
+      .send({ ...body, id: createdUser.id });
 
     expect(response.status).toBe(409);
   });
@@ -286,21 +300,29 @@ describe('PUT /users/:id', async () => {
       firstName: 'Jane',
     };
 
-    const response = await supertest(app).put(`${baseURL}/users/${invalidUserId}`).send({...body, id: createdUser.id});
+    const response = await supertest(app)
+      .put(`${baseURL}/users/${invalidUserId}`)
+      .send({ ...body, id: createdUser.id });
 
     expect(response.status).toBe(403);
   });
 });
 
 describe('DELETE /users/:id', async () => {
-  const user1 = await prisma.user.create({ data: { email: 'lalalolo@lolilo.fr', firstName: 'Lolo', lastName: 'lolo', password: 'Lolilo', role: 'ADMIN' } });
-  const user2 = await prisma.user.create({ data: { email: 'lalalala@lolilo.fr', firstName: 'Lala', lastName: 'lala', password: 'Lolilo' } });
-  const user3 = await prisma.user.create({ data: { email: 'lalalele@lolilo.fr', firstName: 'Lele', lastName: 'lele', password: 'Lolilo' } });
+  const user1 = await prisma.user.create({
+    data: { email: 'lalalolo@lolilo.fr', firstName: 'Lolo', lastName: 'lolo', password: 'Lolilo', role: 'ADMIN' },
+  });
+  const user2 = await prisma.user.create({
+    data: { email: 'lalalala@lolilo.fr', firstName: 'Lala', lastName: 'lala', password: 'Lolilo' },
+  });
+  const user3 = await prisma.user.create({
+    data: { email: 'lalalele@lolilo.fr', firstName: 'Lele', lastName: 'lele', password: 'Lolilo' },
+  });
 
   it('should return 403 forbidden', async () => {
     const response = await supertest(app).delete(`${baseURL}/users/${user2.id}`).send(user3);
     expect(response.status).toBe(403);
-  })
+  });
 
   it('should delete user', async () => {
     const totalUserInDb = await prisma.user.count();

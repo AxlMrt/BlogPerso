@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
-import secrets from '../config/secrets';
-import WrongAuthenticationTokenException from '../config/exceptions/WrongAuthToken';
-import MissingAuthenticationTokenException from '../config/exceptions/MissingAuthToken';
+import secrets from '@/config/secrets';
+import WrongAuthenticationTokenException from '@/config/exceptions/WrongAuthToken';
+import MissingAuthenticationTokenException from '@/config/exceptions/MissingAuthToken';
 
 const authMiddleware: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   const authorization = req.headers.authorization;

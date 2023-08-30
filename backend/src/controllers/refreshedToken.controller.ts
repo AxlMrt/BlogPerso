@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response } from 'express';
-import secrets from '../config/secrets';
-import tokensFn from '../utils/tokens';
 import jwt, { JwtPayload, VerifyErrors } from 'jsonwebtoken';
-import { IDataStoredInToken, IUser } from '../config/types';
-import createCookie from '../utils/cookies';
+import tokensFn from '@/utils/tokens';
+import createCookie from '@/utils/cookies';
+import secrets from '@/config/secrets';
+import { IDataStoredInToken, IUser } from '@/config/types';
 
 const refreshedToken = (req: Request, res: Response) => {
   const authorization = req.headers.authorization;

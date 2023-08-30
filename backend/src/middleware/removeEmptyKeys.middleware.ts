@@ -9,4 +9,4 @@ export const removeEmptyKeysFromBody = (req: Request, _res: Response, next: Next
     }
   }
   next();
-}
+};

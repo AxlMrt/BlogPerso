@@ -1,6 +1,6 @@
-import prisma from '../../prisma/lib/prisma';
-import HttpException from '../config/exceptions/HttpException';
-import { IOtp, IOtpDetails, IUser } from '../config/types';
+import prisma from '@/prisma/lib/prisma';
+import HttpException from '@/config/exceptions/HttpException';
+import { IOtp, IOtpDetails, IUser } from '@/config/types';
 import { hashData } from './hashData';
 import { checkOTP, deleteOTP } from './otp';
 import { sendOTP } from './sendOTP';

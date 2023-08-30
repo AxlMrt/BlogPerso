@@ -1,11 +1,11 @@
 import path from 'path';
-import prisma from '../../prisma/lib/prisma';
-import HttpException from '../config/exceptions/HttpException';
+import prisma from '@/prisma/lib/prisma';
+import HttpException from '@/config/exceptions/HttpException';
 import { hashData } from './hashData';
 import { generateOTP } from './otp';
 import sendEmail from './sendEmail';
-import { passwordMailConfig } from '../config/mail_config/passwordMailConfig';
-import { IOtp, IOtpDetails } from '../config/types';
+import { passwordMailConfig } from '@/config/mail_config/passwordMailConfig';
+import { IOtp, IOtpDetails } from '@/config/types';
 
 export const sendOTP = async ({ email, subject, message, duration = 1 }: IOtpDetails) => {
   try {

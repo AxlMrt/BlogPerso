@@ -28,7 +28,7 @@ describe('POST /books/', async () => {
         publisher: 'Sample Publisher',
         userMail: 'john2.doe@gmail.com',
       });
-    
+
     expect(response.status).toBe(201);
   });
 
@@ -115,7 +115,7 @@ describe('POST /books/', async () => {
     expect(response.status).toBe(400);
     expect(response).toHaveProperty('error');
   });
-  
+
   it('should not create a new book with invalid year', async () => {
     const response = await supertest(app)
       .post(`${baseURL}/books`)
@@ -157,10 +157,10 @@ describe('POST /books/', async () => {
 
 describe('PUT /books/:id', async () => {
   const user = await supertest(app).post(`${baseURL}/users`).send({
-      email: 'jane.doe@gmail.com',
-      firstName: 'Jane',
-      lastName: 'Doe',
-      password: 'A7erT!Gh',
+    email: 'jane.doe@gmail.com',
+    firstName: 'Jane',
+    lastName: 'Doe',
+    password: 'A7erT!Gh',
   });
   const userId = user.body.others.id;
 
@@ -170,37 +170,35 @@ describe('PUT /books/:id', async () => {
       firstName: 'Joe',
       lastName: 'Doe',
       password: 'A7erT!Gh',
-      role: "ADMIN"
-    }
+      role: 'ADMIN',
+    },
   });
 
-  
-    const book = await supertest(app)
-      .post(`${baseURL}/books`)
-      .set('Authorization', `Bearer ${user.body.tokenData.token}`)
-      .send({
-        title: 'Sample Book',
-        author: 'John Doe',
-        type: 'Fiction',
-        year: 2023,
-        feedBack: 3,
-        publisher: 'Sample Publisher',
-        userMail: 'jane.doe@gmail.com',
-      });
+  const book = await supertest(app)
+    .post(`${baseURL}/books`)
+    .set('Authorization', `Bearer ${user.body.tokenData.token}`)
+    .send({
+      title: 'Sample Book',
+      author: 'John Doe',
+      type: 'Fiction',
+      year: 2023,
+      feedBack: 3,
+      publisher: 'Sample Publisher',
+      userMail: 'jane.doe@gmail.com',
+    });
 
   it('should update a book with valid data', async () => {
     const body = {
-        title: 'Updated Book Title',
-        author: 'John Doe',
-        userId: user.body.others.id
-    }
-
+      title: 'Updated Book Title',
+      author: 'John Doe',
+      userId: user.body.others.id,
+    };
 
     const response = await supertest(app)
       .put(`${baseURL}/books/${book!.body.book.id}`)
       .set('Authorization', `Bearer ${user.body.tokenData.token}`)
       .send(body);
-  
+
     expect(response.status).toBe(200);
     expect(response.body.book.title).toEqual(body.title);
   });
@@ -230,7 +228,7 @@ describe('PUT /books/:id', async () => {
         year: 2023,
         feedBack: 4,
         publisher: 'Sample Publisher',
-        userId
+        userId,
       });
 
     expect(response.status).toBe(400);
@@ -247,7 +245,7 @@ describe('PUT /books/:id', async () => {
         year: 2023,
         feedBack: 4,
         publisher: 'Sample Publisher',
-        userId
+        userId,
       });
 
     expect(response.status).toBe(400);
@@ -261,7 +259,7 @@ describe('PUT /books/:id', async () => {
       .send({
         title: 'Updated Book Title',
         author: 'Jane Doe',
-        userId
+        userId,
       });
 
     expect(response.status).toBe(200);
@@ -283,7 +281,7 @@ describe('PUT /books/:id', async () => {
         userId: differentUserId,
       });
 
-    expect(response.status).toBe(403); 
+    expect(response.status).toBe(403);
     expect(response).toHaveProperty('error');
   });
 
@@ -304,7 +302,7 @@ describe('PUT /books/:id', async () => {
     expect(response.status).toBe(400);
     expect(response).toHaveProperty('error');
   });
-  
+
   it('should not create a new book with invalid year', async () => {
     const response = await supertest(app)
       .put(`${baseURL}/books/${book!.body.book.id}`)
@@ -342,7 +340,7 @@ describe('PUT /books/:id', async () => {
     expect(response.status).toBe(400);
     expect(response).toHaveProperty('error');
   });
-})
+});
 
 describe('DELETE /books/:id', async () => {
   const user = await supertest(app).post(`${baseURL}/users`).send({
@@ -358,8 +356,8 @@ describe('DELETE /books/:id', async () => {
       firstName: 'Joe',
       lastName: 'Doe',
       password: 'A7erT!Gh',
-      role: "ADMIN"
-    }
+      role: 'ADMIN',
+    },
   });
 
   const book1 = await supertest(app)
@@ -386,7 +384,7 @@ describe('DELETE /books/:id', async () => {
       publisher: 'Sample Publisher',
       userMail: 'jane2.doe@gmail.com',
     });
-  
+
   const book3 = await prisma?.book.findFirst();
 
   it('should delete a book', async () => {

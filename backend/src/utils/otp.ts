@@ -1,5 +1,5 @@
-import HttpException from '../config/exceptions/HttpException';
-import { IOtp } from '../config/types';
+import HttpException from '@/config/exceptions/HttpException';
+import { IOtp } from '@/config/types';
 import { verifyHashData } from './hashData';
 
 export const checkOTP = async ({ email, otp }: { email: string; otp: string }) => {

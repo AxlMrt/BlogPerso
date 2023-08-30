@@ -10,14 +10,14 @@ describe('POST /login', async () => {
     firstName: 'John',
     lastName: 'Doe',
     password: 'A7erT!Gh',
-  }
+  };
   await supertest(app).post(`${baseURL}/users`).send(data);
 
   it('should connect with good credentials', async () => {
     const loginData = {
       email: 'john2.doe@gmail.com',
       password: 'A7erT!Gh',
-    }
+    };
 
     const response = await supertest(app).post(`${baseURL}/login`).send(loginData);
 
@@ -31,7 +31,7 @@ describe('POST /login', async () => {
     const loginData = {
       email: 'john2.doe@gmail.com',
       password: 'A7ert!gh',
-    }
+    };
     const response = await supertest(app).post(`${baseURL}/login`).send(loginData);
     expect(response.status).toEqual(401);
   });
@@ -75,7 +75,7 @@ describe('POST /login', async () => {
     const loginData = {
       email: 'jane.doe@gmail.com',
       password: 'A7ert!gh',
-    }
+    };
     const response = await supertest(app).post(`${baseURL}/login`).send(loginData);
     expect(response.status).toEqual(404);
   });
@@ -86,7 +86,7 @@ describe('POST /login/logout', () => {
     const loginData = {
       email: 'john2.doe@gmail.com',
       password: 'A7erT!Gh',
-    }
+    };
 
     const login = await supertest(app).post(`${baseURL}/login`).send(loginData);
     expect(login.status).toEqual(200);
@@ -95,4 +95,4 @@ describe('POST /login/logout', () => {
     expect(response.status).toEqual(302);
     expect(response.header['location']).toBe('/login');
   });
-})
+});

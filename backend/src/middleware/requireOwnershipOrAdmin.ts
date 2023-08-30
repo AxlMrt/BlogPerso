@@ -6,17 +6,17 @@ const checkAdminRole = async (id: string) => {
   const user = await prisma?.user.findUnique({ where: { id } });
 
   return user?.role === 'ADMIN' ? true : false;
-}
+};
 
 export const requireOwnershipOrAdmin = async (req: Request, res: Response, next: NextFunction) => {
   const userIdFromRequest = req.params.id;
   let loggedInUserId = req.body.id;
 
-  console.log(req.body)
+  console.log(req.body);
 
   if (req.body.user) {
     const parsed = JSON.parse(req.body.user);
-    loggedInUserId = parsed.id
+    loggedInUserId = parsed.id;
   }
 
   const isAdmin = await checkAdminRole(userIdFromRequest);
@@ -26,7 +26,7 @@ export const requireOwnershipOrAdmin = async (req: Request, res: Response, next:
   } else {
     next(new HttpException(403, 'Forbidden'));
   }
-}
+};
 
 export const requireAdmin = (req: Request, res: Response, next: NextFunction) => {
   if (req.body.role === 'ADMIN') {
@@ -34,4 +34,4 @@ export const requireAdmin = (req: Request, res: Response, next: NextFunction) =>
   } else {
     next(new HttpException(403, 'Forbidden'));
   }
-}
+};

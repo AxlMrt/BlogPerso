@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import HttpException from '../config/exceptions/HttpException';
+import HttpException from '@/config/exceptions/HttpException';
 
 export const hashData = async (data: string | Buffer, saltRounds = 10) => {
   try {

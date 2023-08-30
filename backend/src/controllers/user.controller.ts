@@ -1,15 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { RequestHandler, Request, Response, NextFunction } from 'express';
-import prisma from '../../prisma/lib/prisma';
-import tokensFn from '../utils/tokens';
-import createCookie from '../utils/cookies';
-import HttpException from '../config/exceptions/HttpException';
-import { hashData } from '../utils/hashData';
 import fs from 'fs';
-import { IUser } from '../config/types';
+import prisma from '@/prisma/lib/prisma';
+import tokensFn from '@/utils/tokens';
+import createCookie from '@/utils/cookies';
+import { hashData } from '@/utils/hashData';
 import { transformValuesToLowercase, validEmail, validPassword } from '@/utils/validation';
-import { removeEmptyKeysFromBody } from '@/middleware/removeEmptyKeys.middleware';
-
+import HttpException from '@/config/exceptions/HttpException';
+import { IUser } from '@/config/types';
 
 const getAllUsers: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -29,25 +27,23 @@ const getUser: RequestHandler<{ id: string }> = async (req: Request, res: Respon
       include: { books: true },
     });
 
-    if (!user)
-      next(new HttpException(404, 'User not found.'));
-    else
-      res.status(200).json(user);
+    if (!user) next(new HttpException(404, 'User not found.'));
+    else res.status(200).json(user);
   } catch (error) {
     next(new HttpException(500, "Couldn't get user."));
   }
 };
 
-const createUser: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {  
+const createUser: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const allowedFields = ['email', 'firstName', 'lastName', 'password'];
     const receivedFields = Object.keys(req.body);
-    const invalidFields = receivedFields.filter(field => !allowedFields.includes(field));
+    const invalidFields = receivedFields.filter((field) => !allowedFields.includes(field));
 
     if (invalidFields.length > 0) next(new HttpException(400, 'Additional fields not allowed.'));
     if (!validEmail(req.body.email)) next(new HttpException(400, 'Invalid email.'));
     if (!validPassword(req.body.password)) next(new HttpException(400, 'Invalid password.'));
-    
+
     for (const key in req.body) {
       if (req.body.hasOwnProperty(key)) {
         req.body[key] = transformValuesToLowercase(req.body[key], key);
@@ -57,10 +53,9 @@ const createUser: RequestHandler = async (req: Request, res: Response, next: Nex
     const user: IUser | null = await prisma.user.findUnique({
       where: { email: req.body.email },
     });
-    
+
     if (user) next(new HttpException(409, 'User already exist.'));
-    
-    
+
     const cryptedPassword = await hashData(req.body.password);
     const newUser: IUser = await prisma.user.create({
       data: {
@@ -93,12 +88,12 @@ const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
           }
         }
       }
-    } 
+    }
 
     const allowedFields = ['id', 'email', 'firstName', 'lastName', 'password', 'photo'];
     const uploadDir = __dirname + '/../../public/uploads/';
     const receivedFields = Object.keys(req.body);
-    const invalidFields = receivedFields.filter(field => !allowedFields.includes(field));
+    const invalidFields = receivedFields.filter((field) => !allowedFields.includes(field));
 
     if (invalidFields.length > 0) next(new HttpException(400, 'Additional fields not allowed.'));
 
@@ -106,11 +101,10 @@ const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
       if (!validEmail(req.body.email)) next(new HttpException(400, 'Invalid email.'));
       const isUserWithNewEmail = await prisma.user.findUnique({ where: { email: req.body.email } });
 
-      if (isUserWithNewEmail)
-        next(new HttpException(409, 'Email already taken.'));
+      if (isUserWithNewEmail) next(new HttpException(409, 'Email already taken.'));
     }
 
-    if (req.body.password) 
+    if (req.body.password)
       if (validPassword(req.body.password)) req.body.password = await hashData(req.body.password);
       else next(new HttpException(400, 'Invalid password.'));
 
