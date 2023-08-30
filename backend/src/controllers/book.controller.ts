@@ -124,9 +124,10 @@ const deleteBook: RequestHandler = async (req: Request, res: Response, next: Nex
 
   const bookToDelete = await prisma.book.findUnique({ where: { id } });
   const loggedInUser = await prisma.user.findUnique({ where: { id: req.body.id } });
-  
+
   if (!bookToDelete) next(new HttpException(404, 'Book not found'));
-  if (bookToDelete!.userId !== req.body.id && loggedInUser?.role !== 'ADMIN') next(new HttpException(403, 'IDs does not match.'));
+  if (bookToDelete!.userId !== req.body.id && loggedInUser?.role !== 'ADMIN')
+    next(new HttpException(403, 'IDs does not match.'));
 
   try {
     const deletedBook: IBook = await prisma.book.delete({

@@ -8,8 +8,7 @@ const createOTP = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, subject, message, duration } = req.body;
 
-    if (!Number(duration))
-      next(new HttpException(400, 'Invalid value'));
+    if (!Number(duration)) next(new HttpException(400, 'Invalid value'));
 
     const newOTP: IOtp = await sendOTP({ email, subject, message, duration });
 

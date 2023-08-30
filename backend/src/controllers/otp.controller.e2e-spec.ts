@@ -7,15 +7,13 @@ const baseURL = '/api/v1';
 describe('POST /otp', () => {
   it('should create and send OTP', async () => {
     const validData = {
-      email: "john2.doe@gmail.com",
-      subject: "Récupération mot de passe",
-      message: "Validation pour changer le mot de passe",
-      duration: 1
-    }
+      email: 'john2.doe@gmail.com',
+      subject: 'Récupération mot de passe',
+      message: 'Validation pour changer le mot de passe',
+      duration: 1,
+    };
 
-    const response = await supertest(app)
-      .post(`${baseURL}/otp`)
-      .send(validData);
+    const response = await supertest(app).post(`${baseURL}/otp`).send(validData);
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('email');
@@ -27,15 +25,13 @@ describe('POST /otp', () => {
 
   it('should not create and send OTP with invalid email', async () => {
     const invalidData = {
-      email: "invalid_email",
-      subject: "Récupération mot de passe",
-      message: "Validation pour changer le mot de passe",
-      duration: 1
-    }
+      email: 'invalid_email',
+      subject: 'Récupération mot de passe',
+      message: 'Validation pour changer le mot de passe',
+      duration: 1,
+    };
 
-    const response = await supertest(app)
-      .post(`${baseURL}/otp`)
-      .send(invalidData);
+    const response = await supertest(app).post(`${baseURL}/otp`).send(invalidData);
 
     expect(response.status).toBe(400);
     expect(response).toHaveProperty('error');
@@ -46,9 +42,7 @@ describe('POST /otp', () => {
       // Missing email, subject, message, and duration
     };
 
-    const response = await supertest(app)
-      .post(`${baseURL}/otp`)
-      .send(missingData);
+    const response = await supertest(app).post(`${baseURL}/otp`).send(missingData);
 
     expect(response.status).toBe(400);
     expect(response).toHaveProperty('error');
@@ -62,12 +56,9 @@ describe('POST /otp', () => {
       duration: 'invalid_duration',
     };
 
-    const response = await supertest(app)
-      .post(`${baseURL}/otp`)
-      .send(invalidDurationData);
+    const response = await supertest(app).post(`${baseURL}/otp`).send(invalidDurationData);
 
     expect(response.status).toBe(400);
     expect(response).toHaveProperty('error');
   });
-})
-
+});
