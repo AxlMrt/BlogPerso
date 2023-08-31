@@ -2,13 +2,17 @@
 import { useDeleteUserMutation } from "../../app/store/api/usersApi";
 import { useDeleteBookMutation } from "../../app/store/api/booksApi";
 import { IBook } from "../../app/types";
-import { useAppSelector } from "../../app/store/configureStore";
+import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import CloseModalButton from "../buttons/close_modal/CloseModalButton";
 import { BsTrash } from "react-icons/bs";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
+import { logout } from "../../app/store/slices/authSlice";
 
 export default function DeleteModal() {
   const { user } = useAppSelector((state: { auth: any }) => state.auth);
-  const [deleteUser] = useDeleteUserMutation();
+  const dispatch = useAppDispatch();
+  const [deleteUser, { isSuccess }] = useDeleteUserMutation();
   const [deleteBook] = useDeleteBookMutation();
 
   const closeModal = () => {
@@ -20,11 +24,18 @@ export default function DeleteModal() {
       await user.books.map((book: IBook) =>
         deleteBook({ bookId: book.id, id: user.id }),
       );
-      await deleteUser(user.id!).then(() => localStorage.clear());
+      await deleteUser(user.id!);
     } catch (error) {
       console.log("Couldn't delete this user:", error);
     }
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(logout());
+      toast.success('Votre compte a été supprimé.');
+    }
+  })
 
   return (
     <dialog

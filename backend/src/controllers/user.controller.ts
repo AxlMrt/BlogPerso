@@ -94,6 +94,13 @@ const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
     const uploadDir = __dirname + '/../../public/uploads/';
     const receivedFields = Object.keys(req.body);
     const invalidFields = receivedFields.filter((field) => !allowedFields.includes(field));
+    const currentPhoto: { photo: string | null } | null = await prisma.user.findUnique({
+      where: { id: req.body.id },
+      select: {
+        photo: true,
+      },
+    });
+    const filenamePath: string = uploadDir + currentPhoto?.photo;
 
     if (invalidFields.length > 0) next(new HttpException(400, 'Additional fields not allowed.'));
 
@@ -113,17 +120,14 @@ const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
         req.body[key] = transformValuesToLowercase(req.body[key], key);
       }
     }
-
-    const currentPhoto: { photo: string | null } | null = await prisma.user.findUnique({
-      where: { id: req.body.id },
-      select: {
-        photo: true,
-      },
-    });
-
-    const filenamePath: string = uploadDir + currentPhoto?.photo;
-
+    
     if (req.body.user) req.body = JSON.parse(req.body.user);
+    
+    const updatedUser = await prisma.user.update({
+      where: { id: req.body.id },
+      include: { books: true },
+      data: { ...req.body, password: req.body.password, photo: req.file?.filename },
+    });
 
     if (req.body.photo) {
       if (currentPhoto?.photo !== 'default.png' && fs.existsSync(filenamePath)) {
@@ -132,12 +136,6 @@ const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
         });
       }
     }
-
-    const updatedUser = await prisma.user.update({
-      where: { id: req.body.id },
-      include: { books: true },
-      data: { ...req.body, password: req.body.password, photo: req.file?.filename },
-    });
 
     const { password, role, createdAt, updatedAt, ...others } = updatedUser;
 
@@ -150,6 +148,20 @@ const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
 const deleteUser: RequestHandler<{ id: string }> = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   try {
+    const currentPhoto: { photo: string | null } | null = await prisma.user.findUnique({
+      where: { id: req.body.id },
+      select: {
+        photo: true,
+      },
+    });
+    const uploadDir = __dirname + '/../../public/uploads/';
+    const filenamePath: string = uploadDir + currentPhoto?.photo;
+    if (currentPhoto?.photo !== 'default.png' && fs.existsSync(filenamePath)) {
+        fs.unlink(filenamePath, (err) => {
+          console.log(err);
+        });
+    }
+
     const deletedUser: IUser = await prisma.user.delete({
       where: { id: id },
     });
