@@ -18,7 +18,7 @@ export default function ProfileCard({ currentUser }: Props) {
   return (
 		<div className='bg-white dark:bg-gray-800 dark:text-white shadow rounded-lg p-10'>
 			<div className='flex flex-col gap-1 text-center items-center'>
-				<div className='h-24 w-24 rounded-full content-center overflow-hidden md:h-32 md:w-32 bg-gray-800 dark:bg-white'>
+				<div className='h-24 w-24 rounded-full content-center overflow-hidden md:h-32 md:w-32'>
 					<img
 						className='relative h-auto w-full top-1/2 -translate-y-2/4'
 						src={`${PF}/${currentUser?.photo}`}

@@ -28,7 +28,7 @@ axios.interceptors.response.use(
         axios.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${refreshToken}`;
-        console.log("refreshToken");
+
         await axios
           .post("/refresh")
           .then((response) => {

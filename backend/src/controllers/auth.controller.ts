@@ -54,7 +54,7 @@ const login: RequestHandler<{ email: string; password: string }> = async (
 
 const logout: RequestHandler = async (req: Request, res: Response) => {
   res.setHeader('Set-Cookie', ['Authorization=;Max-age=0']);
-  res.redirect('/login');
+  res.json();
 };
 
 const getUserProfile: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {

@@ -77,10 +77,10 @@ const createUser: RequestHandler = async (req: Request, res: Response, next: Nex
 
 const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    req.body = JSON.parse(JSON.stringify(req.body));
     //In case of picture
     if (req.body.user) {
       req.body = JSON.parse(req.body.user);
-
       for (const key in req.body) {
         if (req.body.hasOwnProperty(key)) {
           if (req.body[key] === '') {
@@ -91,9 +91,9 @@ const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
     }
 
     const allowedFields = ['id', 'email', 'firstName', 'lastName', 'password', 'photo'];
-    const uploadDir = __dirname + '/../../public/uploads/';
     const receivedFields = Object.keys(req.body);
     const invalidFields = receivedFields.filter((field) => !allowedFields.includes(field));
+    const uploadDir = __dirname + '/../../public/uploads/';
     const currentPhoto: { photo: string | null } | null = await prisma.user.findUnique({
       where: { id: req.body.id },
       select: {
@@ -120,13 +120,11 @@ const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
         req.body[key] = transformValuesToLowercase(req.body[key], key);
       }
     }
-    
-    if (req.body.user) req.body = JSON.parse(req.body.user);
-    
+
     const updatedUser = await prisma.user.update({
       where: { id: req.body.id },
       include: { books: true },
-      data: { ...req.body, password: req.body.password, photo: req.file?.filename },
+      data: { ...req.body, photo: req.file?.filename },
     });
 
     if (req.body.photo) {
@@ -141,12 +139,14 @@ const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
 
     res.json(others);
   } catch (error) {
+    console.log(error)
     next(new HttpException(500, "Couldn't update user."));
   }
 };
 
 const deleteUser: RequestHandler<{ id: string }> = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
+  
   try {
     const currentPhoto: { photo: string | null } | null = await prisma.user.findUnique({
       where: { id: req.body.id },

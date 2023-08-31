@@ -2,6 +2,9 @@ import { describe, it, expect } from 'vitest';
 import prisma from '@/prisma/lib/prisma';
 import supertest from 'supertest';
 import app from '..';
+import { getUserFromDatabase } from '@/utils/tests-functions';
+import fs from 'fs';
+import path from 'path';
 
 const baseURL = '/api/v1';
 const invalidUserId = 'invalid_id';
@@ -193,15 +196,33 @@ describe('PUT /users/:id', async () => {
 
   it('should update user', async () => {
     const body = {
-      email: 'john.test@gmail.com',
+      email: 'unique.test@gmail.com',
       firstName: 'John',
       lastName: 'Doe',
     };
 
+    const imagePath = path.join(__dirname, '../../public/uploads/logo.png');
+
     const response = await supertest(app)
       .put(`${baseURL}/users/${createdUser.id}`)
-      .send({ ...body, id: createdUser.id });
+      .field('id', createdUser.id)
+      .field('email', body.email)
+      .field('firstName', body.firstName)
+      .field('lastName', body.lastName)
+      .attach('photo', imagePath);
+    
     expect(response.status).toEqual(200);
+
+    const updatedUser = await getUserFromDatabase(createdUser.id);
+    expect(updatedUser).toBeTruthy();
+    expect(updatedUser?.id).toEqual(createdUser.id);
+
+    expect(updatedUser?.email).toEqual(body.email.toLowerCase());
+    expect(updatedUser?.firstName).toEqual(body.firstName.toLowerCase());
+    expect(updatedUser?.lastName).toEqual(body.lastName.toLowerCase());
+    expect(fs.existsSync(path.join(__dirname, `../../public/uploads/${updatedUser!.photo}`))).toBe(true);
+
+    fs.unlinkSync(path.join(__dirname, `../../public/uploads/${updatedUser!.photo}`));
   });
 
   it('should update with admin role', async () => {
@@ -216,6 +237,14 @@ describe('PUT /users/:id', async () => {
       .send({ ...body, id: createdUser.id });
 
     expect(response.status).toEqual(200);
+
+    const updatedUser = await getUserFromDatabase(createdUser.id);
+    expect(updatedUser).toBeTruthy();
+    expect(updatedUser?.id).toEqual(createdUser.id);
+
+    expect(updatedUser?.email).toEqual(body.email.toLowerCase());
+    expect(updatedUser?.firstName).toEqual(body.firstName.toLowerCase());
+    expect(updatedUser?.lastName).toEqual(body.lastName.toLowerCase());
   });
 
   it('should update user with missing data', async () => {
@@ -230,10 +259,13 @@ describe('PUT /users/:id', async () => {
     const response = await supertest(app)
       .put(`${baseURL}/users/${createdUser.id}`)
       .send({ ...body, id: createdUser.id });
-    const updatedUser = response.body;
+  
     expect(response.status).toEqual(200);
-    expect(updatedUser.email).toBe(body.email.toLowerCase());
-    expect(updatedUser.firstName).toBeDefined();
+  
+    const updatedUser = await getUserFromDatabase(createdUser.id);
+    expect(updatedUser).toBeTruthy();
+    expect(updatedUser?.email).toBe(body.email.toLowerCase());
+    expect(updatedUser?.firstName).toBeDefined();
   });
 
   it('should update user case insensitive', async () => {

@@ -22,7 +22,7 @@ export default function ProfileImage({ profileBar, setProfilebar }: Props) {
 			<div className='relative'>
 				<button
 					type='button'
-					className='relative flex rounded-full bg-white dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
+					className='relative flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
 					id='user-menu-button'
 					aria-expanded='false'
 					aria-haspopup='true'
@@ -30,7 +30,7 @@ export default function ProfileImage({ profileBar, setProfilebar }: Props) {
 				>
 					<span className='absolute -inset-1.5'></span>
 					<span className='sr-only'>Open user menu</span>
-					<div className='h-7 w-7 rounded-full overflow-hidden md:h-8 md:w-8 bg-gray-800 dark:bg-white'>
+					<div className='h-7 w-7 rounded-full overflow-hidden md:h-8 md:w-8'>
 						<img
 							className='relative h-auto w-full top-1/2 -translate-y-2/4'
 							src={PF + user['photo']}

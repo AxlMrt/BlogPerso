@@ -5,12 +5,14 @@ import TableUpdate from "../components/table_update/TableUpdate";
 import { IBook } from "../app/types";
 import { useAppSelector } from "../app/store/configureStore";
 import { useGetUserBookQuery } from "../app/store/api/userQueryApi";
-import Spinner from "../components/spinner/Spinner";
 import {
   BaseQueryArg,
   BaseQueryFn,
 } from "@reduxjs/toolkit/dist/query/baseQueryTypes";
 import AddBookModal from "../components/modal/AddBookModal";
+import TableSkeleton from "../components/skeleton/TableSkeleton";
+import InputSkeleton from "../components/skeleton/InputSkeleton";
+import PaginationSkeleton from "../components/skeleton/PaginationSkeletont";
 
 export default function BooksPage() {
   const [page, setPage] = useState<number>(1);
@@ -48,43 +50,50 @@ export default function BooksPage() {
     refetch();
   }, [refetch]);
 
-  return isLoading ? (
-    <Spinner />
-  ) : (
-    <section
-      className="bg-gray-100 dark:bg-gray-900 h-screen"
-      onClick={() => setTableHeadFilterVisible(false)}
-    >
-      <div className="h-full w-5/6 m-auto mt-32">
-        <Search
-          setSearchField={setSearchField}
-          placeholder={"Rechercher un livre"}
-        />
-        <TableUpdate
-          bookToUpdate={bookToUpdate}
-          updateFields={updateFields}
-          data={data}
-          page={page}
-          setPage={setPage}
-          refetch={refetch}
-        />
-        <Table
-          books={data.books}
-          field={field}
-          handleCheckBox={handleCheckBox}
-          order={order}
-          type={type}
-          tableHeadFilterVisible={tableHeadFilterVisible}
-          updateFields={updateFields}
-          setField={setField}
-          setOrder={setOrder}
-          setSearchField={setSearchField}
-          setTableHeadFilterVisible={setTableHeadFilterVisible}
-          setType={setType}
-          setUpdateFields={setUpdateFields}
-        />
-      </div>
-      <AddBookModal refetch={refetch} />
-    </section>
-  );
+  return (
+		<section
+			className='bg-gray-100 dark:bg-gray-900 h-screen'
+			onClick={() => setTableHeadFilterVisible(false)}
+		>
+			{isLoading ? (
+				<div className='h-full w-5/6 m-auto mt-32'>
+					<InputSkeleton />
+					<PaginationSkeleton />
+					<TableSkeleton />
+				</div>
+			) : (
+				<div className='h-full w-5/6 m-auto mt-32'>
+					<Search
+						setSearchField={setSearchField}
+						placeholder={'Rechercher un livre'}
+					/>
+					<TableUpdate
+						bookToUpdate={bookToUpdate}
+						updateFields={updateFields}
+						data={data}
+						page={page}
+						setPage={setPage}
+						refetch={refetch}
+					/>
+					<Table
+						books={data.books}
+						field={field}
+						handleCheckBox={handleCheckBox}
+						order={order}
+						type={type}
+						tableHeadFilterVisible={tableHeadFilterVisible}
+						updateFields={updateFields}
+						setField={setField}
+						setOrder={setOrder}
+						setSearchField={setSearchField}
+						setTableHeadFilterVisible={setTableHeadFilterVisible}
+						setType={setType}
+						setUpdateFields={setUpdateFields}
+					/>
+				</div>
+			)}
+
+			<AddBookModal refetch={refetch} />
+		</section>
+	);
 }
