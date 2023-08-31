@@ -36,7 +36,6 @@ export default function Form({
             register={register}
             labelText={field.labelText}
             labelFor={field.labelFor}
-            id={field.id}
             name={field.name}
             type={field.type}
             holder={field.placeholder}

@@ -50,7 +50,6 @@ export default function SendPasswordRequestPage() {
                 name={"email"}
                 labelText={"Email"}
                 labelFor={"email"}
-                id={FORM_ID}
                 isRequired={true}
               />
             </form>
