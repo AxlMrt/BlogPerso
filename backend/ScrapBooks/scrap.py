@@ -5,8 +5,6 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 import pandas as pd
-import json
-
 
 url = 'https://www.amazon.fr/gp/bestsellers/2023/books/ref=zg_bsar_cal_ye'
 
