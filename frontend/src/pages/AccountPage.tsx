@@ -72,9 +72,8 @@ export default function AccountPage() {
       toast.success("Vos informations ont été mises à jour!");
     }
 
-    if (error && 'originalStatus' in error) {
-      if (error.originalStatus === 409)
-        toast.error('Email déjà utilisé.');
+    if (error && "originalStatus" in error) {
+      if (error.originalStatus === 409) toast.error("Email déjà utilisé.");
     }
   }, [dispatch, error, isSuccess, navigate, reset, successData]);
 

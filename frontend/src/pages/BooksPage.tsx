@@ -51,49 +51,49 @@ export default function BooksPage() {
   }, [refetch]);
 
   return (
-		<section
-			className='bg-gray-100 dark:bg-gray-900 h-screen'
-			onClick={() => setTableHeadFilterVisible(false)}
-		>
-			{isLoading ? (
-				<div className='h-full w-5/6 m-auto mt-32'>
-					<InputSkeleton />
-					<PaginationSkeleton />
-					<TableSkeleton />
-				</div>
-			) : (
-				<div className='h-full w-5/6 m-auto mt-32'>
-					<Search
-						setSearchField={setSearchField}
-						placeholder={'Rechercher un livre'}
-					/>
-					<TableUpdate
-						bookToUpdate={bookToUpdate}
-						updateFields={updateFields}
-						data={data}
-						page={page}
-						setPage={setPage}
-						refetch={refetch}
-					/>
-					<Table
-						books={data.books}
-						field={field}
-						handleCheckBox={handleCheckBox}
-						order={order}
-						type={type}
-						tableHeadFilterVisible={tableHeadFilterVisible}
-						updateFields={updateFields}
-						setField={setField}
-						setOrder={setOrder}
-						setSearchField={setSearchField}
-						setTableHeadFilterVisible={setTableHeadFilterVisible}
-						setType={setType}
-						setUpdateFields={setUpdateFields}
-					/>
-				</div>
-			)}
+    <section
+      className="bg-gray-100 dark:bg-gray-900 h-screen"
+      onClick={() => setTableHeadFilterVisible(false)}
+    >
+      {isLoading ? (
+        <div className="h-full w-5/6 m-auto mt-32">
+          <InputSkeleton />
+          <PaginationSkeleton />
+          <TableSkeleton />
+        </div>
+      ) : (
+        <div className="h-full w-5/6 m-auto mt-32">
+          <Search
+            setSearchField={setSearchField}
+            placeholder={"Rechercher un livre"}
+          />
+          <TableUpdate
+            bookToUpdate={bookToUpdate}
+            updateFields={updateFields}
+            data={data}
+            page={page}
+            setPage={setPage}
+            refetch={refetch}
+          />
+          <Table
+            books={data.books}
+            field={field}
+            handleCheckBox={handleCheckBox}
+            order={order}
+            type={type}
+            tableHeadFilterVisible={tableHeadFilterVisible}
+            updateFields={updateFields}
+            setField={setField}
+            setOrder={setOrder}
+            setSearchField={setSearchField}
+            setTableHeadFilterVisible={setTableHeadFilterVisible}
+            setType={setType}
+            setUpdateFields={setUpdateFields}
+          />
+        </div>
+      )}
 
-			<AddBookModal refetch={refetch} />
-		</section>
-	);
+      <AddBookModal refetch={refetch} />
+    </section>
+  );
 }
