@@ -1,13 +1,20 @@
+import { useNavigate } from 'react-router-dom';
 import bestsSellers from '../../../ScrapBooks/bestseller.json';
 import { RiQuillPenFill } from 'react-icons/ri';
 
 export default function Advert() {
+  const navigate = useNavigate();
+
+  const handleNav = (title: string) => {
+    navigate(`/book/${title}`)
+  } 
+
   return (
     <div className="flex flex-col items-center ">
     <h3 className="py-6 text-gray-700 text-2xl underline font-bold dark:text-white">
       Découvrez
     </h3>
-    <div className="flex space-x-4 overflow-x-scroll justify-center items-center w-full">
+    <div className="flex space-x-4 overflow-x-scroll justify-center items-center w-full" >
       {
         bestsSellers.map((book, index) => {
           return (
@@ -15,6 +22,7 @@ export default function Advert() {
         className="relative flex flex-col justify-between  bg-white bg-center shadow-md rounded-3xl  bg-contain bg-no-repeat text-gray-800  overflow-hidden cursor-pointer min-w-full w-64 h-64 my-2 md:min-w-0"
         style={{ backgroundImage: `url('${book.photo}')`, }}
         key={index}
+        onClick={() => handleNav(book.title)}
        >
         <div className="absolute bg-gray-800 opacity-50 inset-0 z-0"></div>
         <div className="relative flex flex-row items-end  h-72 w-full ">
