@@ -4,16 +4,19 @@ import { RiQuillPenFill } from 'react-icons/ri';
 
 export default function Advert() {
   const navigate = useNavigate();
-
+  const actualDate = new Date;
   const handleNav = (title: string) => {
     navigate(`/book/${title}`)
   } 
 
   return (
     <div className="flex flex-col items-center ">
-    <h3 className="py-6 text-gray-700 text-2xl underline font-bold dark:text-white">
-      Découvrez
-    </h3>
+      <div className='py-6 text-center uppercase'>
+        <h3 className="text-gray-700 text-2xl font-bold dark:text-white">
+          Découvrez Votre Prochain Livre
+        </h3>
+        <span className='text-sm tracking-wide'>BESTS SELLERS { actualDate.getFullYear() }</span>
+      </div>
     <div className="flex space-x-4 overflow-x-scroll justify-center items-center w-full" >
       {
         bestsSellers.map((book, index) => {
