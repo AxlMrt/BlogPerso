@@ -15,7 +15,7 @@ export default function Advert() {
         <h3 className="text-gray-700 text-2xl font-bold dark:text-white">
           Découvrez Votre Prochain Livre
         </h3>
-        <span className='text-sm tracking-wide'>BESTS SELLERS { actualDate.getFullYear() }</span>
+        <span className='text-sm tracking-wide dark:text-white'>BESTS SELLERS { actualDate.getFullYear() }</span>
       </div>
     <div className="flex space-x-4 overflow-x-scroll justify-center items-center w-full" >
       {

@@ -40,15 +40,16 @@ def get_book_data(link):
 
   nb_pages = soup.find('div', { 'id': 'rpi-attribute-book_details-fiona_pages' }).getText().strip()
   publication_year = soup.find('div', { 'id': 'rpi-attribute-book_details-publication_date' }).getText().strip()
-  publisher = soup.find('div', { 'id': 'rpi-attribute-book_details-publisher' }).getText().strip().split()
+  publisher = soup.find('div', { 'id': 'rpi-attribute-book_details-publisher' }).getText().strip()
 
   data['title'] = soup.find('span', { 'id': 'productTitle' }).getText().strip()
   data['author'] = re.sub("[\(\[].*?[\)\]]", "", soup.find('span', { 'class': 'author notFaded' }).getText()).strip()
   data['description'] = re.sub("En lire plus", "", soup.find('div', { 'id': 'bookDescription_feature_div' }).getText()).strip()
   data['year'] = re.sub("[^0-9]", "", publication_year)
   data['page'] = re.sub("[^0-9]", "", nb_pages)
-  data['publisher'] = publisher[-1]
+  data['publisher'] = publisher
   data['photo'] = soup.find('img', { 'id': 'imgBlkFront' }).get('src') 
+  data['feedBack'] = soup.find('span', { 'class': 'a-size-base a-color-base'})
 
   return data
 
