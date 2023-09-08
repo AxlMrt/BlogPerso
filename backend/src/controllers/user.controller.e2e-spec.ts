@@ -123,7 +123,7 @@ describe('GET /users', async () => {
     },
   });
 
-  it('should create new user', async () => {
+  it('should get all users', async () => {
     const response = await supertest(app).get(`${baseURL}/users`).send(superUser);
     expect(response.status).toBe(200);
   });
@@ -210,7 +210,7 @@ describe('PUT /users/:id', async () => {
       .field('firstName', body.firstName)
       .field('lastName', body.lastName)
       .attach('photo', imagePath);
-    
+
     expect(response.status).toEqual(200);
 
     const updatedUser = await getUserFromDatabase(createdUser.id);
@@ -259,9 +259,9 @@ describe('PUT /users/:id', async () => {
     const response = await supertest(app)
       .put(`${baseURL}/users/${createdUser.id}`)
       .send({ ...body, id: createdUser.id });
-  
+
     expect(response.status).toEqual(200);
-  
+
     const updatedUser = await getUserFromDatabase(createdUser.id);
     expect(updatedUser).toBeTruthy();
     expect(updatedUser?.email).toBe(body.email.toLowerCase());
