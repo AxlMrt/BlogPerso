@@ -3,6 +3,7 @@ CREATE TABLE "Note" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "note" TEXT,
+    "color" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userId" TEXT,
 

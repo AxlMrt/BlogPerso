@@ -39,6 +39,13 @@ export interface IBook {
   userInfo: IUser;
 }
 
+export interface INote {
+  id: string;
+  title: string;
+  note: string;
+  createdAt: Date;
+}
+
 export interface IBookRegister extends IBook {
   userMail: string;
 }

@@ -25,6 +25,7 @@ model Note {
   id        String   @id @default(uuid())
   title     String   
   note      String?
+  color     String
   createdAt DateTime @default(now())
   userId    String?
   user      User?    @relation(fields: [userId], references: [id])

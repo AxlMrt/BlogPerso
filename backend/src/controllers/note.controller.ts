@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import prisma from '@/prisma/lib/prisma';
 import HttpException from '@/config/exceptions/HttpException';
 import { validEmail } from '@/utils/validation';
+import generatePastelColors from '@/utils/randomColors';
 
 const getAllNotes = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -46,6 +47,7 @@ const createNote = async (req: Request, res: Response, next: NextFunction) => {
       data: {
         title,
         note,
+        color: generatePastelColors(),
         user: { connect: { email: userMail } },
       },
     });

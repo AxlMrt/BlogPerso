@@ -39,6 +39,7 @@ const getUserBooks: RequestHandler<{ id: string }> = async (req: Request, res: R
         books: options,
       },
     });
+
     const total = data?._count.books;
     res.json({ books: data?.books, total, page, total_pages: Math.ceil(total! / PER_PAGE) });
   } catch (error) {

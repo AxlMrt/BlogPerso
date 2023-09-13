@@ -15,9 +15,10 @@ export interface IUser {
 export interface INote {
   id: string;
   title: string;
-  note?: string;
+  note: string | null;
+  color: string;
   createdAt: Date;
-  userId: string;
+  userId: string | null;
 }
 
 export interface IUserLogin {
