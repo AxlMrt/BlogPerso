@@ -4,5 +4,6 @@ import _ from '../controllers/userQuery.controller';
 
 const router = express.Router();
 router.get('/bookList/:id', authMiddleware, _.getUserBooks);
+router.get('/noteList/:id', authMiddleware, _.getUserNotes);
 
 export default router;

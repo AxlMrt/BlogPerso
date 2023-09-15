@@ -61,9 +61,8 @@ const createNote = async (req: Request, res: Response, next: NextFunction) => {
 const updateNote = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   const { title, note, userId } = req.body;
-
   try {
-    const allowedFields = ['title', 'note', 'user', 'userId'];
+    const allowedFields = ['id', 'title', 'note', 'user', 'userId'];
     const receivedFields = Object.keys(req.body);
     const invalidFields = receivedFields.filter((field) => !allowedFields.includes(field));
     const noteToUpdate = await prisma.note.findUnique({ where: { id } });
@@ -80,7 +79,7 @@ const updateNote = async (req: Request, res: Response, next: NextFunction) => {
       data: { title, note },
     });
 
-    res.json(updatedNote);
+    res.status(200).json(updatedNote);
   } catch (error) {
     next(new HttpException(500, "Couldn't update note."));
   }

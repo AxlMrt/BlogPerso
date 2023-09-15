@@ -20,18 +20,18 @@ export const notesApi = createApi({
         body: note,
       }),
     }),
-    updateNote: builder.mutation<INote, INote>({
+    updateNote: builder.mutation<INote, { id: string, title: string, note: string, userId: string }>({
       query: (note) => ({
         url: `/notes/${note.id}`,
         method: "put",
         body: note,
       }),
     }),
-    deleteNote: builder.mutation<void, { noteId: string; id: string }>({
-      query: ({ noteId, id }) => ({
-        url: `/books/${noteId}`,
+    deleteNote: builder.mutation<void, { userId: string; id: string }>({
+      query: ({ userId, id }) => ({
+        url: `/notes/${id}`,
         method: "delete",
-        body: { id },
+        body: { userId },
       }),
     }),
   }),

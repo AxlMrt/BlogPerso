@@ -80,7 +80,7 @@ export default function Table({
     //console.log('editData', editData);
     setEdit(editData);
   };
-console.log(successData)
+
   useEffect(() => {
     setEdit(books);
     if (isSuccess) {
