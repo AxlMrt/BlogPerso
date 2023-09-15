@@ -18,6 +18,8 @@ import SendPasswordRequestPage from "../../pages/SendPasswordRequestPage";
 import ResetPasswordPage from "../../pages/ResetPasswordPage";
 import PrivacyPolicy from "../../pages/PrivacyPolicy";
 import TermsAndConditions from "../../pages/TermsAndConditions";
+import SinglePage from '../../pages/SinglePage';
+import NotesPages from "../../pages/NotesPage";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -36,6 +38,8 @@ export const router = createBrowserRouter(
         <Route path="" element={<HomePage />} />
         <Route path="table" element={<BooksPage />} />
         <Route path="account" element={<AccountPage />} />
+        <Route path="book/:title" element={<SinglePage />} />
+        <Route path="notes" element={<NotesPages />} />
       </Route>
       <Route
         path="not-found"

@@ -9,6 +9,16 @@ export interface IUser {
   createdAt: Date;
   updatedAt: Date;
   books?: IBook[];
+  notes?: INote[];
+}
+
+export interface INote {
+  id: string;
+  title: string;
+  note: string | null;
+  color: string;
+  createdAt: Date;
+  userId: string | null;
 }
 
 export interface IUserLogin {

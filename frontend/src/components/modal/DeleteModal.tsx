@@ -33,9 +33,9 @@ export default function DeleteModal() {
   useEffect(() => {
     if (isSuccess) {
       dispatch(logout());
-      toast.success('Votre compte a été supprimé.');
+      toast.success("Votre compte a été supprimé.");
     }
-  })
+  });
 
   return (
     <dialog

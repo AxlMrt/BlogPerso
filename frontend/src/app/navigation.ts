@@ -13,6 +13,7 @@ export const loggedNavigation: {
   },
   { dest: "/", text: "Accueil" },
   { dest: "/table", text: "Vos livres" },
+  { dest: "/notes", text: "Notes"}
   /*{ dest: '#', text: 'Bibliothèque' },*/
 ];
 

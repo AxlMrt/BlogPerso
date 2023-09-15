@@ -30,7 +30,7 @@ const login: RequestHandler<{ email: string; password: string }> = async (
       where: {
         email,
       },
-      include: { books: true },
+      include: { books: true, notes: true, },
     });
 
     if (!user) return next(new HttpException(404, "User doesn't exist"));
@@ -63,7 +63,7 @@ const getUserProfile: RequestHandler = async (req: Request, res: Response, next:
   try {
     const user = await prisma.user.findUnique({
       where: { id: _id },
-      include: { books: true },
+      include: { books: true, notes: true, },
     });
 
     if (!user) next(new HttpException(404, 'User not found.'));

@@ -6,6 +6,7 @@ import { bookApi } from "./api/booksApi";
 import { userApi } from "./api/usersApi";
 import { userQueryApi } from "./api/userQueryApi";
 import { authApi } from "./api/authApi";
+import { notesApi } from "./api/notesApi";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     auth: authSlice.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [bookApi.reducerPath]: bookApi.reducer,
+    [notesApi.reducerPath]: notesApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [userQueryApi.reducerPath]: userQueryApi.reducer,
   },
@@ -20,6 +22,7 @@ export const store = configureStore({
     getDefaultMiddleware().concat([
       authApi.middleware,
       bookApi.middleware,
+      notesApi.middleware,
       userApi.middleware,
       userQueryApi.middleware,
     ]),

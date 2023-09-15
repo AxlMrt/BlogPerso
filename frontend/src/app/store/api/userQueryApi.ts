@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { IBook } from "../../types";
+import { IBook, INote } from "../../types";
 import baseQuery from "./baseQuery";
 
 interface ListResponse<T> {
@@ -28,7 +28,13 @@ export const userQueryApi = createApi({
         url: `/query/bookList/${id}?page=${page}&search=${search}&field=${field}&order=${order}&type=${type}`,
       }),
     }),
+    getUserNotes: builder.query<
+      any, { id: string }>({
+      query: ({ id }) => ({
+        url: `/query/noteList/${id}`
+      }),
+    })
   }),
 });
 
-export const { useGetUserBookQuery } = userQueryApi;
+export const { useGetUserBookQuery, useGetUserNotesQuery } = userQueryApi;

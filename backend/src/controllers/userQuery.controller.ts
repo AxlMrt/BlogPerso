@@ -39,6 +39,7 @@ const getUserBooks: RequestHandler<{ id: string }> = async (req: Request, res: R
         books: options,
       },
     });
+
     const total = data?._count.books;
     res.json({ books: data?.books, total, page, total_pages: Math.ceil(total! / PER_PAGE) });
   } catch (error) {
@@ -46,8 +47,19 @@ const getUserBooks: RequestHandler<{ id: string }> = async (req: Request, res: R
   }
 };
 
+const getUserNotes: RequestHandler<{ id: string }> = async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+  const data = await prisma.user.findUnique({
+    where: { id },
+    select: { notes: true },
+  });
+
+  res.json({ notes: data?.notes });
+};
+
 const _ = {
   getUserBooks,
+  getUserNotes,
 };
 
 export default _;
