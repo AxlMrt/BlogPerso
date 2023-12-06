@@ -139,14 +139,13 @@ const updateUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
 
     res.json(others);
   } catch (error) {
-    console.log(error)
     next(new HttpException(500, "Couldn't update user."));
   }
 };
 
 const deleteUser: RequestHandler<{ id: string }> = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  
+
   try {
     const currentPhoto: { photo: string | null } | null = await prisma.user.findUnique({
       where: { id: req.body.id },
@@ -157,9 +156,9 @@ const deleteUser: RequestHandler<{ id: string }> = async (req: Request, res: Res
     const uploadDir = __dirname + '/../../public/uploads/';
     const filenamePath: string = uploadDir + currentPhoto?.photo;
     if (currentPhoto?.photo !== 'default.png' && fs.existsSync(filenamePath)) {
-        fs.unlink(filenamePath, (err) => {
-          console.log(err);
-        });
+      fs.unlink(filenamePath, (err) => {
+        console.log(err);
+      });
     }
 
     const deletedUser: IUser = await prisma.user.delete({

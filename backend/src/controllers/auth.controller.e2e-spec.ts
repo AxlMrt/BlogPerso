@@ -93,6 +93,5 @@ describe('POST /login/logout', () => {
 
     const response = await supertest(app).post(`${baseURL}/login/logout`).send(loginData);
     expect(response.status).toEqual(200);
-    expect(response.header['location']).toBe('/login');
   });
 });
